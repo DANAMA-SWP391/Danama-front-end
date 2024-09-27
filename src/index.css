@@ -1,0 +1,23 @@
+@font-face {
+  font-family: 'Mogra';
+  src: url('./assets/fonts/Mogra-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Albert Sans regular';
+  src: url("./assets/fonts/static/AlbertSans-Regular.ttf") format('truetype');
+}
+
+html, body, :root  , #root {
+  font-family: 'Albert Sans regular', sans-serif;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
