@@ -1,9 +1,10 @@
 import './LoginBtn.css';
 import Button from "../../../common/Button/Button.jsx";
 
-function LoginBtn() {
+// eslint-disable-next-line react/prop-types
+function LoginBtn( {onClick} ) {
     return (
-        <Button className="login-btn" to="/">Login</Button>
+        <Button onClick ={onClick} className="login-btn">Login</Button>
     )
 }
 

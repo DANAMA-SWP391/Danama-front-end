@@ -1,15 +1,16 @@
-import { useNavigate } from "react-router-dom";
-
 import "./Button.css";
+import {useNavigate} from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
-function Button({ className, children, to }) {
+function Button({onClick, className, children, to}) {
     const navigate = useNavigate();
-    const handleClick = () => {
-        navigate(to);
-    };
+    const handleCLick = (event) => {
+        event.preventDefault();
+        if(onClick) onClick();
+        if(to) navigate(to);
+    }
     return (
-        <button className={className} onClick={handleClick}>
+        <button className={className} onClick={handleCLick}>
             {children}
         </button>
     );
