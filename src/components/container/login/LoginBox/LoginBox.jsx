@@ -5,8 +5,6 @@ import ResetPassLink from "../ResetPassLink/ResetPassLink.jsx";
 import RememberMe from "../RememberMe/RememberMe.jsx";
 import LoginBtn from "../LoginBtn/LoginBtn.jsx";
 
-
-
 function LoginBox() {
     return (
         <form>
