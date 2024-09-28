@@ -2,9 +2,10 @@ import './SignUpBtn.css';
 
 import Button from "../../../common/Button/Button.jsx";
 
-function SignUpBtn() {
+// eslint-disable-next-line react/prop-types
+function SignUpBtn({ onClick }) {
     return (
-        <Button className="signup-btn" to="/signup">Sign Up</Button>
+        <Button className="signup-btn" onClick={onClick} >Sign Up</Button>
     );
 }
 
