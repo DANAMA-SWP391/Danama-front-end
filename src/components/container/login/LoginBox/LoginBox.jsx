@@ -7,7 +7,7 @@ import LoginBtn from "../LoginBtn/LoginBtn.jsx";
 import InputBox from "../../../common/InputBox/InputBox.jsx";
 
 // eslint-disable-next-line react/prop-types
-function LoginBox({ handleButtonClick, isSuccess, loading }) {
+function LoginBox({ handleButtonClick, isSuccess, setEmail, setPassword }) {
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
 
@@ -17,25 +17,24 @@ function LoginBox({ handleButtonClick, isSuccess, loading }) {
         handleButtonClick(email, password);
     };
 
+    const onEmailChange = () => {
+        console.log(emailRef.current.value);
+        setEmail(emailRef.current.value);
+    }
+
+    const onPasswordChange = () => {
+        setPassword(passwordRef.current.value);
+    }
+
     return (
         <form>
-            {loading ? (
                 <>
-                    <InputBox ref={emailRef} className={`email-input ${isSuccess ? `` : `err`}`} type="email" placeholder="Email" />
+                    <InputBox ref={emailRef} className={`email-input ${isSuccess ? `` : `err`}`} type="email" placeholder="Email" onChange={onEmailChange} />
                     <ResetPassLink />
-                    <InputBox ref={passwordRef} className={`password-input ${isSuccess ? `` : `err`}`} type="password" placeholder="Password" />
+                    <InputBox ref={passwordRef} className={`password-input ${isSuccess ? `` : `err`}`} type="password" placeholder="Password" onChange={onPasswordChange} />
                     <RememberMe />
                     <LoginBtn onClick={onClick} />
                 </>
-            ) : (
-                <>
-                    <InputBox ref={emailRef} className={`email-input ${isSuccess ? `` : `err`}`} type="email" placeholder="Email" />
-                    <ResetPassLink />
-                    <InputBox ref={passwordRef} className={`password-input ${isSuccess ? `` : `err`}`} type="password" placeholder="Password" />
-                    <RememberMe />
-                    <LoginBtn onClick={onClick} />
-                </>
-            )}
         </form>
     );
 }
