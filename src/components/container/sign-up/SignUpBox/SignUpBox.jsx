@@ -1,4 +1,4 @@
-import "../SignupBox.css";
+import '../SignUpBox/SignUpBox.css';
 
 import SignUpBtn from "../SignUpBtn/SignUpBtn.jsx";
 import InputBox from "../../../common/InputBox/InputBox.jsx";
