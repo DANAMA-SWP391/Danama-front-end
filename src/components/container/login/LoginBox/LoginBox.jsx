@@ -1,9 +1,9 @@
 import './LoginBox.css';
 
-import InputBox from "../../../Common/InputBox/InputBox.jsx";
 import ResetPassLink from "../ResetPassLink/ResetPassLink.jsx";
 import RememberMe from "../RememberMe/RememberMe.jsx";
 import LoginBtn from "../LoginBtn/LoginBtn.jsx";
+import InputBox from "../../../common/InputBox/InputBox.jsx";
 
 function LoginBox() {
     return (
