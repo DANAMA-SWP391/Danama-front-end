@@ -1,6 +1,6 @@
 import './SignUpBtn.css';
 
-import Button from "../../../Common/Button/Button.jsx";
+import Button from "../../../common/Button/Button.jsx";
 
 function SignUpBtn() {
     return (
