@@ -29,9 +29,9 @@ function LoginBox({ handleButtonClick, isSuccess, setEmail, setPassword }) {
     return (
         <form>
                 <>
-                    <InputBox ref={emailRef} className={`email-input ${isSuccess ? `` : `err`}`} type="email" placeholder="Email" onChange={onEmailChange} />
+                    <InputBox ref={emailRef} className={`email-input ${isSuccess ? `` : `err`} active`} type="email" placeholder="Email" onChange={onEmailChange} />
                     <ResetPassLink />
-                    <InputBox ref={passwordRef} className={`password-input ${isSuccess ? `` : `err`}`} type="password" placeholder="Password" onChange={onPasswordChange} />
+                    <InputBox ref={passwordRef} className={`password-input ${isSuccess ? `` : `err`} active`} type="password" placeholder="Password" onChange={onPasswordChange} />
                     <RememberMe />
                     <LoginBtn onClick={onClick} />
                 </>
