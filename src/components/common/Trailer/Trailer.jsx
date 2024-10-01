@@ -55,7 +55,8 @@ function Trailer() {
                 autoPlay
                 width="600"
             >
-                <source src="/trailer/Dune2.mkv" />
+                <source src="/trailer/Dune2.mp4" />
+
                 Your browser does not support the video tag.
             </video>
             <button onClick={toggleSound} className="sound-button">
