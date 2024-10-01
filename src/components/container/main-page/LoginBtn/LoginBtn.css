@@ -1,0 +1,9 @@
+.sign-in-btn {
+    background-color: #BA1F1F;
+    height: 35px;
+    width: 110px;
+}
+
+.sign-in-btn:hover {
+    background-color: #8A0D0D;
+}

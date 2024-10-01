@@ -1,10 +1,12 @@
 import './Logo.css';
+import {Link} from "react-router-dom";
 
 function Logo() {
     return (
-        <div className="logo">
-            <h1>DANAMA</h1>
-        </div>
+        <Link to={"/"} className="custom-link">
+                <h1 className="logo">DANAMA</h1>
+        </Link>
+
     )
 }
 

@@ -1,0 +1,19 @@
+/* src/components/container/main-page/OptionList/OptionList.css */
+.option-list {
+    width: 250px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.option a {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold; /* Make the text bold */
+    transition: 0.25s ease;
+}
+
+.option a:hover {
+    color: #ff0000;
+}

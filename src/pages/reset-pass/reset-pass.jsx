@@ -91,52 +91,54 @@ function ResetPass() {
     }, [formState.email]);
 
     return (
-        <div className="reset-pass-container">
-            <div className="upper-container">
-                <Logo className="reset-logo" />
-                <p>Reset Password</p>
-            </div>
-            <div className="lower-container">
-                <p className={formState.err ? 'err' : ''}>{formState.content}</p>
-                <form>
-                    <InputBox
-                        ref={emailRef}
-                        name="email"
-                        className={`email-input ${formState.active ? '' : 'active'}`}
-                        type="email"
-                        placeholder="Email"
-                        onChange={handleInputChange}
-                    />
-                    <InputBox
-                        ref={codeRef}
-                        name="code"
-                        className={`code-input ${formState.active && !formState.isSuccess ? 'active' : ''}`}
-                        type="text"
-                        placeholder="Code"
-                    />
-                    <InputBox
-                        ref={passwordRef}
-                        name="password"
-                        className={`pass-input ${formState.isSuccess ? 'active' : ''}`}
-                        type="password"
-                        placeholder="Password"
-                        onChange={handleInputChange}
-                    />
-                    <InputBox
-                        ref={confirmRef}
-                        name="confirmPassword"
-                        className={`confirm-input ${formState.isSuccess ? 'active' : ''}`}
-                        type="password"
-                        placeholder="Confirm Password"
-                        onChange={handleInputChange}
-                    />
-                    <SendBtn onClick={handleClick} />
-                    {formState.loading && (
-                        <div className="loading-screen">
-                            <div className="spinner"></div>
-                        </div>
-                    )}
-                </form>
+        <div className="container">
+            <div className="reset-pass-container">
+                <div className="upper-container">
+                    <Logo className="reset-logo"/>
+                    <p>Reset Password</p>
+                </div>
+                <div className="lower-container">
+                    <p className={formState.err ? 'err' : ''}>{formState.content}</p>
+                    <form>
+                        <InputBox
+                            ref={emailRef}
+                            name="email"
+                            className={`email-input ${formState.active ? '' : 'active'}`}
+                            type="email"
+                            placeholder="Email"
+                            onChange={handleInputChange}
+                        />
+                        <InputBox
+                            ref={codeRef}
+                            name="code"
+                            className={`code-input ${formState.active && !formState.isSuccess ? 'active' : ''}`}
+                            type="text"
+                            placeholder="Code"
+                        />
+                        <InputBox
+                            ref={passwordRef}
+                            name="password"
+                            className={`pass-input ${formState.isSuccess ? 'active' : ''}`}
+                            type="password"
+                            placeholder="Password"
+                            onChange={handleInputChange}
+                        />
+                        <InputBox
+                            ref={confirmRef}
+                            name="confirmPassword"
+                            className={`confirm-input ${formState.isSuccess ? 'active' : ''}`}
+                            type="password"
+                            placeholder="Confirm Password"
+                            onChange={handleInputChange}
+                        />
+                        <SendBtn onClick={handleClick}/>
+                        {formState.loading && (
+                            <div className="loading-screen">
+                                <div className="spinner"></div>
+                            </div>
+                        )}
+                    </form>
+                </div>
             </div>
         </div>
     );

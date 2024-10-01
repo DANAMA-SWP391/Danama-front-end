@@ -46,25 +46,27 @@ function SignUp() {
     }, [name, email, phone, password, confirmPassword]);
 
     return (
-        <div className="signup-box">
-            <div className="upper-container">
-                <div className="logo-container">
-                    <Logo />
+        <div className="container">
+            <div className="signup-box">
+                <div className="upper-container">
+                    <div className="logo-container">
+                        <Logo/>
+                    </div>
+                    <div className="slogan-container">
+                        <Slogan/>
+                    </div>
                 </div>
-                <div className="slogan-container">
-                    <Slogan />
+                <div className="down-container">
+                    <p className={hasError ? 'err' : ''}>{content}</p>
+                    <SignupBox
+                        setName={setName}
+                        setEmail={setEmail}
+                        setPhone={setPhone}
+                        setPassword={setPassword}
+                        setConfirmPassword={setConfirmPassword}
+                        handleButtonClick={handleButtonClick}
+                    />
                 </div>
-            </div>
-            <div className="down-container">
-                <p className={hasError ? 'err' : ''}>{content}</p>
-                <SignupBox
-                    setName={setName}
-                    setEmail={setEmail}
-                    setPhone={setPhone}
-                    setPassword={setPassword}
-                    setConfirmPassword={setConfirmPassword}
-                    handleButtonClick={handleButtonClick}
-                />
             </div>
         </div>
     );
