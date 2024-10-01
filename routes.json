@@ -1,0 +1,21 @@
+{
+  "routes": [
+    {
+      "route": "/login",
+      "serve": "/auth/login/github",
+      "statusCode": 200
+    },
+    {
+      "route": "/signup",
+      "serve": "/auth/signup/github",
+      "statusCode": 200
+    }
+  ],
+  "platformErrorOverrides": [
+    {
+      "errorType": "NotFound",
+      "serve": "/index.html",
+      "statusCode": 200
+    }
+  ]
+}
