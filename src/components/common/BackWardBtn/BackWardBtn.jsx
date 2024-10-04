@@ -1,5 +1,5 @@
 import "./BackWardBtn.css";
-import BackwardImg from "../../../assets/icons/arrow_back.svg";
+import BackwardImg from "../../../assets/Icons/arrow_back.svg";
 
 // eslint-disable-next-line react/prop-types
 function BackWardBtn({ className }) {
