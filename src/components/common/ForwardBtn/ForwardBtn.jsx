@@ -1,5 +1,5 @@
 import "./ForwardBtn.css";
-import ForwardImg from "../../../assets/icons/arrow_forward.svg";
+import ForwardImg from "../../../assets/Icons/arrow_forward.svg";
 
 // eslint-disable-next-line react/prop-types
 function ForwardBtn({ className }) {
