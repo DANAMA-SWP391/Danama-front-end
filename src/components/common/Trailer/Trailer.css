@@ -14,14 +14,23 @@
     display: none;
 }
 
-.sound-button {
+.btn-container {
+    height: 100px;
+    width: 150px;
     position: absolute;
-    top: 40px;
-    right: 7.5%;
-    padding: 10px 20px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    cursor: pointer;
+    bottom: 7.5%;
+    right: 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     z-index: 10;
 }
+
+.btn-container button {
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 2rem;
+    cursor: pointer;
+}
+

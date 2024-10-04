@@ -1,0 +1,17 @@
+.back-ward-btn{
+    background: none;
+}
+
+.back-ward-btn:hover{
+    background: none;
+}
+
+.back-ward-btn img{
+    height: 40px;
+    width: 40px;
+    object-fit: fill;
+}
+
+.back-ward-btn.hidden{
+    display: none;
+}

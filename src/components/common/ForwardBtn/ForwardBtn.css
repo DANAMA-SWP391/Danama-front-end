@@ -1,0 +1,17 @@
+.forward-btn{
+    background: none;
+}
+
+.forward-btn:hover{
+    background: none;
+}
+
+.forward-btn img{
+    height: 40px;
+    width: 40px;
+    object-fit: fill;
+}
+
+.forward-btn.hidden{
+    display: none;
+}

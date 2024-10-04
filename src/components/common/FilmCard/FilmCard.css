@@ -1,0 +1,60 @@
+.film-card {
+    height: 100%;
+    width: 190px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #000000;
+}
+
+.film-card:hover {
+    transform: scale(1.025);
+    transition: transform 0.25s;
+}
+
+.film-card:hover .poster img {
+    opacity: 0.75;
+}
+
+.poster {
+    height: 280px;
+    width: 190px;
+    background: gray;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.poster img {
+    height: 100%;
+    width: 100%;
+    object-fit: fill;
+    border-radius: 10px;
+    transition: opacity 0.25s;
+}
+
+.film-card .info h2 {
+    display: inline-block;
+    font-size: 48px;
+    font-family: "Albert Sans bold", sans-serif;
+    color: #706B6B;
+}
+
+.info {
+    margin-top: 10px;
+    display: flex;
+}
+
+.other-infos {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    width: 90%;
+    margin-left: 10px;
+}
+
+.other-infos .name {
+    font-size: 16px;
+    font-family: "Albert Sans semi-bold", sans-serif;
+}
+
+

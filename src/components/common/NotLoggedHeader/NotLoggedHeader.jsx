@@ -15,4 +15,4 @@ function NotLoggedHeader() {
     )
 }
 
-export default NotLoggedHeader;
+export default NotLoggedHeader

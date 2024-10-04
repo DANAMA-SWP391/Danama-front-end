@@ -1,10 +1,14 @@
 import "./Trailer.css";
 import { useRef, useEffect, useState } from "react";
 
+import SoundBtn from "../SoundBtn/SoundBtn.jsx";
+import PlayBtn from "../PlayBtn/PlayBtn.jsx";
+
 
 function Trailer() {
     const videoRef = useRef(null);
     const [isMuted, setIsMuted] = useState(true);
+    const [isPlaying, setIsPlaying] = useState(true);
 
     useEffect(() => {
         const handleUserInteraction = () => {
@@ -45,6 +49,18 @@ function Trailer() {
         }
     };
 
+    const tooglePlay = () => {
+        if (videoRef.current) {
+            if (videoRef.current.paused) {
+                videoRef.current.play();
+                setIsPlaying(true);
+            } else {
+                videoRef.current.pause();
+                setIsPlaying(false);
+            }
+        }
+    }
+
     return (
         <div className="video-container">
             <video
@@ -56,12 +72,12 @@ function Trailer() {
                 width="600"
             >
                 <source src="/trailer/Dune2.mp4" />
-
                 Your browser does not support the video tag.
             </video>
-            <button onClick={toggleSound} className="sound-button">
-                {isMuted ? "Mute" : "Unmute"}
-            </button>
+            <div className="btn-container">
+                <PlayBtn isPlaying={isPlaying} tooglePlay={tooglePlay} />
+                <SoundBtn isMuted={isMuted} toggleSound={toggleSound} />
+            </div>
         </div>
     );
 }
