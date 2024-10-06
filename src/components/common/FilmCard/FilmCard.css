@@ -1,6 +1,6 @@
 .film-card {
     height: 100%;
-    width: 190px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

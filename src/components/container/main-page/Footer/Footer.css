@@ -1,0 +1,43 @@
+.footer {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    background: #000000;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.footer > div {
+    width: 25%;
+}
+
+.footer ul {
+    margin-top: 10px;
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer p {
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.footer h2 {
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-family: "Albert Sans semi-bold", sans-serif;
+    color: #ffffff;
+}
+
+.footer a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.footer a:hover {
+    color: #ff0000;
+}
+
+.footer > div > ul > li {
+    margin-top: 10px;
+}
