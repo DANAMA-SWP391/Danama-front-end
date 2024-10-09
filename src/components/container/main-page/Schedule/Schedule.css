@@ -1,0 +1,58 @@
+.schedule-section{
+    width: 90%;
+    height: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.schedule-section h1 {
+    font-size: 20px;
+    font-family: "Albert Sans semi-bold", sans-serif;
+    margin-bottom: 100px;
+}
+
+.schedule-section .schedule-container {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.schedule-section .schedule-container > .cinema-list {
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto 20px;
+    border-bottom: #000000 solid 1px;
+    padding-bottom: 30px;
+}
+
+.films-list-container {
+    margin-top: 60px;
+    width: 100%;
+    height: 450px;
+    border: rgba(0, 0, 0, 0.29) 1px solid;
+    border-radius: 10px;
+    margin-bottom: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.films-list-container .dates {
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px auto 20px;
+    border-bottom: rgba(0, 0, 0, 0.29) solid 1px;
+    padding-bottom: 30px;
+}
+
+.films-list-container .films-list {
+    width: 70%;
+
+}

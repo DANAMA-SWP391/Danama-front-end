@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 // eslint-disable-next-line react/prop-types
 function FilmCard({poster, number, name, genre}) {
     return (
-        <Link to={"/"} className={"film-card"}>
+        <Link to={"/film-page"} className={"film-card"}>
             <div className="poster">
                 <img src={poster} alt={name}/>
             </div>

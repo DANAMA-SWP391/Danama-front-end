@@ -22,6 +22,11 @@
   src: url("./assets/fonts/static/AlbertSans-SemiBold.ttf") format('truetype');
 }
 
+@font-face {
+  font-family: 'Albert Sans extra-bold';
+    src: url("./assets/fonts/static/AlbertSans-ExtraBold.ttf") format('truetype');
+}
+
 html, body, :root  , #root {
   width: 100%;
   height: 100%;

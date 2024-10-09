@@ -8,20 +8,23 @@
     align-items: center;
 }
 
+.separate-line {
+    width: 90%;
+    height: 1px;
+    background: #000000;
+}
+
 .film-lists > div {
     height: 45%;
     width: 90%;
 }
 
+
+
 .film-lists > div:nth-child(3) {
     margin-top: 40px;
 }
 
-.film-lists .separate-line {
-    width: 90%;
-    height: 1px;
-    background-color: #000000;
-}
 
 .film-lists > div > h2 {
     font-size: 20px;

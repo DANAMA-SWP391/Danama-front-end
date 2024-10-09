@@ -10,6 +10,7 @@ import poster7 from "../../../../assets/posters/Crow.jpg";
 import poster8 from "../../../../assets/posters/Batman.jpg";
 
 import Slider from "../../../common/Slider/Slider.jsx";
+import SeparateLine from "../../../common/SeparateLine/SeparateLine.jsx";
 
 function FilmLists() {
     const nowPlayingFilms = [
@@ -37,7 +38,7 @@ function FilmLists() {
                 <Slider nowPlayingFilms={nowPlayingFilms} />
             </div>
 
-            <div className="separate-line"></div>
+            <span className="separate-line"></span>
 
             <div className="upcoming-films">
                 <h2>Upcoming</h2>

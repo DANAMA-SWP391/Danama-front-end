@@ -1,82 +1,58 @@
-import "./Trailer.css";
 import { useRef, useEffect, useState } from "react";
+import "./Trailer.css";
 
 import SoundBtn from "../SoundBtn/SoundBtn.jsx";
 import PlayBtn from "../PlayBtn/PlayBtn.jsx";
 
-
 function Trailer() {
     const videoRef = useRef(null);
     const [isMuted, setIsMuted] = useState(true);
-    const [isPlaying, setIsPlaying] = useState(true);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
-        const handleUserInteraction = () => {
-            if (videoRef.current) {
+        const handleLoadedData = () => {
+            if(videoRef.current) {
+                videoRef.current.currentTime = 13;
                 videoRef.current.play();
             }
-        };
+        }
+        const videoElement = videoRef.current;
+        videoElement.addEventListener("loadeddata", handleLoadedData);
 
-        // Add the event listener to play the video on first user interaction (e.g., click)
-        document.addEventListener("click", handleUserInteraction, { once: true });
-
-        return () => {
-            // Ensure the event listener is properly cleaned up
-            document.removeEventListener("click", handleUserInteraction);
-        };
+        return() => {
+            videoElement.removeEventListener("loadeddata", handleLoadedData);
+        }
     }, []);
 
-    // Skip the video to 13 seconds after metadata is loaded
-    const handleLoadedMetadata = () => {
-        if (videoRef.current) {
-            videoRef.current.currentTime = 13;
-        }
-    };
-
-    // Replay video starting from 13 seconds when it ends
-    const handleEnded = () => {
-        if (videoRef.current) {
-            videoRef.current.currentTime = 13;
+    const togglePlay = () => {
+        if (videoRef.current.paused) {
             videoRef.current.play();
+            setIsPlaying(true);
+        } else {
+            videoRef.current.pause();
+            setIsPlaying(false);
         }
     };
 
-    // Toggle mute/unmute state for the video
-    const toggleSound = () => {
-        if (videoRef.current) {
-            videoRef.current.muted = !videoRef.current.muted;
-            setIsMuted(videoRef.current.muted); // Update the state accordingly
-        }
+    const toggleMute = () => {
+        videoRef.current.muted = !videoRef.current.muted;
+        setIsMuted(videoRef.current.muted);
     };
-
-    const tooglePlay = () => {
-        if (videoRef.current) {
-            if (videoRef.current.paused) {
-                videoRef.current.play();
-                setIsPlaying(true);
-            } else {
-                videoRef.current.pause();
-                setIsPlaying(false);
-            }
-        }
-    }
 
     return (
         <div className="video-container">
             <video
                 ref={videoRef}
-                onLoadedMetadata={handleLoadedMetadata}
-                onEnded={handleEnded}
                 muted={isMuted}
                 autoPlay
-                width="600"
+                loop
             >
-                <source src="/trailer/Dune2.mp4" />
+                <source src="/trailer/Dune2.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
             <div className="btn-container">
-                <PlayBtn isPlaying={isPlaying} tooglePlay={tooglePlay} />
-                <SoundBtn isMuted={isMuted} toggleSound={toggleSound} />
+                <PlayBtn isPlaying={isPlaying} togglePlay={togglePlay} />
+                <SoundBtn isMuted={isMuted} toggleSound={toggleMute} />
             </div>
         </div>
     );

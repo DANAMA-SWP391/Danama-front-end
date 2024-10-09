@@ -1,0 +1,43 @@
+.screen-shot-slider {
+    width: 90%;
+    height: 200px;
+    overflow: hidden;
+    margin: 0 auto;
+    position: relative;
+    margin-bottom: 50px;
+}
+
+.totally-container {
+    margin-top: 50px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.totally-container h1 {
+    margin-left: 5%;
+    font-size: 20px;
+    font-family: "Albert Sans semi-bold", sans-serif;
+    margin-bottom: 20px;
+}
+
+.totally-container button {
+    position: absolute;
+    z-index: 9999;
+    top: 50%;
+}
+
+.totally-container .back-ward-btn {
+    left: -2%;
+}
+
+.totally-container .forward-btn {
+    right: -2%;
+}
+
+.screen-shot-list-container {
+    display: flex;
+    width: 90vh;
+    height: 100%;
+    transition: transform 0.5s;
+}

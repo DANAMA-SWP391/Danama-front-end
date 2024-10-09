@@ -1,0 +1,124 @@
+.film-poster {
+    height: 90vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    color: #000000;
+    position: relative;
+}
+
+.film-poster img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transition: transform 0.3s;
+    object-fit: cover;
+    opacity: 0.9;
+    z-index: -999;
+
+}
+
+
+.film-poster h2 {
+    font-size: 32px;
+    font-family: "Albert Sans bold", sans-serif;
+    color: #ffffff;
+
+}
+
+.film-poster > .cont-1 {
+    position: relative;
+    left: 5%;
+    margin-top: 5%;
+}
+
+.film-poster > .cont-1 > p:nth-child(2) {
+    font-size: 16px;
+    font-family: "Albert Sans regular", sans-serif;
+    color: #ffffff;
+}
+
+.film-poster > .cont-1 > p:nth-child(3) {
+    font-size: 24px;
+    font-family: "Albert Sans extra-bold", sans-serif;
+    color: #ffffff;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.cont-2 {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 200px;
+    position: relative;
+    left: 5%;
+}
+
+.cont-2 > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.cont-2 > div:first-child {
+    width: 20%;
+}
+
+.cont-2 > div:first-child button {
+    margin-bottom: 10px;
+    background: #ffffff;
+    color: #000000;
+    font-family: "Albert Sans bold", sans-serif;
+}
+
+.cont-2 > div:first-child button:hover {
+    background: #1E65DE;
+    color: #ffffff;
+}
+
+.cont-2 > div:nth-child(2) {
+    width: 70%;
+    padding-left: 20px;
+}
+
+.cont-2 > div:nth-child(2) > div:first-child > .description{
+    font-size: 16px;
+}
+
+.cont-2 > div:nth-child(2) > div:nth-child(2) {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.cont-2 > div:nth-child(2) > div:nth-child(2) > p {
+    font-size: 14px;
+    font-family: "Albert Sans regular", sans-serif;
+    color: #cccccc;
+}
+
+.cont-2 > div:nth-child(3) {
+    width: 35%;
+}
+
+.cont-2 > div:nth-child(3) > p {
+    font-size: 16px;
+    font-family: "Albert Sans regular", sans-serif;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.cont-2 > div:nth-child(3) > p > span{
+    font-size: 16px;
+    font-family: "Albert Sans regular", sans-serif;
+    color: #cccccc;
+}
+
+

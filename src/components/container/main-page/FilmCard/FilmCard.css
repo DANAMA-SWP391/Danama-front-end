@@ -1,0 +1,35 @@
+.schedule-film {
+    width: 100%;
+    height: 280px;
+    display: flex;
+}
+
+.schedule-film p {
+    font-size: 14px;
+    color: #000000;
+}
+
+.schedule-film img {
+    width: 190px;
+    height: 280px;
+}
+
+.schedule-film .film-info {
+    width: 100%;
+    margin-left: 30px;
+}
+
+.schedule-film .film-info .film-age {
+    font-family: "Albert Sans bold", sans-serif;
+    text-align: center;
+    width: 40px;
+    height: 30px;
+    background: #C7872D;
+    align-items: center;
+    padding-top: 5px;
+}
+.schedule-film .film-info .film-name {
+    font-family: "Albert Sans semi-bold", sans-serif;
+    font-size: 16px;
+    margin-top: 10px;
+}

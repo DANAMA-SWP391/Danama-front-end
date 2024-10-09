@@ -1,0 +1,27 @@
+.logo-container {
+    text-align: center;
+    transition: 0.25s ease-in-out;
+}
+
+.logo-container:hover {
+    cursor: pointer;
+    scale: 1.1;
+}
+
+.logo-container img {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+}
+
+.logo-container img:hover {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.logo-container p {
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    color: black;
+    font-family: "Albert Sans semi-bold", sans-serif;
+}

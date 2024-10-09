@@ -1,10 +1,11 @@
 .body .main-slide {
     width: 100%;
-    height: 92vh;
-    display: flex;
-    align-items: end;
-    background-color: #7c7c7c;
+    height: 90vh;
     position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .main-slide .option {
@@ -13,7 +14,18 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    position: relative;
+    position: absolute;
+    bottom: 10%;
     left: 5%;
-    bottom: 2.5%;
+}
+
+.film-poster,
+.trailer {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+}
+
+.film-poster.hidden,
+.trailer.hidden {
+    opacity: 0;
 }
