@@ -1,0 +1,41 @@
+.body__left-container .left-container__user {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.left-container__user .user__avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.left-container__user .user__avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.left-container__user p {
+    font-size: 20px;
+    color: #000;
+    font-family: "Albert Sans semi-bold", sans-serif;
+}
+
+.body__right-container {
+    width: 65%;
+}
+
+.body__right-container .box-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+}
+.box-container > div {
+    width: 40%;
+    height: 40%;
+}

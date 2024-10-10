@@ -1,0 +1,47 @@
+.body__booking-details {
+    width: 80%;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.body__booking-details > div {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    margin-top: 20px;
+
+    display: flex;
+}
+
+.body__booking-details h2 {
+    font-size: 24px;
+    font-family: "Albert Sans semi-bold", sans-serif;
+    margin-bottom: 20px;
+}
+
+.body__booking-details > div h3 {
+    font-family: "Albert Sans semi-bold", sans-serif;
+    font-size: 16px;
+    margin-right: 20px;
+}
+
+.booking-details__time > div {
+    display: flex;
+}
+
+.booking-details__time div:first-child {
+    margin-right: 50%;
+}
+
+.booking-details__cinema p:nth-child(2) {
+    font-size: 12px;
+}
+
+.booking-details__seats > div {
+    display: flex;
+}
+
+.booking-details__seats > div:first-child {
+    margin-right: 50%;
+}

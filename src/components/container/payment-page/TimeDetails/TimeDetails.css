@@ -1,0 +1,7 @@
+.booking-details__time > div {
+    display: flex;
+}
+
+.booking-details__time div:first-child {
+    margin-right: 50%;
+}

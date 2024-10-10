@@ -1,0 +1,15 @@
+.payment-page__body {
+    width: 90%;
+    margin: 20px auto 100px;
+}
+
+.payment-page__body h1 {
+    font-size: 24px;
+    color: #000;
+    margin-bottom: 20px;
+}
+
+.payment-page__body .separate-line {
+    width: 100%;
+}
+

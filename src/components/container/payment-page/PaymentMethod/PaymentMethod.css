@@ -1,0 +1,31 @@
+.body__payment-method {
+    margin-bottom: 40px;
+}
+
+.body__payment-method h2 {
+    font-family: 'Albert Sans semi-bold', sans-serif;
+    font-size: 26px;
+    color: #000;
+    margin: 20px 0 40px;
+}
+
+.body__payment-method ul {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    justify-content: space-between;
+}
+
+.body__payment-method ul li button {
+    height: 75px;
+    width: 250px;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #000;
+}
+
+.body__payment-method ul li button:hover {
+    background-color: #1E65DE;
+    color: #fff;
+}

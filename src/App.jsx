@@ -5,15 +5,17 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Login from './pages/login/login.jsx'
 import SignUp from "./pages/sign-up/sign-up.jsx";
 import ResetPass from "./pages/reset-pass/reset-pass.jsx";
-import MainPage from "./pages/main-page/main-page.jsx";
+// import MainPage from "./pages/main-page/main-page.jsx";
 import FilmPage from "./pages/film-page/film-page.jsx";
+// import Payment from "./pages/payment-page/payment-page.jsx";
+import Profile from "./pages/profile-page/profile-page.jsx";
 
 function App() {
     return (
       <>
           <Router>
               <Routes>
-                    <Route path="/" element={<MainPage />} />
+                    <Route path="/" element={<Profile />} />
                     <Route path={"/login"} element={<Login />} />
                     <Route path={"/signup"} element={<SignUp />} />
                     <Route path={"/reset-pass"} element={<ResetPass />} />
