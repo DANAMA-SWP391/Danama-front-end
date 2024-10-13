@@ -1,4 +1,3 @@
-// src/components/container/main-page/OptionList/OptionList.jsx
 import "./OptionList.css";
 
 function OptionList() {

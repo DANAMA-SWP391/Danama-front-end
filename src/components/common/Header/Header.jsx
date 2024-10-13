@@ -13,7 +13,7 @@ function Header({ user }) {
                 <OptionList />
                 {
                     user ?
-                        <HeaderUser user={user} /> : <LoginBtn />
+                        <HeaderUser user={user} /> : <LoginBtn to={"/login"} />
                 }
             </div>
         </div>
