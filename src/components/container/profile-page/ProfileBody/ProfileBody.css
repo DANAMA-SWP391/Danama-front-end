@@ -1,0 +1,21 @@
+.profile-page__body {
+    width: 90%;
+    margin: 20px auto 100px;
+}
+
+.profile-page__body p {
+    color:#000000;
+}
+
+.profile-page__body h1 {
+    font-size: 24px;
+    color: #000;
+    margin-bottom: 20px;
+}
+
+.profile-page__body .separate-line {
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+

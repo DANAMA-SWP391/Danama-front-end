@@ -1,5 +1,6 @@
 import "./GoogleSignIn.css";
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+
 
 function GoogleSignIn() {
     const handleSuccess = (response) => {
@@ -11,13 +12,8 @@ function GoogleSignIn() {
     }
 
     return (
-        <GoogleOAuthProvider clientId="1057976212312-k4a01hpamvopr9j9q6fuc8u31vpv0g17.apps.googleusercontent.com">
-            <div>
-                <GoogleLogin
-                    onSuccess={handleSuccess}
-                    onError={handleError}
-                />
-            </div>
+        <GoogleOAuthProvider clientId={"1057976212312-fjk08o0u6klggbc06l4c4j6gulnskamn.apps.googleusercontent.com"} >
+            <GoogleLogin onSuccess={handleSuccess} onError={handleError} />
         </GoogleOAuthProvider>
     );
 }

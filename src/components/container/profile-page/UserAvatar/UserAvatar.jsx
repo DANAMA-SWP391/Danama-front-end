@@ -1,6 +1,6 @@
-import "./User.css";
+import "./UserAvatar.css";
 
-function User() {
+function UserAvatar() {
     return (
         <div className="left-container__user">
             <div className="user__avatar">
@@ -11,4 +11,4 @@ function User() {
     );
 }
 
-export default User;
+export default UserAvatar;

@@ -1,0 +1,4 @@
+.box-container > button {
+    position: absolute;
+    bottom: 30%;
+}

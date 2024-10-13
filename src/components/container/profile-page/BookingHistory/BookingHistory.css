@@ -1,0 +1,18 @@
+.box-container table {
+    width: 100%;
+    border: #000000 1px solid;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.box-container table th,
+.box-container table td {
+    text-align: center;
+    padding: 10px;
+
+}
+
+.box-container table th {
+    border-bottom: 1px solid #000;
+}
+

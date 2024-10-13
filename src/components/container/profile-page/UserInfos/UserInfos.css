@@ -1,0 +1,16 @@
+.box-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.box-container > div {
+    width: 300px;
+    height: 100px;
+    margin-bottom: 30px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    padding: 10px 0 0 10px;
+    position: relative;
+}

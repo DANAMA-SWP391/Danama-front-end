@@ -1,0 +1,11 @@
+.body__right-container {
+    width: 65%;
+}
+
+.body__right-container h2 {
+    font-size: 20px;
+    color: #000;
+    font-family: "Albert Sans semi-bold", sans-serif;
+    margin-bottom: 50px;
+}
+

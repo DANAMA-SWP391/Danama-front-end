@@ -1,0 +1,13 @@
+.header-user {}
+
+.header-user span {
+    color:#ffffff;
+}
+
+.header-user__user img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: #ffffff 1px solid;
+}

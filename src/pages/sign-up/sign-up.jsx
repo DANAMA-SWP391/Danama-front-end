@@ -1,11 +1,12 @@
 import './sign-up.css';
-
+import { useEffect, useState } from "react";
 import Logo from "../../components/common/Logo/Logo.jsx";
 import Slogan from "../../components/common/Slogan/Slogan.jsx";
 import SignupBox from "../../components/container/sign-up/SignUpBox/SignUpBox.jsx";
-
-import { useEffect, useState } from "react";
 import { validateEmail, validateName, validatePhone, validatePassword, validateConfirmPassword } from "../../utils/validateHelper";
+import {addUser, users} from "../../utils/userData.js";
+import defaultAvatar from "../../assets/avatars/default-avatar.svg";
+import {useNavigate} from "react-router-dom";
 
 function SignUp() {
     const [name, setName] = useState('');
@@ -16,9 +17,10 @@ function SignUp() {
     const [content, setContent] = useState('Assign New Account');
     const [hasError, setHasError] = useState(false);
 
+    const navigate = useNavigate();
+
     const handleButtonClick = (name, email, phone, pass, confirmPass) => {
         let error = false;
-
         if (!validateName(name)) {
             setContent("Name must be at least 3 characters long.");
             error = true;
@@ -35,7 +37,17 @@ function SignUp() {
             setContent("Passwords do not match.");
             error = true;
         } else {
-            setContent("Assign New Account");
+            const user = {
+                id: users.length + 1,
+                email: email,
+                password: password,
+                name: name,
+                phone: phone,
+                avatar: defaultAvatar
+            }
+            setHasError(false);
+            addUser(user);
+            navigate('/login');
         }
         setHasError(error);
     }
@@ -49,12 +61,8 @@ function SignUp() {
         <div className="container">
             <div className="signup-box">
                 <div className="upper-container">
-                    <div className="logo-container">
-                        <Logo/>
-                    </div>
-                    <div className="slogan-container">
-                        <Slogan/>
-                    </div>
+                    <div className="logo-container"><Logo/></div>
+                    <div className="slogan-container"><Slogan/></div>
                 </div>
                 <div className="down-container">
                     <p className={hasError ? 'err' : ''}>{content}</p>
