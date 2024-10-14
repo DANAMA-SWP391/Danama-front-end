@@ -3,7 +3,12 @@
     height: 100%;
     overflow: hidden;
     position: relative;
-    transition: 0.5s ease-in-out opacity;
+    opacity: 0.5;
+    transition: opacity 1s ease-out;
+}
+
+.video-container.loaded {
+    opacity: 1;
 }
 
 .video-container video {
@@ -21,11 +26,12 @@
 
 .btn-container {
     height: 100px;
-    width: 150px;
+    width: 100px;
     position: absolute;
-    bottom: 10%;
-    right: 5%;
+    top: 10%;
+    right: 7.5%;
     display: flex;
+
     justify-content: space-between;
     align-items: center;
     z-index: 10;
@@ -38,4 +44,3 @@
     font-size: 2rem;
     cursor: pointer;
 }
-

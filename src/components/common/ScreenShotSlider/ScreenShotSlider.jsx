@@ -7,7 +7,7 @@ import {useState} from "react";
 
 function ScreenShotSlider({screenShots}) {
     const [currentSlide, setCurrentSlide] = useState(0);
-    const [imagesPerSlide, setImagesPerSlide] = useState(3);
+    const [imagesPerSlide] = useState(3);
     const [isHover, setIsHover] = useState(false);
 
     const handlePrevSlide = () => {

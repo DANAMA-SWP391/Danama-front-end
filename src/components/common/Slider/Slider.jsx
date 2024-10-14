@@ -2,38 +2,26 @@ import "./Slider.css";
 import BackWardBtn from "../BackWardBtn/BackWardBtn.jsx";
 import ForwardBtn from "../ForwardBtn/ForwardBtn.jsx";
 import FilmCard from "../FilmCard/FilmCard.jsx";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 
 function Slider({ nowPlayingFilms }) {
+
+
+
     const [currentSlide, setCurrentSlide] = useState(0);
-    const [filmsPerSlide, setFilmsPerSlide] = useState(4);
+    const [filmsPerSlide] = useState(4);
     const [isHover, setIsHover] = useState(false);
-
-    const totalSlides = Math.ceil(nowPlayingFilms.length / filmsPerSlide);
-
-    useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth < 768) {
-                setFilmsPerSlide(2);
-            } else {
-                setFilmsPerSlide(4);
-            }
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    const handleNextSlide = () => {
-        if (currentSlide < totalSlides - 1) {
-            setCurrentSlide(currentSlide + 1);
-        }
-    };
 
     const handlePrevSlide = () => {
         if (currentSlide > 0) {
             setCurrentSlide(currentSlide - 1);
+        }
+    };
+
+    const handleNextSlide = () => {
+        if (currentSlide < Math.ceil(nowPlayingFilms.length / filmsPerSlide) - 1) {
+            setCurrentSlide(currentSlide + 1);
         }
     };
 
@@ -53,8 +41,8 @@ function Slider({ nowPlayingFilms }) {
                 <div
                     className="film-list"
                     style={{
-                        transform: `translateX(-${currentSlide * (100 / filmsPerSlide)}%)`,
                         width: `${(nowPlayingFilms.length / filmsPerSlide) * 100}%`,
+                        transform: `translateX(-${currentSlide * (100 / filmsPerSlide)}%)`,
                         transition: 'transform 0.5s ease-in-out',
                     }}
                 >
