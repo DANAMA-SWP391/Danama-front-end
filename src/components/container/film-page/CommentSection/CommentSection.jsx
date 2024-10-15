@@ -3,6 +3,7 @@ import Button from "../../../common/Button/Button.jsx";
 import Comment from "../Comment/Comment.jsx";
 import { useState } from "react";
 import CommentBox from "../CommentBox/CommentBox.jsx";
+import PropTypes from 'prop-types';
 
 function CommentSection({ user }) {
     const [isCommentBoxVisible, setIsCommentBoxVisible] = useState(false);
@@ -17,7 +18,7 @@ function CommentSection({ user }) {
     ]);
 
     const handleCommentClick = () => {
-        if (user.user) {
+        if (user) {
             setIsCommentBoxVisible(true);
         } else if (window.confirm("You need to login to comment. Do you want to login?")) {
             window.location.href = "/login";
@@ -40,5 +41,12 @@ function CommentSection({ user }) {
         </div>
     );
 }
+
+CommentSection.propTypes = {
+    user: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        avatar: PropTypes.string.isRequired
+    }).isRequired
+};
 
 export default CommentSection;

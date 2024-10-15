@@ -2,13 +2,14 @@ import "./CommentBox.css";
 import BackSpace from "../../../../assets/Icons/back-space.svg";
 import Button from "../../../common/Button/Button.jsx";
 import { useEffect, useRef } from "react";
+import PropTypes from 'prop-types';
 
 function CommentBox({ setIsCommentBoxVisible, setCommentList, user }) {
     const commentRef = useRef(null);
     const rateRef = useRef(null);
 
     const handleSubmit = () => {
-        const commentValue = commentRef.current.value.trim();
+        const commentValue = commentRef.current.value;
         const rateValue = rateRef.current.value;
 
         if (!commentValue) {
@@ -17,14 +18,13 @@ function CommentBox({ setIsCommentBoxVisible, setCommentList, user }) {
         }
 
         const newComment = {
-            user: user.user.name,
-            avatar: user.user.avatar,
+            user: user.name,
+            avatar: user.avatar,
             date: new Date().toLocaleDateString(),
             rating: rateValue,
             comment: commentValue
         };
 
-        // Prevent adding duplicate comments
         setCommentList(prevList => {
             const isDuplicate = prevList.some(
                 item => item.comment === newComment.comment && item.date === newComment.date
@@ -37,7 +37,6 @@ function CommentBox({ setIsCommentBoxVisible, setCommentList, user }) {
         rateRef.current.value = 1;
         setIsCommentBoxVisible(false);
     };
-
 
     const handleClose = () => {
         // Clear the inputs on close
@@ -71,5 +70,14 @@ function CommentBox({ setIsCommentBoxVisible, setCommentList, user }) {
         </div>
     );
 }
+
+CommentBox.propTypes = {
+    setIsCommentBoxVisible: PropTypes.func.isRequired,
+    setCommentList: PropTypes.func.isRequired,
+    user: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        avatar: PropTypes.string.isRequired
+    }).isRequired
+};
 
 export default CommentBox;
