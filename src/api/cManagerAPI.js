@@ -1,20 +1,108 @@
-export const fetchBookingListPage = async (showtimeId) => {
+export const fetchBookingListPage = async (cinemaId) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/ListBookingController', {
-            method: 'DELETE',
+        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/ListBookingController?cinemaId=${cinemaId}`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ showtimeId }),
+
+
         });
 
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
         }
 
-        return true;
+        const data = await response.json();
+        return data;
     } catch (error) {
-        console.error('Error deleting showtime:', error);
+        console.error('Error fetching cinema booking list:', error);
+        return false;
+    }
+};
+
+export const fetchCinemaDashBoardPage = async (cinemaId) => {
+    try {
+        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/managerDashBoard?cinemaId=${cinemaId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching cinema dashboard page:', error);
+        return false;
+    }
+};
+
+export const fetchRoomList = async (cinemaId) => {
+    try {
+        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/RoomController?cinemaId=${cinemaId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching room list:', error);
+        return false;
+    }
+};
+
+export const fetchSeatList = async (roomId) => {
+    try {
+        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/SeatController?roomId=${roomId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching seat list:', error);
+        return false;
+    }
+};
+
+export const fetchShowtimeList = async (cinemaId) => {
+    try {
+        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/ShowtimeController?cinemaId=${cinemaId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching showtime list:', error);
         return false;
     }
 };
@@ -198,11 +286,16 @@ export const fetchUpdateRoom = async (room) => {
 export const fetchChangeSeatType = async (seat) => {
     try {
         const response = await fetch('http://localhost:8080/DANAMA_war_exploded/SeatController', {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(seat),
+            body: JSON.stringify({
+                action: 'changeSeatType',
+                // seat: { seatId: seatId, type: newType }
+                seat: seat
+                }
+            ),
         });
 
         if (!response.ok) {
