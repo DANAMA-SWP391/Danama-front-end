@@ -2,6 +2,7 @@ import "./HeaderUser.css";
 import PropTypes from 'prop-types';
 
 function HeaderUser({ user }) {
+    console.log(user)
     return (
         <div className="header-user">
             <div className="container">
