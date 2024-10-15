@@ -6,6 +6,7 @@ import Login from './pages/login/login.jsx'
 import SignUp from "./pages/sign-up/sign-up.jsx";
 import ResetPass from "./pages/reset-pass/reset-pass.jsx";
 import MainPage from "./pages/main-page/main-page.jsx";
+import TestComponent from "./test/file.jsx";
 // import FilmPage from "./pages/film-page/film-page.jsx";
 // import Payment from "./pages/payment-page/payment-page.jsx";
 // import Profile from "./pages/profile-page/profile-page.jsx";
@@ -15,8 +16,11 @@ function App() {
       <>
           <Router>
               <Routes>
-                    <Route path="/" element={<MainPage />} />
-                    <Route path={"/login"} element={<Login />} />
+
+                  <Route path={"/test"} element={<TestComponent />} />
+
+                  <Route path="/" element={<MainPage />} />
+                  <Route path={"/login"} element={<Login />} />
                     <Route path={"/signup"} element={<SignUp />} />
                     <Route path={"/reset-pass"} element={<ResetPass />} />
                     {/*<Route path={"/film-page"} element={<FilmPage />} />*/}
