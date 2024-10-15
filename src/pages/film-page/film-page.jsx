@@ -1,6 +1,5 @@
 import "./film-page.css";
 import Header from "../../components/common/Header/Header.jsx";
-import FilmPoster from "../../components/common/FilmPoster/FilmPoster.jsx";
 import ScreenShotSlider from "../../components/common/ScreenShotSlider/ScreenShotSlider.jsx";
 import screenshot1 from "../../assets/screen-shot/1.jpg";
 import screenshot2 from "../../assets/screen-shot/2.jpg";
@@ -22,8 +21,8 @@ function FilmPage() {
     const location = useLocation();
     const { film } = location.state || {};
 
-    const user = useContext(UserContext);
-    console.log(user);
+    const {user, filmList} = useContext(UserContext);
+
     const screenShots = [screenshot1, screenshot2, screenshot3, screenshot4, screenshot5];
     
     const [isLogged, setIsLogged] = useState(false);
@@ -40,9 +39,9 @@ function FilmPage() {
             <MainSlide isLogged={isLogged} film={film}/>
             <ScreenShotSlider screenShots={screenShots} />
             <SeparateLine />
-            <CommentSection />
+            <CommentSection user={user} />
             <SeparateLine/>
-            <FilmLists/>
+            <FilmLists filmLists={filmList}/>
             <Footer />
         </div>
     );

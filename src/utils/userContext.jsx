@@ -7,9 +7,10 @@ export const UserContext = createContext();
 // Create the provider component
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [filmList, setFilmList] = useState([]);
 
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ user, setUser, filmList, setFilmList }}>
             {children}
         </UserContext.Provider>
     );

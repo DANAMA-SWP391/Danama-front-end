@@ -1,14 +1,15 @@
 import "./main-page.css";
 import Body from "../../components/container/main-page/Body/Body.jsx";
 import Footer from "../../components/container/main-page/Footer/Footer.jsx";
-import {useContext, useEffect, useState} from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../utils/userContext.jsx";
 import Header from "../../components/common/Header/Header.jsx";
 import PropTypes from "prop-types";
 
 function MainPage() {
-    const { user } = useContext(UserContext);
-    const filmLists = [
+    const { user, filmList, setFilmList } = useContext(UserContext);
+
+    const filmData = [
         {
             id: 1,
             name: "Joker: Folie à Deux",
@@ -203,23 +204,22 @@ function MainPage() {
         }
     ];
 
+    const [isLogged, setIsLogged] = useState(false);
 
+    useEffect(() => {
+        if (filmList.length === 0) {
+            setFilmList(filmData);
+        }
+    }, [filmList, setFilmList]);
 
-
-    const[isLogged, setIsLogged] = useState(false);
-
-    useEffect(
-        () => {
-            if (user) {
-                setIsLogged(true);
-            }
-        }, [user]
-    )
+    useEffect(() => {
+        setIsLogged(!!user);
+    }, [user]);
 
     return (
         <div className="main-page">
             <Header user={user} />
-            <Body isLogged={isLogged} filmLists={filmLists} />
+            <Body isLogged={isLogged} filmLists={filmList} />
             <Footer />
         </div>
     );
