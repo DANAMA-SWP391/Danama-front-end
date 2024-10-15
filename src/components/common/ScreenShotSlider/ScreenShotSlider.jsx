@@ -1,13 +1,13 @@
 import "./ScreenShotSlider.css";
 import BackWardBtn from "../BackWardBtn/BackWardBtn.jsx";
 import ForwardBtn from "../ForwardBtn/ForwardBtn.jsx";
-import ScreenShotCard from "../ScreenShotCard/ScreenShotCard.jsx";
+import ScreenShotCard from "../ScreenshotCard/ScreenShotCard.jsx";
 import PropTypes from 'prop-types';
 import {useState} from "react";
 
 function ScreenShotSlider({screenShots}) {
     const [currentSlide, setCurrentSlide] = useState(0);
-    const [imagesPerSlide, setImagesPerSlide] = useState(3);
+    const [imagesPerSlide] = useState(3);
     const [isHover, setIsHover] = useState(false);
 
     const handlePrevSlide = () => {

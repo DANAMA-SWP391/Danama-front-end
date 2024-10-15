@@ -1,14 +1,18 @@
+import PropTypes from "prop-types";
 import PlayIcon from "../../../assets/Icons/play.svg";
 import PauseIcon from "../../../assets/Icons/pause.svg";
 
-// eslint-disable-next-line react/prop-types
-function PlayBtn({tooglePlay, isPlaying}) {
-
+function PlayBtn({togglePlay, isPlaying}) {
     return (
-        <button onClick={tooglePlay}>
-        <img src={isPlaying ? PauseIcon : PlayIcon} alt="play" />
+        <button onClick={togglePlay}>
+            <img src={isPlaying ? PauseIcon : PlayIcon} alt="play" />
         </button>
     );
 }
+
+PlayBtn.propTypes = {
+    togglePlay: PropTypes.func.isRequired,
+    isPlaying: PropTypes.bool.isRequired,
+};
 
 export default PlayBtn;

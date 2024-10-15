@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState } from "react";
 import "./Trailer.css";
-
 import SoundBtn from "../SoundBtn/SoundBtn.jsx";
 import PlayBtn from "../PlayBtn/PlayBtn.jsx";
 
@@ -8,45 +7,72 @@ function Trailer() {
     const videoRef = useRef(null);
     const [isMuted, setIsMuted] = useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         const handleLoadedData = () => {
-            if(videoRef.current) {
-                videoRef.current.currentTime = 13;
-                videoRef.current.play();
+            const video = videoRef.current;
+            if (video) {
+                video.currentTime = 14;
+                setIsLoaded(true);
+                setIsPlaying(true);
+                video.play();
             }
-        }
-        const videoElement = videoRef.current;
-        videoElement.addEventListener("loadeddata", handleLoadedData);
+        };
+        const video = videoRef.current;
+        video.addEventListener("loadeddata", handleLoadedData);
 
-        return() => {
-            videoElement.removeEventListener("loadeddata", handleLoadedData);
-        }
-    }, []);
+        return () => {
+            video.removeEventListener("loadeddata", handleLoadedData);
+        };
+    }, [videoRef]);
 
     const togglePlay = () => {
-        if (videoRef.current.paused) {
-            videoRef.current.play();
+        const video = videoRef.current;
+        if (video.paused) {
+            video.play();
             setIsPlaying(true);
         } else {
-            videoRef.current.pause();
+            video.pause();
             setIsPlaying(false);
         }
     };
 
     const toggleMute = () => {
-        videoRef.current.muted = !videoRef.current.muted;
-        setIsMuted(videoRef.current.muted);
+        const video = videoRef.current;
+        video.muted = !video.muted;
+        setIsMuted(video.muted);
     };
 
+    useEffect(() => {
+        const mainSlideSection = document.querySelector('.video-container');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting && isPlaying) {
+                    videoRef.current.play();
+                } else {
+                    videoRef.current.pause();
+                    setIsPlaying(false);
+                }
+            });
+        },{
+            threshold: 0.5
+        });
+
+        if (mainSlideSection) {
+            observer.observe(mainSlideSection);
+        }
+
+        return () => {
+            if (mainSlideSection) {
+                observer.unobserve(mainSlideSection);
+            }
+        };
+    }, []);
+
     return (
-        <div className="video-container">
-            <video
-                ref={videoRef}
-                muted={isMuted}
-                autoPlay
-                loop
-            >
+        <div className={`video-container ${isLoaded ? "loaded" : ""}`}>
+            <video ref={videoRef} muted={isMuted} autoPlay loop>
                 <source src="/trailer/Dune2.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>

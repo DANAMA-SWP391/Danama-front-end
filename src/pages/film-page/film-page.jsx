@@ -1,6 +1,5 @@
 import "./film-page.css";
-import NotLoggedHeader from "../../components/common/NotLoggedHeader/NotLoggedHeader.jsx";
-import FilmPoster from "../../components/common/FilmPoster/FilmPoster.jsx";
+import Header from "../../components/common/Header/Header.jsx";
 import ScreenShotSlider from "../../components/common/ScreenShotSlider/ScreenShotSlider.jsx";
 import screenshot1 from "../../assets/screen-shot/1.jpg";
 import screenshot2 from "../../assets/screen-shot/2.jpg";
@@ -12,20 +11,37 @@ import CommentSection from "../../components/container/film-page/CommentSection/
 
 import FilmLists from "../../components/container/main-page/FilmLists/FilmLists.jsx";
 import Footer from "../../components/container/main-page/Footer/Footer.jsx";
+import {useContext, useEffect, useState} from "react";
+import {UserContext} from "../../utils/userContext.jsx";
+import MainSlide from "../../components/container/main-page/MainSlide/MainSlide.jsx";
+
+import { useLocation } from "react-router-dom";
 
 function FilmPage() {
+    const location = useLocation();
+    const { film } = location.state || {};
+
+    const {user, filmList} = useContext(UserContext);
 
     const screenShots = [screenshot1, screenshot2, screenshot3, screenshot4, screenshot5];
-
+    
+    const [isLogged, setIsLogged] = useState(false);
+    
+    useEffect(() => {
+        if (user) {
+            setIsLogged(true);
+        }
+    }, [user]);
+    
     return (
         <div className="film-page">
-            <NotLoggedHeader />
-            <FilmPoster />
+            <Header user={user} />
+            <MainSlide isLogged={isLogged} film={film}/>
             <ScreenShotSlider screenShots={screenShots} />
             <SeparateLine />
-            <CommentSection />
+            <CommentSection user={user} />
             <SeparateLine/>
-            <FilmLists/>
+            <FilmLists filmLists={filmList}/>
             <Footer />
         </div>
     );

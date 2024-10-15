@@ -11,6 +11,7 @@
     top: 50%;
     transform: translateY(-50%);
     z-index: 1;
+    height: 100%;
 }
 
 .total-container button:nth-child(1) {
@@ -22,7 +23,7 @@
 }
 
 .film-list-container {
-    height: 100%;
+
 }
 
 .film-list-container .film-list {
