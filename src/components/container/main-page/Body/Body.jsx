@@ -1,17 +1,24 @@
 import "./Body.css";
+import PropTypes from 'prop-types';
 
 import MainSlide from "../MainSlide/MainSlide.jsx";
 import FilmLists from "../FilmLists/FilmLists.jsx";
-import Schedule from "../Schedule/Schedule.jsx";
+// import Schedule from "../Schedule/Schedule.jsx";
 
-function Body() {
+function Body({ isLogged, filmLists }) {
+
     return (
         <div className="body">
-            <MainSlide />
-            <FilmLists />
-            <Schedule />
+            <MainSlide isLogged={isLogged} />
+            <FilmLists filmLists={filmLists} />
+            {/*<Schedule />*/}
         </div>
     );
 }
+
+Body.propTypes = {
+    isLogged: PropTypes.bool.isRequired,
+    filmLists: PropTypes.array.isRequired
+};
 
 export default Body;

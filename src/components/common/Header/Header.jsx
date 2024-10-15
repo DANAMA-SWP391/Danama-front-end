@@ -4,8 +4,13 @@ import OptionList from "../../container/main-page/OptionList/OptionList.jsx";
 import LoginBtn from "../../container/main-page/LoginBtn/LoginBtn.jsx";
 import PropTypes from 'prop-types';
 import HeaderUser from "../HeaderUser/HeaderUser.jsx";
+import {useContext} from "react";
+import {UserContext} from "../../../utils/userContext.jsx";
 
-function Header({ user }) {
+function Header() {
+    const {user} = useContext(UserContext);
+    console.log(user);
+
     return (
         <div className="header">
             <div className="container">
@@ -23,6 +28,7 @@ function Header({ user }) {
 Header.propTypes = {
     user: PropTypes.shape({
         avatar: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
     }),
 };
 

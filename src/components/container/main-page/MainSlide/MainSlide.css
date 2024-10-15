@@ -31,12 +31,13 @@
 }
 
 .main-slide .cont-1 {
+    position: absolute;
+    top: 12%;
+    left: 5%;
+    width: 90%;
     display: flex;
     flex-direction: column;
-    width: 90%;
-    position: absolute;
-    top: 5vh;
-    left: 5%;
+    justify-content: start;
 }
 
 .main-slide .cont-1 h2 {

@@ -16,8 +16,14 @@ import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../utils/userContext.jsx";
 import MainSlide from "../../components/container/main-page/MainSlide/MainSlide.jsx";
 
+import { useLocation } from "react-router-dom";
+
 function FilmPage() {
+    const location = useLocation();
+    const { film } = location.state || {};
+
     const user = useContext(UserContext);
+    console.log(user);
     const screenShots = [screenshot1, screenshot2, screenshot3, screenshot4, screenshot5];
     
     const [isLogged, setIsLogged] = useState(false);
@@ -31,7 +37,7 @@ function FilmPage() {
     return (
         <div className="film-page">
             <Header user={user} />
-            <MainSlide isLogged={isLogged} />
+            <MainSlide isLogged={isLogged} film={film}/>
             <ScreenShotSlider screenShots={screenShots} />
             <SeparateLine />
             <CommentSection />
