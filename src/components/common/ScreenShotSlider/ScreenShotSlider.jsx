@@ -1,7 +1,7 @@
 import "./ScreenShotSlider.css";
 import BackWardBtn from "../BackWardBtn/BackWardBtn.jsx";
 import ForwardBtn from "../ForwardBtn/ForwardBtn.jsx";
-import ScreenShotCard from "../ScreenShotCard/ScreenShotCard.jsx";
+import ScreenShotCard from "../ScreenshotCard/ScreenShotCard.jsx";
 import PropTypes from 'prop-types';
 import {useState} from "react";
 
