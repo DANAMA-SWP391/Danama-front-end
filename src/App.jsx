@@ -10,6 +10,7 @@ import MainPage from "./pages/main-page/main-page.jsx";
 import EmailVerification from "./pages/email-verification-page/email-verification-page.jsx";
 import FilmPage from "./pages/film-page/film-page.jsx";
 import TestComponent from "./test/file.jsx";
+import BookingList from "./pages/cManager-Pages/listbooking-page/list-booking.jsx";
 // import Payment from "./pages/payment-page/payment-page.jsx";
 // import Profile from "./pages/profile-page/profile-page.jsx";
 
@@ -19,6 +20,7 @@ function App( ) {
             <Router>
                 <Routes>
                     <Route path="test" element={<TestComponent/>} />
+                    <Route path="/Cmanager" element={<BookingList/>} />
 
                     <Route path="/" element={<MainPage/>} />
                     <Route path="/login" element={<Login />} />

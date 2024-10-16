@@ -1,0 +1,75 @@
+.sidebar {
+    width: 250px;
+    background-color: #6A2222; /* Màu đỏ đô */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Căn bên trái để menu không bị căn giữa */
+    padding: 20px 15px; /* Thêm khoảng cách bên trái và bên phải */
+    color: white; /* Màu chữ trắng để dễ đọc */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Đổ bóng bên phải */
+    position: fixed; /* Giữ sidebar cố định khi cuộn */
+}
+
+.logo {
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold; /* Đậm cho logo */
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.menu-item {
+    background: none;
+    border: none;
+    width: 100%;
+    padding: 15px;
+    color: #fff;
+    text-align: left;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s; /* Thêm hiệu ứng transform */
+}
+
+.menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Màu nền sáng hơn khi hover */
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
+
+.menu-item:active {
+    transform: scale(0.95); /* Nhỏ lại khi nhấn */
+}
+
+.sidebar .menu .menu-item {
+    display: flex; /* Sử dụng flexbox để căn chỉnh icon và văn bản */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    padding: 10px; /* Khoảng cách cho nút */
+    border-radius: 5px; /* Bo tròn các góc */
+}
+
+.sidebar .menu .menu-item .icon {
+    margin-right: 15px; /* Khoảng cách giữa icon và văn bản */
+    font-size:  1.5rem; /* Kích thước của icon */
+    color: white; /* Đảm bảo màu icon cũng là trắng */
+
+}
+
+.icon-dashboard,
+.icon-booking,
+.icon-room,
+.icon-showtime {
+    margin-right: 10px;
+}
+
+/* Thêm một số hiệu ứng cho logo */
+.logo:hover {
+    color: #FFD700; /* Đổi màu logo khi hover */
+    transition: color 0.3s; /* Hiệu ứng chuyển màu mượt mà */
+}

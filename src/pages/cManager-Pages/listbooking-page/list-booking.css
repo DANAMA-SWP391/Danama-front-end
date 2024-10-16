@@ -1,0 +1,73 @@
+.booking-list-page {
+    display: flex;
+    flex-direction: column; /* Xếp theo chiều dọc cho header và layout */
+    height: 100vh; /* Chiều cao toàn bộ trang */
+}
+
+
+.header {
+    padding: 20px;
+    z-index: 1000; /* Đảm bảo header nằm trên cùng */
+    position: fixed; /* Giữ header cố định ở trên cùng */
+    width: 100%; /* Chiều rộng 100% */
+}
+
+.layout {
+    display: flex; /* Xếp theo chiều ngang cho sidebar và nội dung */
+    flex: 1; /* Chiếm hết không gian còn lại */
+}
+
+.booking-list-content {
+    flex: 1;
+    margin-left: 200px;
+    padding: 20px;
+    background-color: #f8f9fa;
+
+}
+
+.booking-title {
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    width: 200px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.search-container button {
+    padding: 5px 10px;
+}
+
+.booking-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.booking-table th,
+.booking-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.booking-table th {
+    background-color: #343a40;
+    color: white;
+    font-weight: bold;
+}
+
+
+.sidebar {
+    width: 200px; /* Kích thước cố định cho sidebar */
+    /* Thêm các thuộc tính CSS khác cho sidebar nếu cần */
+}
+
