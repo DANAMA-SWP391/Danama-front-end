@@ -1,3 +1,5 @@
+import {fetchListEmails} from "../api/authAPI.js";
+
 export function validateEmail(email) {
     const re = /\S+@\S+\.\S+/;
     return re.test(email.toLowerCase());
@@ -14,6 +16,18 @@ export function validatePassword(password) {
 
 export function validateName(name) {
     return name.length >= 3;
+}
+export async function validateExistEmail(email) {
+    try {
+        const data = await fetchListEmails();
+        const emailList= data.listEmails;
+        console.log(emailList);// Fetch the list of emails
+        // Check if the provided email exists in the email list
+        return emailList.includes(email);  // Return true if exists, false otherwise
+    } catch (error) {
+        console.error("Error validating email existence:", error);
+        throw error;  // Optionally rethrow the error for further handling
+    }
 }
 
 export function validateConfirmPassword(password, confirmPassword) {
