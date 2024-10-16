@@ -9,19 +9,11 @@ import Others from "../../components/container/login/Others/Others.jsx";
 import ErrMsgBox from "../../components/common/ErrMsgBox/ErrMsgBox.jsx";
 import Avatar from '../../assets/avatars/cat.png';
 import { UserContext } from "../../utils/userContext.jsx";
+import {login} from "../../api/authAPI.js";
 
 function Login() {
     const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
-
-    const user = {
-        id: '1',
-        email: 'tungdang.nbk.9a5@gmail.com',
-        password: '555555',
-        name: 'Tung Dang',
-        phone: '0987654321',
-        avatar: Avatar
-    };
 
     const [isSuccess, setIsSuccess] = useState(true);
     const [loading, setLoading] = useState(false);
@@ -38,18 +30,35 @@ function Login() {
 
     const handleButtonClick = (email, password) => {
         setLoading(true);
-        setTimeout(() => {
+
+        setTimeout(async () => {
             if (!validateEmailAndPassword(email, password)) {
                 setContent("Invalid email or password!");
                 setIsSuccess(false);
-            } else if (email !== user.email || password !== user.password) {
-                handleLoginFailed();
-            } else {
-                handleLoginSuccess()
+                setLoading(false); // Set loading to false if validation fails
+                return; // Exit the function early
             }
-            setLoading(false);
-        }, 500);
+
+            try {
+                const response = await login(email, password); // Use the login function
+
+                if (response.success) {
+                    setUser(response.user);
+                    handleLoginSuccess(); // Call your success handler
+                } else {
+                    handleLoginFailed(); // Call your failure handler
+                    setContent(response.message || "Login failed!"); // Optionally set an error message
+                }
+            } catch (error) {
+                console.error('Login error:', error); // Log the error
+                setContent("An error occurred during login.");
+                setIsSuccess(false);
+            } finally {
+                setLoading(false); // Ensure loading is set to false at the end
+            }
+        }, 500); // Delay of 500ms
     };
+
 
     const handleLoginFailed = () => {
         setContent("Email or password is incorrect!");
@@ -58,7 +67,6 @@ function Login() {
 
     const handleLoginSuccess = () => {
         setIsSuccess(true);
-        setUser(user);
         navigate("/");
     };
 
