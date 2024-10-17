@@ -156,7 +156,6 @@ export async function resetPassword(email,newPassword) {
 }
 export async function fetchJwtToken() {
     const token = localStorage.getItem('jwtToken');
-    console.log(localStorage.getItem('jwtToken'));
     if (!token) {
         console.error('No token found');
         return { success: false, message: 'No token available' }; // Return an error if no token is found
@@ -176,13 +175,11 @@ export async function fetchJwtToken() {
         }
 
         const data = await response.json();
-        console.log(data);
         if (data.success) {
             // Token is valid, return the account data
             const user = data.user;
             console.log('Token is valid');
-            console.log('Account Data:', user);
-            return { success: true, account: user }; // Return the account data if validation is successful
+            return { success: true, user: user };
         } else {
             // Token is invalid or expired
             console.error('Token validation failed:', data.message);

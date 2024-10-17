@@ -1,18 +1,52 @@
-.box-container table {
+.booking-history-table {
     width: 100%;
-    border: #000000 1px solid;
-    border-radius: 8px;
-    overflow: hidden;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
 }
 
-.box-container table th,
-.box-container table td {
-    text-align: center;
-    padding: 10px;
-
+.booking-history-table th,
+.booking-history-table td {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: left;
 }
 
-.box-container table th {
-    border-bottom: 1px solid #000;
+.booking-history-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
 }
 
+.booking-history-table td {
+    font-size: 14px;
+    color: #333;
+}
+
+.booking-history-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.booking-history-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Adjust the width of the details column */
+.details-column {
+    width: 100px; /* Smaller width for the details column */
+    text-align: center; /* Center the button */
+}
+
+.details-button {
+    padding: 5px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+}
+
+.details-button:hover {
+    background-color: #0056b3;
+}

@@ -1,16 +1,15 @@
 .box-container {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     flex-wrap: wrap;
+    gap: 30px; /* Space between boxes */
+    justify-content: flex-start; /* Align boxes to the left */
 }
 
-.box-container > div {
+.box-container__item {
     width: 300px;
-    height: 100px;
-    margin-bottom: 30px;
-    border: 1px solid #000;
-    border-radius: 10px;
-    padding: 10px 0 0 10px;
+    height: 120px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 15px;
     position: relative;
 }

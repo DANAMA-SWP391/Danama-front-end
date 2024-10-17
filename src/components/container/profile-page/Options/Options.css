@@ -4,13 +4,40 @@
     list-style: none;
     height: 125px;
     justify-content: space-between;
-
+    padding: 0;
+    margin: 0;
 }
 
 .body__left-container .left-container__options ul li {
     font-size: 16px;
+    padding: 10px 15px;
+    margin: 5px 0;
+    background-color: #f0f0f0;
+    color: #333;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
 
 .body__left-container .left-container__options ul li:hover {
+    background-color: #007bff;
+    color: #fff;
     cursor: pointer;
+    transform: translateY(-2px);
+}
+
+.body__left-container .left-container__options ul li:active {
+    background-color: #0056b3;
+    color: #fff;
+    transform: translateY(0);
+}
+
+.body__left-container .left-container__options ul li.selected {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    border: 1px solid #0056b3;
+}
+
+.body__left-container .left-container__options ul li:not(.selected):hover {
+    font-weight: normal;
 }

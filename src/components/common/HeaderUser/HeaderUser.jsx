@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import "./HeaderUser.css";
 import PropTypes from 'prop-types';
+import {Link} from "react-router-dom";
 
 function HeaderUser({ user }) {
     const [showOptions, setShowOptions] = useState(false);
@@ -20,9 +21,9 @@ function HeaderUser({ user }) {
     return (
         <div className="header-user">
             <div className="header-user__container">
-                <div className="header-user__avatar">
+                <Link to="/profile" className="header-user__avatar">
                     <img src={user.avatar} alt="avatar" />
-                </div>
+                </Link>
                 <div className="header-user__triangle" onClick={toggleDropdown}>
                     ▼
                 </div>
