@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Header from "../../../components/common/Header/Header.jsx"; // Đường dẫn phải chính xác
 import Sidebar from "../../../components/common/CMangerSideBar/CManagerSideBar.jsx";
 import { fetchBookingListPage } from "../../../api/cManagerAPI.js";
 import "./list-booking.css";
+import CManagerHeader from "../../../components/common/CManagerHeader/CManagerHeader.jsx";
 
 function BookingList() {
     const [bookings, setBookings] = useState([]);
@@ -51,7 +51,7 @@ function BookingList() {
 
     return (
         <div className="booking-list-page">
-            <Header />
+            <CManagerHeader />
             <div className="layout"> {/* Thêm div chứa cho sidebar và nội dung */}
                 <Sidebar />
                 <div className="booking-list-content">

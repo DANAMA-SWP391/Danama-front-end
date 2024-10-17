@@ -19,7 +19,7 @@ function Sidebar() {
                 </Button>
                 <Button className="menu-item" to="/Cmanager">
                     <span className="icon"><FaClipboardList style={{ fontSize: '20px' }} /></span>
-                    Booking List
+                    Booking List Page
                 </Button>
                 <Button className="menu-item" to="/room-management">
                     <span className="icon"><BsDoorOpenFill style={{ fontSize: '20px' }}/></span>

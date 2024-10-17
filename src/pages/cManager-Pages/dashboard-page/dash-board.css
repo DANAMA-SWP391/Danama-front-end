@@ -1,0 +1,179 @@
+/* General layout */
+.cinema-dashboard {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.layout {
+    display: flex;
+    flex: 1;
+}
+
+/* Main content area to center the cards and chart */
+.main-content {
+    display: flex;
+    flex: 1;
+    justify-content: center; /* Center the content horizontally */
+    align-items: flex-start; /* Align the content at the top */
+    padding: 20px;
+}
+
+/* Content layout */
+.dashboard-content {
+    flex: 3;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content in the middle of the space */
+}
+
+/* Sidebar styling */
+/* Sidebar styling for Most Watched Movies */
+.most-watched-section {
+    flex: 0 0 220px; /* Set the same width as the sidebar */
+    margin-left: 20px;
+    background-color: #f1f0f0; /* Match the color of the sidebar */
+    padding: 20px;
+    border-radius: 0; /* Remove the rounded corners */
+    box-shadow: none; /* Remove box shadow */
+    color: #201f1f; /* Text color white */
+    position: sticky;
+    top: 10px;
+    height: fit-content; /* Ensure it doesn't expand unnecessarily */
+}
+
+/* Header for Most Watched section */
+.most-watched-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #201f1f;
+}
+
+/* Styling for the list of movies */
+.most-watched-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.most-watched-section li {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    color: #201f1f;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.most-watched-section li:hover {
+    background-color: rgb(147, 21, 21); /* Add hover effect like the sidebar */
+    border-radius: 5px;
+
+}
+
+.movie-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-info h4 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #201f1f;
+}
+
+.movie-info span {
+    font-size: 0.9rem;
+    color: #201f1f;
+}
+
+/* Ensure consistency with the sidebar */
+.most-watched-section li {
+    border-bottom: 1px solid rgb(241, 240, 240);
+    padding: 10px 0;
+}
+
+.most-watched-section li:last-child {
+    border-bottom: none;
+}
+
+
+/* Card Styling */
+.revenue-cards {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px; /* Limit the max width of the cards row */
+    margin-bottom: 20px;
+}
+
+.card {
+    background-color: #f1f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 30%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.revenue-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.revenue-data p {
+    font-size: 1.2rem;
+    color: #777;
+}
+
+.revenue-data h3 {
+    font-size: 1.8rem;
+    color: #e74c3c;
+    margin-top: 5px;
+}
+
+/* Chart section */
+.chart-section {
+    width: 100%;
+    max-width: 800px; /* Limit the width of the chart */
+    margin-top: 20px;
+}
+
+.chart-container {
+    width: 100%;
+    height: 400px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+#ticketSoldChart {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .main-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .most-watched-section {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .chart-container,
+    .revenue-cards {
+        width: 100%;
+    }
+}
+
+
