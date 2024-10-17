@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import MainSlide from "../MainSlide/MainSlide.jsx";
 import FilmLists from "../FilmLists/FilmLists.jsx";
-// import Schedule from "../Schedule/Schedule.jsx";
+import Schedule from "../Schedule/Schedule.jsx";
 
 function Body({ isLogged, filmLists }) {
 
@@ -11,7 +11,7 @@ function Body({ isLogged, filmLists }) {
         <div className="body">
             <MainSlide isLogged={isLogged} />
             <FilmLists filmLists={filmLists} />
-            {/*<Schedule />*/}
+            <Schedule />
         </div>
     );
 }
