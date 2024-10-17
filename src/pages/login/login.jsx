@@ -7,7 +7,6 @@ import Slogan from "../../components/common/Slogan/Slogan.jsx";
 import LoginBox from "../../components/container/login/LoginBox/LoginBox.jsx";
 import Others from "../../components/container/login/Others/Others.jsx";
 import ErrMsgBox from "../../components/common/ErrMsgBox/ErrMsgBox.jsx";
-import Avatar from '../../assets/avatars/cat.png';
 import { UserContext } from "../../utils/userContext.jsx";
 import {login} from "../../api/authAPI.js";
 

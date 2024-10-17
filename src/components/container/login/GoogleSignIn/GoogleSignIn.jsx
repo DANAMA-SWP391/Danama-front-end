@@ -1,9 +1,9 @@
 import "./GoogleSignIn.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import {loginByGoogle} from "../../../../api/authAPI.js";
-import {UserContext} from "../../../../utils/userContext.jsx";
-import {useContext} from "react";
 import {useNavigate} from "react-router-dom";
+import {useContext} from "react";
+import {UserContext} from "../../../../utils/userContext.jsx";
 
 
 function GoogleSignIn() {
@@ -12,12 +12,11 @@ function GoogleSignIn() {
     const handleSuccess = async (response) => {
         try {
             const token = response.credential;
+            console.log(token);
             // Call the loginByGoogle function with the token
             const data = await loginByGoogle(token);
-            setUser(data);
+            setUser(data.user);
             navigate('/');
-            // Process the login success data as needed
-            console.log("User data received after login:", data);
         } catch (error) {
             console.error("Error during Google login:", error);
         }
