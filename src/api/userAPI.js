@@ -185,3 +185,28 @@ export async function addBooking(booking, tickets) {
 export function paymentConfirm(bookingId) {
 
 }
+
+export async function upLoadImage(file, folder) {
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("folder", folder); // Folder path you want to store in
+
+        const response = await fetch("http://localhost:8080/DANAMA_war_exploded/uploadImage", {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            return data.location; // This will be the path where the file is saved
+        } else {
+            console.error("Failed to upload image:", response.statusText);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error uploading image:", error);
+        return null;
+    }
+}
+
