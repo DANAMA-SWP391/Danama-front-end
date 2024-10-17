@@ -1,11 +1,12 @@
+/* src/components/container/main-page/Footer/Footer.css */
 .footer {
-
     display: flex;
     justify-content: space-around;
     text-align: center;
     background: #000000;
     padding-top: 50px;
     padding-bottom: 50px;
+    margin-top: 50px; /* Add margin to the top */
 }
 
 .footer > div {
