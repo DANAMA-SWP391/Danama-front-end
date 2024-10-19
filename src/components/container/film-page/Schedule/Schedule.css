@@ -1,0 +1,77 @@
+.film-schedules {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.film-schedules p {
+    color: #000000;
+    font-size: 16px;
+}
+
+.film-schedules h1 {
+    font-size: 20px;
+    font-family: "Albert Sans semi-bold", sans-serif;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.film-schedules .dates {
+    margin: 0 auto 50px;
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    align-items: center;
+}
+
+.film-schedules .schedule-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto;
+    border: 1px solid rgba(0,0,0,0.25);
+    border-radius: 10px;
+}
+
+.film-schedules .schedule-container .cinema-list {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 5%;
+    border-right: 1px solid rgba(0,0,0,0.25);
+}
+
+.film-schedules .schedule-container .cinema-list .cinema-logo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+    width: 100%;
+    padding-left: 10%;
+}
+
+.film-schedules .schedule-container .cinema-list .cinema-logo:hover {
+    cursor: pointer;
+    scale: 1.1;
+}
+
+.film-schedules .schedule-container .cinema-list .cinema-logo > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.film-schedules .schedule-container .cinema-list .cinema-logo img {
+    width: 50px;
+    height: 50px;
+}
+
+.film-schedules .schedule-container .cinema-list .cinema-logo div p {
+    margin-left: 10px;
+    font-family: "Albert Sans semi-bold", sans-serif;
+}
+
+.film-schedules .schedule-container .cinema-list .cinema-logo > p {
+    color: #1f70c8;
+    font-size: 14px;
+    font-family: "Albert Sans semi-bold", sans-serif;
+}
