@@ -6,6 +6,10 @@ import galaxy from "../../../../assets/cinemaLogos/galaxy.jpg";
 import metiz from "../../../../assets/cinemaLogos/metiz.jpg";
 import Date from "../../../common/Date/Date.jsx";
 
+import Price from "../../../../assets/Icons/priceTag.svg";
+import Location from "../../../../assets/Icons/location.svg";
+import ArrowUpward from "../../../../assets/Icons/arrow-upward.svg";
+
 function Schedule() {
 
     const cinemaLogoList = [[all, "All"], [cgv, "CGV"], [lotte, "Lotte"], [galaxy, "Galaxy"], [metiz, "Metiz"]];
@@ -33,23 +37,33 @@ function Schedule() {
                 </div>
                 <div className="schedules">
                     <div className="button-cont">
-                        <button>Price</button>
-                        <button>Near You</button>
+                        <button><img src={Price} alt="price"/> Price <img src={ArrowUpward} alt="arrow-up"/></button>
+                        <button><img src={Location} alt="near-you"/>Near You</button>
                     </div>
-                    <div className="schedule">
-                        <h2>CGV Vincom Đà Nẵng</h2>
-                        <p className={"address"}>Tầng 4, TTTM Vincom Đà Nẵng, đường Ngô Quyền, P.An Hải Bắc, Q.Sơn Trà, TP. Đà Nẵng</p>
-                        <p className="format">2D Subtitle</p>
-                        <div className="showtimes">
-                            <div className="showtime">
-                                <p className={"time"}>9:20 ~ 10:57</p>
-                                <p className={"price"}>Best Price: 100.000đ</p>
+                    <div>
+                        <div className="schedule">
+                            <h2>CGV Vincom Đà Nẵng</h2>
+                            <p className={"address"}>Tầng 4, TTTM Vincom Đà Nẵng, đường Ngô Quyền, P.An Hải Bắc, Q.Sơn
+                                Trà, TP. Đà Nẵng</p>
+                            <p className="format">2D Subtitle</p>
+                            <div className="showtimes">
+                                <div className="showtime">
+                                    <p className={"time"}>9:20 ~ 10:57</p>
+                                    <p className={"price"}>Best Price: 100.000đ</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="schedule">
-                        <h2>CGV Vĩnh Trung Plaza</h2>
-                        <p>255-257 Hùng Vương, Phường Vĩnh Trung, Quận Thanh Khê, TP. Đà Nẵng</p>
+                        <div className="schedule">
+                            <h2>CGV Vĩnh Trung Plaza</h2>
+                            <p className={"address"}>255-257 Hùng Vương, Phường Vĩnh Trung, Quận Thanh Khê, TP. Đà Nẵng</p>
+                            <p className="format">2D Subtitle</p>
+                            <div className="showtimes">
+                                <div className="showtime">
+                                    <p className={"time"}>9:20 ~ 10:57</p>
+                                    <p className={"price"}>Best Price: 100.000đ</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
