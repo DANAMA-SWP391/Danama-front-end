@@ -26,6 +26,10 @@
     background: rgba(0,0,0,0.25);
 }
 
+.schedule-section .separate-line {
+    margin: 70px auto;
+}
+
 .schedule-section .line {
     height: 1px;
     margin: 0 auto 50px;
@@ -127,6 +131,7 @@
 
 .films-list-container .films-list {
     overflow-y: scroll;
+    height: 400px;
 }
 
 .schedule-section .cinema-list-box　{
