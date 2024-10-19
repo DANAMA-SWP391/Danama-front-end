@@ -20,7 +20,6 @@ export async function login(email, password) {
             // Store the JWT token in localStorage
             localStorage.setItem('jwtToken', data.jwtToken);
             localStorage.setItem('user', JSON.stringify(data.user));
-            console.log(localStorage);
             // console.log(data);
         }
         return data;
