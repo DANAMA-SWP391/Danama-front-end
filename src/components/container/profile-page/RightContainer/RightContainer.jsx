@@ -7,7 +7,7 @@ import avatar from '../../../../assets/Icons/avatar.svg';
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import {changePassword, fetchJwtToken} from "../../../../api/authAPI.js";
-import {fetchBookingHistory} from "../../../../api/userAPI.js";
+import {fetchBookingHistory, updateProfile} from "../../../../api/userAPI.js";
 import BookingHistory from "../BookingHistory/Booking History.jsx";
 import ChangePass from "../ChangePass/ChangePass.jsx";
 
@@ -85,14 +85,45 @@ function RightContainer({ selectedOption }) {
             setMessage("An error occurred while changing the password.");
         }
     };
+    const handleProfileUpdate = async (updatedInfo) => {
+        // Update the user profile with the new information
+        const updatedUser = { ...user };
 
+        if (updatedInfo.title === "Name") {
+            updatedUser.name = updatedInfo.content;
+        } else if (updatedInfo.title === "Phone") {
+            updatedUser.phone = updatedInfo.content;
+        } else if (updatedInfo.title === "Avatar") {
+            updatedUser.avatar = updatedInfo.content;
+        }
+        console.log(updatedUser);
+        // Call the updateProfile API
+        try {
+            const response = await updateProfile(updatedUser);
+            if (response.sucess) {
+                setUser(updatedUser); // Update the user in state
+
+                const userFromStorage = JSON.parse(localStorage.getItem('user')); // Retrieve the existing user object
+                if (userFromStorage) {
+                    userFromStorage.name = updatedUser.name; // Update name
+                    userFromStorage.avatar = updatedUser.avatar; // Update avatar
+                    localStorage.setItem('user', JSON.stringify(userFromStorage));
+                }
+                window.location.reload();
+            } else {
+                console.error('Profile update failed:', response.message);
+            }
+        } catch (error) {
+            console.error('Error updating profile:', error);
+        }
+    };
     const renderContent = () => {
         switch (selectedOption) {
             case 'User information':
                 return (
                     <div>
                         <h2>User Information</h2>
-                        <UserInfos infos={createInfos()} />
+                        <UserInfos infos={createInfos()} onUpdate={handleProfileUpdate}/>
                     </div>
                 );
             case 'Booking History':
