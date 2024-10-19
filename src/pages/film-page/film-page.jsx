@@ -14,6 +14,7 @@ import Footer from "../../components/container/main-page/Footer/Footer.jsx";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../utils/userContext.jsx";
 import MainSlide from "../../components/container/main-page/MainSlide/MainSlide.jsx";
+import Schedule from "../../components/container/film-page/Schedule/Schedule.jsx";
 
 import { useLocation } from "react-router-dom";
 
@@ -40,6 +41,8 @@ function FilmPage() {
             <ScreenShotSlider screenShots={screenShots} />
             <SeparateLine />
             <CommentSection user={user} />
+            <SeparateLine/>
+            <Schedule />
             <SeparateLine/>
             <FilmLists filmLists={filmList}/>
             <Footer />
