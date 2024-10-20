@@ -49,7 +49,7 @@ export const fetchAddCinema = async (cinema) => {
 };
 
 // Cập nhật thông tin rạp chiếu phim
-export const fetchUpdateCinema = async (cinemaId, cinema) => {
+export const fetchUpdateCinema = async (cinema) => {
     try {
         const response = await fetch('http://localhost:8080/DANAMA_war_exploded/CinemaController', {
             method: 'POST',
@@ -58,8 +58,7 @@ export const fetchUpdateCinema = async (cinemaId, cinema) => {
             },
             body: JSON.stringify({
                 action: 'update',
-                cinemaId: cinemaId,  // Gửi cinemaId cùng với cinema
-                cinema: cinema,      // Gửi toàn bộ đối tượng cinema
+                cinema: cinema, // Gửi toàn bộ đối tượng cinema
             }),
         });
 
@@ -69,12 +68,13 @@ export const fetchUpdateCinema = async (cinemaId, cinema) => {
 
         const result = await response.json(); // Nhận phản hồi từ server
         console.log('Update response:', result); // Log phản hồi để kiểm tra kết quả
-        return result; // Trả về true nếu cập nhật thành công
+        return result.success; // Trả về giá trị success từ server
     } catch (error) {
         console.error('Error updating cinema:', error);
         return false; // Trả về false nếu có lỗi xảy ra
     }
 };
+
 
 
 // Xóa rạp chiếu phim
@@ -109,29 +109,29 @@ export const fetchAddAccount = async (account) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                action: 'add',
-                account: {
-                    name: account.name,
-                    email: account.email,
-                    phone: account.phone,
-                    avatar: account.avatar,
-                    googleId: account.googleId,
-                    roleId: account.roleId,
-                    password: account.password,
-                },
+                action: 'add',  // Xác định hành động là "add"
+                account: account,  // Gửi đối tượng account chứa các thông tin cần thêm
             }),
         });
 
-        const result = await response.json();
-        return result.success; // Trả về true nếu thêm thành công
+        // Kiểm tra phản hồi từ server
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const result = await response.json(); // Lấy kết quả trả về từ server
+        console.log('Account added response:', result);  // In kết quả ra để kiểm tra
+
+        return result.success;  // Trả về kết quả từ server
     } catch (error) {
         console.error('Error adding account:', error);
-        return false;
+        return false;  // Trả về false nếu có lỗi xảy ra
     }
 };
 
+
 // Xem chi tiết tài khoản
-export const fetchViewAccount = async (UID) => {
+export const fetchAccountById = async (UID) => {
     try {
         const response = await fetch('http://localhost:8080/DANAMA_war_exploded/AccountController', {
             method: 'POST',
@@ -141,7 +141,7 @@ export const fetchViewAccount = async (UID) => {
             body: JSON.stringify({
                 action: 'view',
                 account: {
-                    UID: UID,
+                    UID: UID,  // UID của tài khoản cần xem chi tiết
                 },
             }),
         });
@@ -150,11 +150,15 @@ export const fetchViewAccount = async (UID) => {
             throw new Error(`Error: ${response.status}`);
         }
 
-        const data = await response.json();
-        return data; // Trả về đối tượng tài khoản chi tiết
+        const result = await response.json();
+        if (result.success) {
+            return result.account; // Trả về đối tượng account nếu thành công
+        } else {
+            throw new Error('Account not found');
+        }
     } catch (error) {
-        console.error('Error viewing account:', error);
-        return null;
+        console.error('Error fetching account by ID:', error);
+        return null; // Trả về null nếu có lỗi
     }
 };
 
@@ -212,17 +216,21 @@ export const fetchMovieList = async () => {
                 'Content-Type': 'application/json',
             },
         });
+
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
         }
 
         const data = await response.json();
-        return data.movies; // Lấy danh sách movies từ JSON trả về
+        console.log(data);
+
+        return data;
     } catch (error) {
-        console.error('Error fetching movie list:', error);
-        return null; // Hoặc bạn có thể ném lỗi ra ngoài
+        console.error('Error fetching movie list and genres:', error);
+        return null; // Return null if an error occurs
     }
 };
+
 
 // Thêm mới một bộ phim
 export const fetchAddMovie = async (movie) => {
@@ -233,30 +241,38 @@ export const fetchAddMovie = async (movie) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                action: 'add',
+                action: 'add',     // Hành động "add" cho API
                 movie: {
+                    // Không cần gửi movieId vì movieId sẽ được tự động sinh
                     name: movie.name,
                     description: movie.description,
                     poster: movie.poster,
                     trailer: movie.trailer,
-                    releaseDate: movie.releaseDate.toISOString(), // Chuyển đổi sang định dạng ISO
+                    releaseDate: movie.releaseDate,
                     country: movie.country,
                     director: movie.director,
                     ageRestricted: movie.ageRestricted,
                     actors: movie.actors,
                     duration: movie.duration,
                     status: movie.status,
-                },
+                    genres: movie.genres  // Gửi danh sách genres (bao gồm genreId)
+                }
             }),
         });
 
-        const result = await response.json();
-        return result.success;  // Trả về true nếu thêm thành công, false nếu thất bại
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const result = await response.json();  // Nhận phản hồi JSON từ server
+        console.log('Add movie response:', result);
+        return result.success;  // Trả về true nếu thêm thành công
     } catch (error) {
         console.error('Error adding movie:', error);
-        return false;
+        return false;  // Trả về false nếu có lỗi xảy ra
     }
 };
+
 
 // Xem chi tiết bộ phim
 export const fetchViewMovie = async (movieId) => {
@@ -268,23 +284,24 @@ export const fetchViewMovie = async (movieId) => {
             },
             body: JSON.stringify({
                 action: 'view',
-                movieId: movieId,
+                movie: { movieId: movieId }  // Truyền đối tượng movie với movieId
             }),
         });
 
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
+        const result = await response.json();
 
-        const data = await response.json();
-        return data; // Trả về đối tượng chi tiết phim
+        if (result.success) {
+            return result.movie;  // Trả về thông tin movie nếu thành công
+        } else {
+            throw new Error('Movie not found or error occurred');
+        }
     } catch (error) {
-        console.error('Error viewing movie:', error);
-        return null; // Hoặc bạn có thể ném lỗi ra ngoài
+        console.error('Error fetching movie:', error);
+        return null;
     }
 };
 
-// Xóa bộ phim
+
 export const fetchDeleteMovie = async (movieId) => {
     try {
         const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieController', {
@@ -294,18 +311,47 @@ export const fetchDeleteMovie = async (movieId) => {
             },
             body: JSON.stringify({
                 action: 'delete',
-                movieId: movieId, // Gửi movieId để xóa
+                movie: { movieId: movieId }  // Truyền đối tượng movie với movieId
             }),
         });
 
         const result = await response.json();
-        console.log('Delete response:', result); // Log kết quả phản hồi
-        return result.success; // Trả về true nếu xóa thành công
+        console.log('Delete response:', result);  // Ghi log kết quả phản hồi
+        return result.success;  // Trả về true nếu xóa thành công
     } catch (error) {
         console.error('Error deleting movie:', error);
         return false;
     }
 };
+
+export const fetchUpdateMovie = async (movie) => {
+
+    try {
+        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieController', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 'update',
+                movie: movie,  // Send movie data including genres
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('Update movie response:', result);
+        return result.success;
+    } catch (error) {
+        console.error('Error updating movie:', error);
+        return false;
+    }
+};
+
+
 
 
 

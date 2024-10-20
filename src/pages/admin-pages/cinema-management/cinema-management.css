@@ -1,0 +1,79 @@
+.cinema-list-container {
+    display: flex;
+    background-color: #f4f4f4;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #7b1e1e;
+    padding: 20px;
+    color: white;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.cinema-list-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.cinema-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.add-cinema-btn {
+    padding: 10px 20px;
+    background-color: #c8f0c8;
+    border: none;
+    cursor: pointer;
+}
+
+.cinema-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cinema-table th,
+.cinema-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.cinema-table th {
+    background-color: #e0e0e0;
+}
+
+.cinema-logo {
+    width: 50px;
+    height: auto;
+}
+
+.edit-btn, .delete-btn {
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-btn {
+    padding: 5px 10px;
+    cursor: pointer;
+}

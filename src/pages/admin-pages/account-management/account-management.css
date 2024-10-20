@@ -1,0 +1,129 @@
+/* Container chính cho toàn bộ Account Management */
+.account-management-container {
+    display: flex;
+    min-height: 100vh; /* Đảm bảo chiều cao bao phủ toàn bộ màn hình */
+}
+
+/* Sidebar nằm cố định bên trái */
+.sidebar {
+    width: 250px;
+    background-color: #6A2222;
+    height: 100vh;
+    color: white;
+    padding: 20px 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Phần nội dung (content) nằm bên cạnh Sidebar */
+.account-management-content {
+    margin-left: 250px; /* Tạo khoảng cách đủ để content nằm bên cạnh Sidebar */
+    width: calc(100% - 250px); /* Chiếm phần còn lại của trang */
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    min-height: 100vh; /* Đảm bảo content bao phủ toàn bộ chiều cao */
+}
+
+/* Header của Account Management */
+.account-management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.account-management-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.add-account-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.add-account-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Table styling */
+.account-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.account-table th, .account-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.account-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.account-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Button styling */
+.edit-btn, .delete-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.edit-btn:hover {
+    background-color: #0056b3;
+}
+
+.delete-btn:hover {
+    background-color: #d9534f;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination-btn:hover {
+    background-color: #0056b3;
+}
+
+.pagination span {
+    margin: 0 10px;
+    font-size: 16px;
+}
