@@ -3,7 +3,14 @@ import { useEffect, useState } from "react";
 import Logo from "../../components/common/Logo/Logo.jsx";
 import Slogan from "../../components/common/Slogan/Slogan.jsx";
 import SignupBox from "../../components/container/sign-up/SignUpBox/SignUpBox.jsx";
-import { validateEmail, validateName, validatePhone, validatePassword, validateConfirmPassword } from "../../utils/validateHelper";
+import {
+    validateEmail,
+    validateName,
+    validatePhone,
+    validatePassword,
+    validateConfirmPassword,
+    validateExistEmail
+} from "../../utils/validateHelper";
 import {addUser, users} from "../../utils/userData.js";
 import defaultAvatar from "../../assets/avatars/default-avatar.svg";
 import {useNavigate} from "react-router-dom";
@@ -18,11 +25,12 @@ function SignUp() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [content, setContent] = useState('Assign New Account');
     const [hasError, setHasError] = useState(false);
-
     const navigate = useNavigate();
 
-    const handleButtonClick = (name, email, phone, pass, confirmPass) => {
+    const handleButtonClick = async (name, email, phone, pass, confirmPass) => {
         let error = false;
+        const emailExists = await validateExistEmail(email);
+        console.log(emailExists);
         if (!validateName(name)) {
             setContent("Name must be at least 3 characters long.");
             error = true;
@@ -38,18 +46,21 @@ function SignUp() {
         } else if (!validateConfirmPassword(pass, confirmPass)) {
             setContent("Passwords do not match.");
             error = true;
+        } else if (emailExists) {
+            setContent("Email already registered.");
+            error = true;
         } else {
             const user = {
-                id: users.length + 1,
+                UID: 0,
                 email: email,
                 password: password,
                 name: name,
                 phone: phone,
-                avatar: defaultAvatar
+                avatar: defaultAvatar,
+                roleId: 1
             }
             setHasError(false);
-            addUser(user);
-            navigate('/email-verification');
+            navigate('/email-verification', {state: {user}});
         }
         setHasError(error);
     }

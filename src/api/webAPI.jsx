@@ -117,3 +117,25 @@ export async function fetchHomePage() {
         throw error;
     }
 }
+export async function upFileToAzure(file) {
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await fetch("http://localhost:8080/DANAMA_war_exploded/uploadFileToAzure", {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            return data.imageUrl; // The URL of the uploaded image
+        } else {
+            console.error("Failed to upload image:", response.statusText);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error uploading image:", error);
+        return null;
+    }
+}

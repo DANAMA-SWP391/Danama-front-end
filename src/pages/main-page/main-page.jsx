@@ -218,7 +218,7 @@ function MainPage() {
 
     return (
         <div className="main-page">
-            <Header user={user} />
+            <Header/>
             <Body isLogged={isLogged} filmLists={filmList} />
             <Footer />
         </div>

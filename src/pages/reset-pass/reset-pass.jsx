@@ -4,16 +4,14 @@ import SendBtn from "../../components/container/reset-pass/SendBtn/SendBtn.jsx";
 import { useEffect, useRef, useState } from "react";
 import InputBox from "../../components/common/InputBox/InputBox.jsx";
 import { validateEmail } from "../../utils/validateHelper.js";
+import {fetchListEmails, resetPassword, sendVerificationCode} from "../../api/authAPI.js";
 
 function ResetPass() {
-    const realEmail = 'tungdang@gmail.com';
-    const realPass = '555555';
-
     const emailRef = useRef(null);
     const codeRef = useRef(null);
     const passwordRef = useRef(null);
     const confirmRef = useRef(null);
-
+    const [email, setEmail] = useState('');
     const [formState, setFormState] = useState({
         email: "",
         isSuccess: false,
@@ -22,7 +20,8 @@ function ResetPass() {
         active: false,
         err: false,
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        verificationCode: ""  // State to store the verification code from the backend
     });
 
     const updateFormState = (newState) => {
@@ -40,19 +39,42 @@ function ResetPass() {
         });
     };
 
-    const handleEmailSubmission = () => {
-        if (!validateEmail(emailRef.current.value)) {
-            updateFormState({ err: true, content: "Invalid email" });
-        } else if (emailRef.current.value !== realEmail) {
-            updateFormState({ err: true, content: "Email does not exist" });
-        } else {
-            updateFormState({ content: "Please check your email to get the code", active: true });
+    const handleEmailSubmission = async () => {
+        try {
+            setEmail(emailRef.current.value);
+            if (!validateEmail(emailRef.current.value)) {
+                updateFormState({ err: true, content: "Invalid email" });
+                return;
+            }
+
+            // Fetch list of emails and check if the email exists
+            const data = await fetchListEmails();
+            const emailList = data.listEmails;
+            if (!emailList.includes(emailRef.current.value)) {
+                updateFormState({ err: true, content: "Email does not exist" });
+                return;
+            }
+
+            // Send verification code and store the verification code from the response
+            const response = await sendVerificationCode(emailRef.current.value);
+            const verificationCode = response.code;  // Save the verification code from the API response
+
+            // Update form state with the verification code and prepare the UI for the next step
+            updateFormState({
+                content: "Please check your email to get the code",
+                active: true,
+                verificationCode: verificationCode // Store verification code in state
+            });
+
             resetFields([emailRef]);
+        } catch (error) {
+            updateFormState({ err: true, content: "Error sending verification code" });
+            console.error(error);
         }
     };
 
     const handleCodeSubmission = () => {
-        if (codeRef.current.value !== realPass) {
+        if (codeRef.current.value !== formState.verificationCode) {
             updateFormState({ err: true, content: "Code is incorrect" });
         } else {
             updateFormState({ content: "Enter your new password", isSuccess: true });
@@ -60,12 +82,20 @@ function ResetPass() {
         }
     };
 
-    const handlePasswordSubmission = () => {
+    const handlePasswordSubmission = async () => {
         if (passwordRef.current.value !== confirmRef.current.value) {
             updateFormState({ err: true, content: "Passwords do not match" });
-        } else {
+            return;
+        }
+
+        try {
+            // Reset password via API
+            await resetPassword(email, passwordRef.current.value);
             updateFormState({ content: "Password reset successful", isSuccess: false, active: false });
             resetFields([passwordRef, confirmRef]);
+        } catch (error) {
+            updateFormState({ err: true, content: "Error resetting password" });
+            console.error(error);
         }
     };
 
@@ -94,11 +124,11 @@ function ResetPass() {
         <div className="container">
             <div className="reset-pass-container">
                 <div className="upper-container">
-                    <Logo className="reset-logo"/>
+                    <Logo className="reset-logo" />
                     <p>Reset Password</p>
                 </div>
                 <div className="lower-container">
-                    <p className={formState.err ? 'err' : ''}>{formState.content}</p>
+                    <p style={{ color: formState.err ? 'red' : 'green' }}>{formState.content}</p>
                     <form>
                         <InputBox
                             ref={emailRef}
@@ -131,7 +161,7 @@ function ResetPass() {
                             placeholder="Confirm Password"
                             onChange={handleInputChange}
                         />
-                        <SendBtn onClick={handleClick}/>
+                        <SendBtn onClick={handleClick} />
                         {formState.loading && (
                             <div className="loading-screen">
                                 <div className="spinner"></div>
