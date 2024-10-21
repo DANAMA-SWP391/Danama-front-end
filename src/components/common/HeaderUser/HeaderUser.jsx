@@ -10,7 +10,8 @@ function HeaderUser({ user }) {
     const handleLogout = () => {
         localStorage.removeItem('user'); // Remove user from localStorage
         localStorage.removeItem('jwtToken'); // Remove JWT token if applicable
-        navigate('/'); // Reload the page or redirect to login page
+        navigate('/');
+        window.location.reload();// Reload the page or redirect to login page
     };
 
     // Toggle dropdown visibility
