@@ -185,3 +185,4 @@ export async function addBooking(booking, tickets) {
 export function paymentConfirm(bookingId) {
 
 }
+

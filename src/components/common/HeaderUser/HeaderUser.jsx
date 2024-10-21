@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import "./HeaderUser.css";
 import PropTypes from 'prop-types';
+import {Link, useNavigate} from "react-router-dom";
 
 function HeaderUser({ user }) {
     const [showOptions, setShowOptions] = useState(false);
-
+    const navigate = useNavigate();
     // Function to handle log out
     const handleLogout = () => {
         localStorage.removeItem('user'); // Remove user from localStorage
         localStorage.removeItem('jwtToken'); // Remove JWT token if applicable
-        window.location.reload(); // Reload the page or redirect to login page
+        navigate('/');
+        window.location.reload();// Reload the page or redirect to login page
     };
 
     // Toggle dropdown visibility
@@ -20,9 +22,9 @@ function HeaderUser({ user }) {
     return (
         <div className="header-user">
             <div className="header-user__container">
-                <div className="header-user__avatar">
+                <Link to="/profile" className="header-user__avatar">
                     <img src={user.avatar} alt="avatar" />
-                </div>
+                </Link>
                 <div className="header-user__triangle" onClick={toggleDropdown}>
                     ▼
                 </div>
