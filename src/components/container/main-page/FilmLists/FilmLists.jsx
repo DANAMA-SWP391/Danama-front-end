@@ -7,17 +7,12 @@ function FilmLists({ filmLists }) {
     const upcomingFilms = [];
 
     filmLists.forEach((film) => {
-        if (film.status === "Playing") {
+        if (film.status === 1) {
             playingFilms.push(film);
-        } else if (film.status === "Upcoming") {
+        } else if (film.status === 2) {
             upcomingFilms.push(film);
         }
     });
-
-    console.log("Playing Films:", playingFilms);
-    console.log("Upcoming Films:", upcomingFilms);
-
-    console.log(playingFilms)
     return (
         <div className="film-lists">
             <div className="now-playing-films">

@@ -6,9 +6,10 @@ import SignUpBtn from "../SignUpBtn/SignUpBtn.jsx";
 import FilmPoster from "../../../common/FilmPoster/FilmPoster.jsx";
 import Button from "../../../common/Button/Button.jsx";
 import PropTypes from "prop-types";
+import {useNavigate} from "react-router-dom";
 
 function MainSlide( { isLogged, film } ) {
-
+    const navigate = useNavigate();
     const [canPlay, setCanPlay] = useState(false);
 
     useEffect(() => {
@@ -20,7 +21,9 @@ function MainSlide( { isLogged, film } ) {
             clearTimeout(timer);
         };
     }, );
-
+    const handleOnClick = () => {
+        // navigate('/sign-up');
+    }
     return (
         <div className="main-slide">
             {
@@ -72,7 +75,7 @@ function MainSlide( { isLogged, film } ) {
                     <div className="option">
                         <Slogan/>
                         <div className="sign-up">
-                            <span>New Guest? <SignUpBtn>Sign Up</SignUpBtn></span>
+                            <span>New Guest? <SignUpBtn onClick={handleOnClick()}>Sign Up</SignUpBtn></span>
                         </div>
                     </div>
             }
