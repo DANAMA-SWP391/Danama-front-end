@@ -13,11 +13,11 @@ function Sidebar() {
                 <h2>DANAMA</h2>
             </div>
             <div className="menu">
-                <Button className="menu-item" to="/cinema-dashboard">
+                <Button className="menu-item" to="/Cmanager">
                     <span className="icon"><MdDashboard style={{ fontSize: '20px' }} /></span>
                     Cinema Dashboard
                 </Button>
-                <Button className="menu-item" to="/Cmanager">
+                <Button className="menu-item" to="/list-booking">
                     <span className="icon"><FaClipboardList style={{ fontSize: '20px' }} /></span>
                     Booking List Page
                 </Button>

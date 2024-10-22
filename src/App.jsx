@@ -1,6 +1,6 @@
 import './App.css'
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { UserProvider } from './utils/userContext.jsx';
 
 import Login from './pages/login/login.jsx'
@@ -14,7 +14,7 @@ import BookingList from "./pages/cManager-Pages/listbooking-page/list-booking.js
 import RoomManagement from "./pages/cManager-Pages/room-management-page/room-management.jsx";
 import ShowtimeManagement from "./pages/cManager-Pages/showtime-management-page/showtime-management.jsx";
 import CinemaDashboard from "./pages/cManager-Pages/dashboard-page/dash-board.jsx";
-// import Payment from "./pages/payment-page/payment-page.jsx";
+import SeatManagement    from "./pages/cManager-Pages/seat-management-page/seat-management.jsx";
 // import Profile from "./pages/profile-page/profile-page.jsx";
 
 function App( ) {
@@ -23,11 +23,12 @@ function App( ) {
             <Router>
                 <Routes>
                     <Route path="test" element={<TestComponent/>} />
-                    <Route path="/Cmanager" element={<BookingList/>} />
+                    <Route path="/list-booking" element={<BookingList/>} />
                     <Route path="/room-management" element={<RoomManagement/>} />
                     <Route path="/showtime-management" element={<ShowtimeManagement/>} />
-                    <Route path="/cinema-dashboard" element={<CinemaDashboard/>} />
-                    {/*<Route path="/seat-management" element={<SeatManagement/>} />*/}
+                    <Route path="/Cmanager" element={<CinemaDashboard/>} />
+                    <Route path="/seat-management/:roomId" element={<SeatManagement />} />
+
 
                     <Route path="/" element={<MainPage/>} />
                     <Route path="/login" element={<Login />} />

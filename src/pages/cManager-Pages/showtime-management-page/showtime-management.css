@@ -25,18 +25,16 @@
 }
 
 .add-showtime-button {
-    margin-right: auto;
-    margin-bottom: 20px; /* Khoảng cách dưới nút thêm phòng */
+    margin-bottom: 20px; /* Khoảng cách dưới bảng */
     padding: 5px 10px;
-    font-size: 16px; /* Kích thước chữ lớn hơn */
-    background-color: #007bff; /* Màu nền của nút */
-    color: white; /* Màu chữ trắng */
+    font-size: 16px; /* Kích thước chữ */
+    background-color: #349e25; /* Màu nền của nút */
+    color: white; /* Màu chữ */
     border: none;
     border-radius: 5px; /* Bo góc nút */
     cursor: pointer;
-
-
-
+    float: right; /* Căn nút sang phải */
+    margin-right: 0px; /* Có thể chỉnh thêm để canh lề với bảng */
 }
 
 .add-showtime-button:hover {
@@ -246,4 +244,60 @@
 
 .time-inputs input {
     width: 100px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    background-color: #f2f2f2; /* Màu nền của các nút không được chọn */
+    color: #333; /* Màu chữ */
+    border: 1px solid #ddd; /* Viền nhạt */
+    margin: 0 3px; /* Khoảng cách giữa các nút */
+    padding: 5px; /* Giảm kích thước padding để tạo nút nhỏ hơn */
+    width: 30px; /* Chiều rộng cố định để tạo hình vuông */
+    height: 30px; /* Chiều cao cố định để tạo hình vuông */
+    border-radius: 4px; /* Giảm bo góc để tạo nút vuông */
+    cursor: pointer; /* Thêm con trỏ khi hover */
+    transition: background-color 0.3s ease; /* Hiệu ứng khi hover */
+    font-size: 12px; /* Giảm kích thước font */
+    text-align: center; /* Căn giữa văn bản trong nút */
+    line-height: 20px; /* Căn chỉnh chiều dọc của số trong nút */
+}
+
+.pagination button.active {
+    background-color: #D77B2F; /* Màu nền cho trang hiện tại */
+    color: white; /* Màu chữ cho nút trang hiện tại */
+    border: 1px solid #D77B2F; /* Viền đồng màu với nền */
+}
+
+.pagination button:hover {
+    background-color: #ddd; /* Thay đổi màu nền khi hover */
+}
+
+.pagination button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed; /* Không cho phép nhấp vào các nút disabled */
+}
+
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.label-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa label và thông báo lỗi */
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-left: 10px;
 }

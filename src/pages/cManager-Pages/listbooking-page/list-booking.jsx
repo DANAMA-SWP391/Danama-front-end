@@ -6,19 +6,20 @@ import CManagerHeader from "../../../components/common/CManagerHeader/CManagerHe
 
 function BookingList() {
     const [bookings, setBookings] = useState([]);
-    const [filteredBookings, setFilteredBookings] = useState([]); // Thêm state để lưu danh sách bookings đã lọc
+    const [filteredBookings, setFilteredBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchDate, setSearchDate] = useState('');
-
-    const cinemaId = 1; // Đảm bảo cinemaId hợp lệ
+    const [currentPage, setCurrentPage] = useState(1);
+    const bookingsPerPage = 20;
+    const cinemaId = 1;
 
     const handleFetchBookings = async (cinemaId) => {
         setLoading(true);
         try {
             const data = await fetchBookingListPage(cinemaId);
             setBookings(data.bookings || []);
-            setFilteredBookings(data.bookings || []); // Gán bookings từ data
+            setFilteredBookings(data.bookings || []);
         } catch (error) {
             console.error('Error fetching booking list:', error);
             setError('Could not fetch bookings.');
@@ -31,11 +32,10 @@ function BookingList() {
     }, [cinemaId]);
 
     const handleDateChange = (e) => {
-        const selectedDate = e.target.value; // Lưu ngày được chọn
+        const selectedDate = e.target.value;
         setSearchDate(selectedDate);
         console.log("Search Date:", selectedDate);
 
-        // Lọc bookings theo ngày
         if(selectedDate == '') {
             setFilteredBookings(bookings);
         }
@@ -45,14 +45,22 @@ function BookingList() {
                 return bookingDate === selectedDate;
             });
 
-            setFilteredBookings(filtered); // Cập nhật filteredBookings
+            setFilteredBookings(filtered);
         }
     };
+
+    const indexOfLastBooking = currentPage * bookingsPerPage;
+    const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
+    const currentBookings = filteredBookings.slice(indexOfFirstBooking, indexOfLastBooking);
+    const totalPages = Math.ceil(filteredBookings.length / bookingsPerPage);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
 
     return (
         <div className="booking-list-page">
             <CManagerHeader />
-            <div className="layout"> {/* Thêm div chứa cho sidebar và nội dung */}
+            <div className="layout">
                 <Sidebar />
                 <div className="booking-list-content">
                     <h2 className="booking-title">BOOKINGS LIST</h2>
@@ -60,7 +68,7 @@ function BookingList() {
                         <input
                             type="date"
                             value={searchDate}
-                            onChange={handleDateChange} // Thay đổi onChange để gọi handleDateChange
+                            onChange={handleDateChange}
                             placeholder="Search by Date"
                         />
                     </div>
@@ -77,12 +85,15 @@ function BookingList() {
                                     <th>User ID</th>
                                     <th>Date</th>
                                     <th>Total Cost</th>
+                                    <th>Status</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {filteredBookings.length > 0 ? (
-                                    filteredBookings.map((booking) => (
-                                        <tr key={booking.bookingId}>
+                                {currentBookings.length > 0 ? (
+                                    // filteredBookings.map((booking) => (
+                                currentBookings.map((booking) => (
+
+                                    <tr key={booking.bookingId}>
                                             <td>{booking.bookingId}</td>
                                             <td>{booking.user ? booking.user.UID : 'N/A'}</td>
                                             <td>
@@ -91,6 +102,7 @@ function BookingList() {
                                                     : 'N/A'}
                                             </td>
                                             <td>{booking.totalCost ? booking.totalCost.toLocaleString('vi-VN') : 0} VND</td>
+                                            <td>{booking.status}</td>
                                         </tr>
                                     ))
                                 ) : (
@@ -100,6 +112,31 @@ function BookingList() {
                                 )}
                                 </tbody>
                             </table>
+                            <div className="pagination">
+                                <button
+                                    onClick={() => paginate(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                    className={currentPage === 1 ? 'disabled' : ''}
+                                >
+                                    &laquo;
+                                </button>
+                                {[...Array(totalPages)].map((_, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => paginate(index + 1)}
+                                        className={currentPage === index + 1 ? 'active' : ''}
+                                    >
+                                        {index + 1}
+                                    </button>
+                                ))}
+                                <button
+                                    onClick={() => paginate(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                    className={currentPage === totalPages ? 'disabled' : ''}
+                                >
+                                    &raquo;
+                                </button>
+                            </div>
                         </>
                     )}
                 </div>
