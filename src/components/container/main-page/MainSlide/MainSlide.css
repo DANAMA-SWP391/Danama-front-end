@@ -1,5 +1,5 @@
 .body .main-slide {
-    width: 100%;
+    width: 100vw;
     height: 90vh;
     position: relative;
     overflow: hidden;
