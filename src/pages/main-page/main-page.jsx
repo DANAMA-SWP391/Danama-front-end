@@ -226,7 +226,7 @@ function MainPage() {
 }
 
 MainPage.propTypes = {
-    user: PropTypes.object.isRequired,
+    // user: PropTypes.object.isRequired,
 };
 
 export default MainPage;

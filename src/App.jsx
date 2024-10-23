@@ -12,7 +12,9 @@ import FilmPage from "./pages/film-page/film-page.jsx";
 import CinemaManagement from "./pages/admin-pages/cinema-management/cinema-management.jsx";
 import MovieManagement from "./pages/admin-pages/movie-management/movie-management.jsx";
 import AccountManagement from "./pages/admin-pages/account-management/account-management.jsx";
-import TestAdminApi from "../test/test-admin-api.jsx";
+import AdminDashboardPage from "./pages/admin-page/admin-dashboard-page.jsx";
+
+
 // import Payment from "./pages/payment-page/payment-page.jsx";
 // import Profile from "./pages/profile-page/profile-page.jsx";
 
@@ -21,7 +23,7 @@ function App( ) {
         <UserProvider>
             <Router>
                 <Routes>
-                    <Route path="/test-api" element={<TestAdminApi />} />
+                    <Route path="/admin-dashboard" element={<AdminDashboardPage/>} />
                     <Route path="/admin-pages" element={<CinemaManagement/>} />
                     <Route path="/movie-management" element={<MovieManagement/>} />
                     <Route path="/account-management" element={<AccountManagement/>} />
