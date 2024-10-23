@@ -3,6 +3,7 @@
     height: 280px;
     display: flex;
     position: relative;
+    margin-bottom: 10px;
 }
 
 .schedule-film p {
@@ -50,14 +51,14 @@
     margin-top: 30px;
 }
 
-.schedule-film .film-schedule .format p {
+.schedule-film .film-schedule p {
     font-family: "Albert Sans semi-bold", sans-serif;
     font-size: 14px;
     color: #000000;
     margin-bottom: 5px;
 }
 
-.schedule-film .film-schedule .format .schedules .schedule {
+.schedule-film .film-info .film-schedule .showtime {
     width: 125px;
     height: 50px;
     display: inline-flex;
@@ -66,21 +67,22 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 5px;
 }
 
-.schedule-film .film-schedule .format .schedules .schedule:hover {
+.schedule-film .film-info .film-schedule .showtime:hover {
 
-    color: #ffffff;
+    background-color: #305b89;
     cursor: pointer;
 }
 
-.schedule-film .film-schedule .format .schedules .schedule p:first-child {
+.schedule-film .film-info .film-schedule .showtime p:first-child {
     font-family: "Albert Sans semi-bold", sans-serif;
     font-size: 14px;
     color: #000000;
 }
 
-.schedule-film .film-schedule .format .schedules .schedule p:nth-child(2) {
+.schedule-film .film-info .film-schedule .showtime p:nth-child(2) {
     font-family: "Albert Sans", sans-serif;
     font-size: 12px;
     color: #22228f;

@@ -88,7 +88,7 @@ function Login() {
                             setPassword={setPassword}
                         />
                     </div>
-                    <Others/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 s />
+                    <Others />
                 </div>
             </div>
         </>
