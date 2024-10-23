@@ -352,6 +352,44 @@ export const fetchUpdateMovie = async (movie) => {
 };
 
 
+export const fetchAdminDashBoardPage = async () => {
+    try {
+        // Gửi yêu cầu GET đến API của backend để lấy toàn bộ dữ liệu cho trang dashboard admin
+        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/adminDashBoard', {
+            method: 'GET',  // Dùng GET để lấy dữ liệu
+            headers: {
+                'Content-Type': 'application/json',  // Định dạng header để nhận JSON
+            },
+        });
+
+        // Kiểm tra xem response có hợp lệ hay không
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+
+        // Parse dữ liệu từ response thành JSON
+        const data = await response.json();
+
+        // Kiểm tra nếu không nhận được dữ liệu hợp lệ
+        if (!data) {
+            throw new Error('No data received from server');
+        }
+
+        // Trả về dữ liệu đã nhận được từ API
+        return data;
+    } catch (error) {
+        console.error('Error fetching admin dashboard page:', error.message);
+        return false;  // Trả về false nếu có lỗi
+    }
+};
+
+
+
+
+
+
+
+
 
 
 

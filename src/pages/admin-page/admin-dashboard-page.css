@@ -1,0 +1,217 @@
+/* General layout for dashboard page */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background-color: #1f1f1f;
+    color: #fff;
+}
+
+.sidebar {
+    width: 18%;
+    background-color: #800000;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+    height: 100vh;
+}
+
+.dashboard-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #1f1f1f;
+    overflow-y: auto;
+    min-height: 100vh;
+}
+
+.dashboard-title {
+    font-size: 40px;
+    text-align: center;
+    color: #efc313;
+    margin-bottom: 30px;
+}
+
+.dashboard-most-watched-movies,
+.dashboard-most-popular-time-slots,
+.dashboard-revenue-summary,
+.dashboard-summary-pie-chart {
+    margin-bottom: 30px;
+}
+
+.dashboard-most-watched-movies table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #444;
+    border-radius: 10px;
+}
+
+.dashboard-most-watched-movies th,
+.dashboard-most-watched-movies td {
+    padding: 15px;
+    text-align: left;
+    color: #fff;
+    border-bottom: 1px solid #555;
+}
+
+.dashboard-most-watched-movies th {
+    background-color: #990000;
+    color: #ffcccc;
+}
+
+.dashboard-movie-poster {
+    width: 70px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.dashboard-most-watched-movies h2,
+.dashboard-most-popular-time-slots h2,
+.dashboard-revenue-summary h2 {
+    font-size: 20px;
+    color: #f60000;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.dashboard-most-popular-time-slots ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dashboard-most-popular-time-slots li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #444;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.dashboard-most-popular-time-slots li:hover {
+    background-color: #555;
+}
+
+.dashboard-cinema-logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+    border-radius: 5px;
+}
+
+.dashboard-revenue-summary {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.dashboard-cinema-revenue-list {
+    margin-top: 10px;
+}
+
+.dashboard-cinema-revenue {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.dashboard-revenue-bar {
+    width: 60%;
+    height: 10px;
+    background-color: #555;
+    border-radius: 5px;
+    margin-left: 10px;
+    transition: background-color 0.3s, width 0.3s;
+}
+
+.dashboard-revenue-fill {
+    height: 100%;
+    background-color: #990000;
+}
+
+.dashboard-revenue-bar:hover .dashboard-revenue-fill {
+    background-color: #cc0000;
+}
+
+.dashboard-pie-chart {
+    width: 100%;
+    height: 300px;
+    background-color: #222;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    position: relative;
+}
+
+.apex-charts {
+    width: 100%;
+    height: 100%;
+}
+
+.dashboard-summary-pie-chart {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    height: auto;
+}
+
+.dashboard-error-message {
+    color: red;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+        height: auto;
+        overflow: visible;
+    }
+
+    .dashboard-content {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .dashboard-most-watched-movies table,
+    .dashboard-most-popular-time-slots ul,
+    .dashboard-revenue-summary,
+    .dashboard-summary-pie-chart {
+        margin-bottom: 20px;
+    }
+
+    .dashboard-movie-poster {
+        width: 50px;
+    }
+
+    .dashboard-cinema-logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .dashboard-revenue-bar {
+        width: 80%;
+    }
+
+    .dashboard-pie-chart {
+        height: 250px;
+    }
+}
+
