@@ -4,6 +4,10 @@
     position: relative;
 }
 
+.comment-section button {
+    margin-top: 50px;
+}
+
 .comment-section p {
     color: #000;
     font-size: 14px;
@@ -17,4 +21,16 @@
     height: 100vh;
     background: rgba(0, 0, 0, 0.5);
     z-index: 10;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.pagination span {
+    margin: 0 10px;
+    font-size: 14px;
+    color: #666;
 }

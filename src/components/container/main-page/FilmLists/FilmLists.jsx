@@ -1,23 +1,25 @@
 import "./FilmLists.css";
-import PropTypes from "prop-types";
+import { useContext } from "react";
 import Slider from "../../../common/Slider/Slider.jsx";
+import {WebContext} from "../../../../utils/webContext.jsx"; // Import WebContext
 
-function FilmLists({ filmLists }) {
+function FilmLists() {
+    // Use useContext to access filmList from WebContext
+    const { filmList } = useContext(WebContext);
     const playingFilms = [];
     const upcomingFilms = [];
 
-    filmLists.forEach((film) => {
-        if (film.status === "Playing") {
+    filmList.forEach((film) => {
+        if (film.status === 1) {
             playingFilms.push(film);
-        } else if (film.status === "Upcoming") {
+        } else if (film.status === 2) {
             upcomingFilms.push(film);
         }
     });
+    console.log(filmList);
+    console.log(playingFilms);
+    console.log(upcomingFilms);
 
-    console.log("Playing Films:", playingFilms);
-    console.log("Upcoming Films:", upcomingFilms);
-
-    console.log(playingFilms)
     return (
         <div className="film-lists">
             <div className="now-playing-films">
@@ -34,13 +36,5 @@ function FilmLists({ filmLists }) {
         </div>
     );
 }
-
-FilmLists.propTypes = {
-    filmLists: PropTypes.array.isRequired,
-};
-
-FilmLists.defaultProps = {
-    filmLists: [],
-};
 
 export default FilmLists;

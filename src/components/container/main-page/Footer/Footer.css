@@ -1,11 +1,12 @@
 .footer {
-
     display: flex;
     justify-content: space-around;
     text-align: center;
     background: #000000;
     padding-top: 50px;
     padding-bottom: 50px;
+    margin-top: auto; /* Push the footer to the bottom */
+    width: 100%;
 }
 
 .footer > div {
