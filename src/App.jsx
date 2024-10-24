@@ -12,18 +12,14 @@ import FilmPage from "./pages/film-page/film-page.jsx";
 import CinemaManagement from "./pages/admin-pages/cinema-management/cinema-management.jsx";
 import MovieManagement from "./pages/admin-pages/movie-management/movie-management.jsx";
 import AccountManagement from "./pages/admin-pages/account-management/account-management.jsx";
-import AdminDashboardPage from "./pages/admin-page/admin-dashboard-page.jsx";
-
-
 // import Payment from "./pages/payment-page/payment-page.jsx";
-// import Profile from "./pages/profile-page/profile-page.jsx";
+ import Profile from "./pages/profile-page/profile-page.jsx";
 
 function App( ) {
     return (
         <UserProvider>
             <Router>
                 <Routes>
-                    <Route path="/admin-dashboard" element={<AdminDashboardPage/>} />
                     <Route path="/admin-pages" element={<CinemaManagement/>} />
                     <Route path="/movie-management" element={<MovieManagement/>} />
                     <Route path="/account-management" element={<AccountManagement/>} />
@@ -36,7 +32,7 @@ function App( ) {
                     <Route path="/email-verification" element={<EmailVerification />}/>
                     <Route path="/film-page" element={<FilmPage />} />
                     {/*<Route path="/payment" element={<Payment />} />*/}
-                    {/*<Route path="/profile" element={<Profile />} />*/}
+                    <Route path="/profile" element={<Profile />} />
                 </Routes>
             </Router>
         </UserProvider>

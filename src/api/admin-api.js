@@ -207,6 +207,36 @@ export const fetchAccountList = async () => {
     }
 };
 
+// Update Account
+export const fetchUpdateAccount = async (UID, updatedAccount) => {
+    try {
+        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/AccountController', {
+            method: 'POST', // Có thể sử dụng 'PUT' nếu bạn muốn đúng chuẩn REST
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 'update',
+                account: {
+                    UID: UID,
+                    name: updatedAccount.name,
+                    email: updatedAccount.email,
+                    phone: updatedAccount.phone,
+                    avatar: updatedAccount.avatar,
+                    googleId: updatedAccount.googleId,
+                    roleId: updatedAccount.roleId,
+                    password: updatedAccount.password,
+                }
+            }),
+        });
+        const data = await response.json();
+        return data.success; // Trả về true nếu cập nhật thành công
+    } catch (error) {
+        console.error('Failed to update account:', error);
+        return false;
+    }
+};
+
 // Lấy danh sách phim
 export const fetchMovieList = async () => {
     try {

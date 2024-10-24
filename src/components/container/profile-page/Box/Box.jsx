@@ -1,14 +1,18 @@
-import "./Box.css";
 import PropTypes from 'prop-types';
+import './Box.css';
 
-function Box({title, content, img}) {
+function Box({ title, content, img }) {
     return (
-        <div className="right-container__box">
-            <p>{title}</p>
-            <p>{content}</p>
-            <img src={img} alt="person"/>
+        <div className="box-container__item">
+            <div className="box-content">
+                <p className="box-title">{title}</p>
+                <p className="box-description">{content}</p>
+            </div>
+            <div className="box-image">
+                <img src={img} alt={title} />
+            </div>
         </div>
-    )
+    );
 }
 
 Box.propTypes = {

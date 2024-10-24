@@ -1,11 +1,26 @@
 import "./GoogleSignIn.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import {loginByGoogle} from "../../../../api/authAPI.js";
+import {useNavigate} from "react-router-dom";
+import {useContext} from "react";
+import {UserContext} from "../../../../utils/userContext.jsx";
 
 
 function GoogleSignIn() {
-    const handleSuccess = (response) => {
-        console.log("Google Sign-In successful. Token:", response);
-    }
+    const { setUser } = useContext(UserContext);
+    const navigate = useNavigate();
+    const handleSuccess = async (response) => {
+        try {
+            const token = response.credential;
+            console.log(token);
+            // Call the loginByGoogle function with the token
+            const data = await loginByGoogle(token);
+            setUser(data.user);
+            navigate('/');
+        } catch (error) {
+            console.error("Error during Google login:", error);
+        }
+    };
 
     const handleError = (error) => {
         console.log("Google Sign-In failed. Error:", error);

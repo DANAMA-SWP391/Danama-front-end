@@ -1,18 +1,45 @@
-.box-container > div:hover {
-    background-color: #f5f5f5;
+.box-container__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 300px;
+    height: 120px;
+    margin-bottom: 30px;
+    border: 1px solid #ddd; /* Soft border */
+    border-radius: 15px; /* Rounded corners */
+    padding: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.box-container__item:hover {
+    background-color: #f9f9f9;
     cursor: pointer;
 }
 
-.box-container > div p {
-    font-size: 16px;
+.box-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.box-container > div p:first-child {
+.box-title {
     font-family: "Albert Sans semi-bold", sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    color: #000;
 }
 
-.right-container__box img {
-    position: absolute;
-    right: 10px;
-    top: 10px;
+.box-description {
+    font-size: 16px;
+    margin-top: 5px;
+    color: #333;
+}
+
+.box-image img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
 }
