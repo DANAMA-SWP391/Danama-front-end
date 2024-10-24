@@ -9,7 +9,7 @@ function Body({ isLogged, filmLists }) {
 
     return (
         <div className="body">
-            <MainSlide isLogged={isLogged} />
+            <MainSlide isLogged={isLogged} filmLists={filmLists}  />
             <FilmLists filmLists={filmLists} />
             <Schedule />
         </div>

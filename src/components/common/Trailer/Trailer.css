@@ -39,10 +39,9 @@
     height: 100px;
     width: 100px;
     position: absolute;
-    top: 25%;
+    top: 30%;
     right: 7.5%;
     display: flex;
-
     justify-content: space-between;
     align-items: center;
     z-index: 10;
