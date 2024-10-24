@@ -283,9 +283,9 @@
     gap: 10px; /* Khoảng cách giữa label và thông báo lỗi */
 }
 
-.error-message {
+p.error-message {
     color: red;
     font-size: 12px;
-    margin-left: 10px;
+    margin: 0; /* Loại bỏ khoảng cách mặc định */
 }
 

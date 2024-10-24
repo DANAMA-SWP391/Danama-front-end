@@ -109,7 +109,7 @@ function SeatManagement() {
     return (
         <div className="seat-management-page">
             <CManagerHeader />
-            <div className="layout">
+            <div className="seat-layout">
                 <Sidebar />
                 <div className="seat-management-content">
                     <h2 className="title">Seat List</h2>
@@ -128,8 +128,8 @@ function SeatManagement() {
                                 <th>Col</th>
                                 <th>SeatNum</th>
                                 <th>Type</th>
-                                <th className="icon-column">Edit</th>
-                                <th className="icon-column">Delete</th>
+                                <th className="icon-seat-column">Edit</th>
+                                <th className="icon-seat-column">Delete</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -141,12 +141,12 @@ function SeatManagement() {
                                     <td>{seat.seatNum}</td>
                                     <td>{seat.type}</td>
                                     <td>
-                                        <Button className="edit-button" onClick={() => openUpdateSeatModal(seat)}>
+                                        <Button className="update-seat-button" onClick={() => openUpdateSeatModal(seat)}>
                                             <span className="icon"><FaPencilAlt style={{ fontSize: '20px' }} /></span>
                                         </Button>
                                     </td>
                                     <td>
-                                        <Button className="delete-button" onClick={() => openDeleteModal(seat.seatId)}>
+                                        <Button className="delete-seat-button" onClick={() => openDeleteModal(seat.seatId)}>
                                             <span className="icon"><MdDeleteOutline style={{ fontSize: '20px' }} /></span>
                                         </Button>
                                     </td>
@@ -197,15 +197,29 @@ function SeatManagement() {
                                         required
                                     />
                                 </div>
+                                {/*<div>*/}
+                                {/*    <label>Type:</label>*/}
+                                {/*    <input*/}
+                                {/*        type="text"*/}
+                                {/*        name="type"*/}
+                                {/*        value={formData.type}*/}
+                                {/*        onChange={handleChange}*/}
+                                {/*        required*/}
+                                {/*    />*/}
+                                {/*</div>*/}
                                 <div>
                                     <label>Type:</label>
-                                    <input
-                                        type="text"
+                                    <select
                                         name="type"
                                         value={formData.type}
                                         onChange={handleChange}
                                         required
-                                    />
+                                    >
+                                        <option value="">Select Seat Type</option>
+                                        {/* Default placeholder */}
+                                        <option value="VIP">VIP</option>
+                                        <option value="Standard">Standard</option>
+                                    </select>
                                 </div>
                                 <div className="modal-footer">
                                     <Button onClick={handleSubmit}>{isEdit ? "Update" : "Add"}</Button>

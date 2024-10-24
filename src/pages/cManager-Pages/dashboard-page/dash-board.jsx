@@ -190,23 +190,23 @@ function CinemaDashboard() {
 
                     <div className="most-watched-section">
                         <h3 className="mostwatch">Most Watched</h3>
-                        {dashboardData?.showtimes && dashboardData.showtimes.length > 0 ? (
+                        {dashboardData?.popularmovies && dashboardData.popularmovies.length > 0 ? (
                             <ul>
-                                {dashboardData.showtimes.map((showtime, index) => (
+                                {dashboardData.popularmovies.map((movie, index) => (
                                     <li key={index} className="movie-item">
                                         <div className="movie-poster-wrapper">
                                             <img
-                                                src={showtime.movie.poster}
-                                                alt={`${showtime.movie.name} Poster`}
+                                                src={movie.poster}
+                                                alt={`${movie.name} Poster`}
                                                 className="movie-poster-large"
                                             />
                                         </div>
                                         <div className="movie-info">
-                                            <h4 className="movie-title">{showtime.movie.name}</h4>
-                                            <p className="movie-genre">{showtime.movie.genres.map(genre => genre.name).join(', ')}</p> {/* Thể loại phim */}
-                                            <span className="showtime">
-                            {showtime.startTime} - {showtime.endTime}
-                        </span>
+                                            <h4 className="movie-title">{movie.name}</h4>
+                                            <p className="movie-genre">{movie.genres.map(genre => genre.name).join(', ')}</p> {/* Thể loại phim */}
+                        {/*                    <span className="showtime">*/}
+                        {/*    {showtime.startTime} - {showtime.endTime}*/}
+                        {/*</span>*/}
                                         </div>
                                     </li>
                                 ))}

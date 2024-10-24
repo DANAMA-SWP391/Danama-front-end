@@ -21,7 +21,7 @@
 }
 
 /* Bố cục chính */
-.layout {
+.seat-layout {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -70,8 +70,19 @@
     background-color: #f1f1f1;
 }
 
+.seat-table th.icon-seat-column,
+.seat-table td.icon-seat-column {
+    width: 80px; /* Giới hạn chiều rộng cột */
+    text-align: center; /* Căn giữa nội dung trong cột */
+    padding: 5px; /* Thêm khoảng cách giữa nội dung và viền */
+}
+
+.room-table td.icon-seat-column button {
+    padding: 5px 8px; /* Điều chỉnh padding của nút */
+    font-size: 12px; /* Giảm kích thước font nếu cần */
+}
 /* Cột icon cho edit và delete */
-.icon-column {
+.icon-seat-column {
     text-align: center;
     width: 100px;
 }
@@ -92,92 +103,93 @@
 }
 
 /* Các nút sửa và xóa */
-.edit-button, .delete-button {
+.update-seat-button, .delete-seat-button {
     background-color: transparent;
     border: none;
     cursor: pointer;
 }
 
-.edit-button .icon, .delete-button .icon {
+.update-seat-button .icon, .delete-seat-button .icon {
     font-size: 20px;
     color: #333;
 }
 
-.delete-button {
+.delete-seat-button {
     background-color: #dc3545; /* Màu đỏ cho nút xóa */
     color: #f6f1f1; /* Màu chữ trắng */
+    width:60px;
 }
 
-.edit-button:hover .icon {
+.edit-seat-button:hover .icon {
     color: #f0ad4e;
 }
 
-.delete-button:hover {
+.delete-seat-button:hover {
     background-color: #c82333; /* Màu khi hover cho nút xóa */
 }
 
-/* Modal chung */
-.modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 400px;
-    border-radius: 8px;
-    z-index: 1000;
-}
+/*!* Modal chung *!*/
+/*.modal {*/
+/*    position: fixed;*/
+/*    top: 50%;*/
+/*    left: 50%;*/
+/*    transform: translate(-50%, -50%);*/
+/*    background-color: white;*/
+/*    padding: 20px;*/
+/*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);*/
+/*    width: 400px;*/
+/*    border-radius: 8px;*/
+/*    z-index: 1000;*/
+/*}*/
 
-.modal-header {
-    margin-bottom: 20px;
-}
+/*.modal-header {*/
+/*    margin-bottom: 20px;*/
+/*}*/
 
-.modal-title {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
+/*.modal-title {*/
+/*    font-size: 20px;*/
+/*    margin-bottom: 10px;*/
+/*}*/
 
-.modal-body label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
+/*.modal-body label {*/
+/*    display: block;*/
+/*    margin-bottom: 8px;*/
+/*    font-weight: bold;*/
+/*}*/
 
-.modal-body input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
+/*.modal-body input {*/
+/*    width: 100%;*/
+/*    padding: 10px;*/
+/*    margin-bottom: 20px;*/
+/*    border: 1px solid #ddd;*/
+/*    border-radius: 4px;*/
+/*}*/
 
-.modal-footer {
-    display: flex;
-    justify-content: space-between;
-}
+/*.modal-footer {*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*}*/
 
-.modal-footer button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+/*.modal-footer button {*/
+/*    padding: 10px 20px;*/
+/*    border: none;*/
+/*    border-radius: 5px;*/
+/*    cursor: pointer;*/
+/*}*/
 
-.modal-footer button:hover {
-    opacity: 0.9;
-}
+/*.modal-footer button:hover {*/
+/*    opacity: 0.9;*/
+/*}*/
 
-/* Nút xác nhận trong modal */
-.modal-footer .btn-confirm {
-    background-color: #4CAF50;
-    color: white;
-}
+/*!* Nút xác nhận trong modal *!*/
+/*.modal-footer .btn-confirm {*/
+/*    background-color: #4CAF50;*/
+/*    color: white;*/
+/*}*/
 
-.modal-footer .btn-cancel {
-    background-color: #d9534f;
-    color: white;
-}
+/*.modal-footer .btn-cancel {*/
+/*    background-color: #d9534f;*/
+/*    color: white;*/
+/*}*/
 
 

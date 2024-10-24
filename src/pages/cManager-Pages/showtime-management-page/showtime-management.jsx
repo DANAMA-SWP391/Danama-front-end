@@ -29,7 +29,6 @@ function ShowtimeManagement() {
         basePrice: '',
         roomId: '',
         roomName: '',
-        seatAvailable: '',
         status: ''
     }); // Trạng thái dữ liệu form
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,7 +43,6 @@ function ShowtimeManagement() {
         endTime: '',
         basePrice: '',
         roomId: '',
-        seatAvailable: '',
         status: ''
     });
     const showtimesPerPage = 10;
@@ -100,7 +98,6 @@ function ShowtimeManagement() {
             endTime: '00:00:00',
             basePrice: '',
             roomId: '',
-            seatAvailable: '',
             status: ''
         }); // Reset dữ liệu
         setFormError({ // Reset error when open form
@@ -110,7 +107,6 @@ function ShowtimeManagement() {
             endTime: '',
             basePrice: '',
             roomId: '',
-            seatAvailable: '',
             status: ''
         });
         setIsModalOpen(true);
@@ -126,7 +122,6 @@ function ShowtimeManagement() {
             endTime: showtime.startTime,
             basePrice: showtime.basePrice,
             roomId: showtime.room.roomId,
-            seatAvailable: showtime.seatAvailable,
             status: showtime.status
         });
         setFormError({ // Reset error when open form
@@ -136,7 +131,6 @@ function ShowtimeManagement() {
             endTime: '',
             basePrice: '',
             roomId: '',
-            seatAvailable: '',
             status: ''
         });
         setIsModalOpen(true);
@@ -153,7 +147,6 @@ function ShowtimeManagement() {
             endTime: '',
             basePrice: '',
             roomId: '',
-            seatAvailable: '',
             status: ''
         };
 
@@ -181,10 +174,7 @@ function ShowtimeManagement() {
             errors.roomId = 'Room ID is required';
             hasError = true;
         }
-        if (!formData.seatAvailable || formData.seatAvailable <= 0) {
-            errors.seatAvailable = 'Seat Available must be a positive number';
-            hasError = true;
-        }
+
         if (!formData.status) {
             errors.status = 'Status is required';
             hasError = true;
@@ -312,7 +302,10 @@ function ShowtimeManagement() {
                                             <td>{showtime.basePrice}</td>
                                             <td>{showtime.room ? showtime.room.name : 'N/A'}</td>
                                             <td>{showtime.seatAvailable}</td>
-                                            <td>{showtime.status}</td>
+                                            {/*<td>{showtime.status}</td>*/}
+                                            <td>
+                                                {showtime.status === 0 ? 'Coming Soon' : 'Now Showing'}
+                                            </td>
 
 
                                             <td>
@@ -380,7 +373,7 @@ function ShowtimeManagement() {
                             <div className="modal-body">
                                 <form onSubmit={handleSubmit}>
                                     <div>
-                                        <div className= "label-group">
+                                        <div className="label-group">
                                             <label>Movie Id:</label>
                                             {formError.movieId && (
                                                 <span className="error-message">{formError.movieId}</span>
@@ -396,10 +389,10 @@ function ShowtimeManagement() {
                                     </div>
                                     <div>
                                         <div className="label-group">
-                                        <label>Show Date:</label>
-                                        {formError.showDate && (
-                                            <span className="error-message">{formError.showDate}</span>
-                                        )}
+                                            <label>Show Date:</label>
+                                            {formError.showDate && (
+                                                <span className="error-message">{formError.showDate}</span>
+                                            )}
                                         </div>
                                         <input
                                             type="date"
@@ -416,28 +409,28 @@ function ShowtimeManagement() {
                                                 <span className="error-message">{formError.startTime}</span>
                                             )}
                                         </div>
-                                            <input
-                                                type="time"
-                                                name="startTime"
-                                                value={formData.startTime}
-                                                onChange={handleChange}
-                                                required
-                                            />
+                                        <input
+                                            type="time"
+                                            name="startTime"
+                                            value={formData.startTime}
+                                            onChange={handleChange}
+                                            required
+                                        />
 
                                         <div className="label-group">
-                                        <label>End Time:</label>
-                                        {formError.endTime && (
-                                            <span className="error-message">{formError.endTime}</span>
-                                        )}
-                                    </div>
-                                            <input
-                                                type="time"
-                                                name="endTime"
-                                                value={formData.endTime}
-                                                onChange={handleChange}
-                                                required
-                                            />
+                                            <label>End Time:</label>
+                                            {formError.endTime && (
+                                                <span className="error-message">{formError.endTime}</span>
+                                            )}
                                         </div>
+                                        <input
+                                            type="time"
+                                            name="endTime"
+                                            value={formData.endTime}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
 
                                     <div>
                                         <div className="label-group">
@@ -469,21 +462,23 @@ function ShowtimeManagement() {
                                             required
                                         />
                                     </div>
-                                    <div>
-                                        <div className="label-group">
-                                            <label>Available Seats:</label>
-                                            {formError.seatAvailable && (
-                                                <span className="error-message">{formError.seatAvailable}</span>
-                                            )}
-                                        </div>
-                                        <input
-                                            type="number"
-                                            name="seatAvailable"
-                                            value={formData.seatAvailable}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </div>
+
+                                    {/*<div>*/}
+                                    {/*    <div className="label-group">*/}
+                                    {/*        <label>Status:</label>*/}
+                                    {/*        {formError.status && (*/}
+                                    {/*            <span className="error-message">{formError.status}</span>*/}
+                                    {/*        )}*/}
+                                    {/*    </div>*/}
+                                    {/*    <input*/}
+                                    {/*        type="number"*/}
+                                    {/*        name="status"*/}
+                                    {/*        value={formData.status}*/}
+                                    {/*        onChange={handleChange}*/}
+                                    {/*        required*/}
+                                    {/*    />*/}
+
+                                    {/*</div>*/}
                                     <div>
                                         <div className="label-group">
                                             <label>Status:</label>
@@ -491,20 +486,22 @@ function ShowtimeManagement() {
                                                 <span className="error-message">{formError.status}</span>
                                             )}
                                         </div>
-                                        <input
-                                            type="number"
+                                        <select
                                             name="status"
                                             value={formData.status}
                                             onChange={handleChange}
                                             required
-                                        />
-
+                                        >
+                                            <option value="">Select Status</option>
+                                            <option value="0">Coming Soon</option>
+                                            <option value="1">Now Showing</option>
+                                        </select>
                                     </div>
 
                                     <div className="modal-footer">
                                         <Button onClick={handleSubmit}>{isEdit ? "Update" : "Add"}</Button>
-                                            <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
-                                        </div>
+                                        <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
+                                    </div>
                                 </form>
                             </div>
                         </Modal>
