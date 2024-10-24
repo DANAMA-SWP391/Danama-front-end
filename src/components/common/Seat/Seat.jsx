@@ -1,7 +1,7 @@
 import './Seat.css';
 import PropTypes from 'prop-types';
 
-function Seat({ seat, onClick, key, color, price }) {
+function Seat({ seat, onClick, color, price }) {
     return (
         <div
             className='seat'
@@ -14,7 +14,6 @@ function Seat({ seat, onClick, key, color, price }) {
 }
 
 Seat.propTypes = {
-    key: PropTypes.number.isRequired,
     seat: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     color: PropTypes.string.isRequired,

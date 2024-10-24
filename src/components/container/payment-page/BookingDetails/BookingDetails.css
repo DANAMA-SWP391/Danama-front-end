@@ -45,3 +45,6 @@
 .booking-details__seats > div:first-child {
     margin-right: 50%;
 }
+.body__booking-details p {
+    color: black; /* Or whatever color you want */
+}

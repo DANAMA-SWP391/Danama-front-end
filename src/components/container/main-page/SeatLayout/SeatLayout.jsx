@@ -11,6 +11,9 @@ const createSeatFormat = () => {
 const SeatLayout = ({ seats, selectedSeats, getSeatColor, handleClick, basePrice }) => {
     // Create the seat format array
     const seatFormat = createSeatFormat();
+    const isSelected = (seatNum) => {
+        return selectedSeats.some(selectedSeat => selectedSeat.seatNum === seatNum);
+    };
     const getSeatPrice = (seatType) => {
         switch (seatType) {
             case 'VIP': return basePrice * 1.5; // VIP seats are 50% more expensive
@@ -25,7 +28,7 @@ const SeatLayout = ({ seats, selectedSeats, getSeatColor, handleClick, basePrice
         seatFormat[rowIndex][colIndex] = {
             ...seat,
             price: getSeatPrice(seat.type), // Calculate the price for each seat
-            type: selectedSeats.includes(seat.seatNum) ? "Selected" : seat.type // Mark seat as selected
+            type: isSelected(seat.seatNum) ? "Selected" : seat.type // Mark seat as selected
         };
     });
     console.log(seatFormat);
@@ -41,7 +44,7 @@ const SeatLayout = ({ seats, selectedSeats, getSeatColor, handleClick, basePrice
                         {row.map((seat, seatIndex) => (
                             seat ? (
                                 <Seat
-                                    key={seat.seatId}
+                                    key={seatIndex}
                                     seat={seat.seatNum}
                                     price={seat.price} // Pass seat price
                                     onClick={() => handleClick(seat)} // Handle seat click

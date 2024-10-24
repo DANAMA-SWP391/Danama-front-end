@@ -170,19 +170,32 @@ export async function addBooking(booking, tickets) {
         if (!responseData.success) {
             throw new Error('Failed to add booking or tickets');
         }
-
-        // Return the booking and tickets data if successful
-        return {
-            booking: responseData.booking,
-            tickets: responseData.tickets,
-        };
+        return responseData;
     } catch (error) {
         console.error('Error adding booking:', error);
         throw error; // Re-throw the error to be handled by the caller
     }
 }
 
-export function paymentConfirm(bookingId) {
+export async function paymentConfirm(bookingId) {
+    try {
+        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/payment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({bookingId}), // Send bookingId as the body
+        });
 
+        const data = await response.json(); // Parse the response as JSON
+
+        if (response.ok && data.success) {
+            return { success: true };
+        } else {
+            throw new Error('Payment confirmation failed');
+        }
+    } catch (error) {
+        console.error('Error confirming payment:', error);
+        return { success: false };
+    }
 }
-

@@ -24,7 +24,7 @@ const BookingInfo = ({ film, showtime, selectedSeats, handlePurchase, price }) =
                 {selectedSeats? (
                     selectedSeats.map((seat, index) => (
                         <div key={index} className="seat-item">
-                            <p>{seat}</p> {/* Display seat number */}
+                            <p>{seat.seatNum}</p> {/* Display seat number */}
                         </div>
                     ))
                 ) : (

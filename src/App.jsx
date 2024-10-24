@@ -11,20 +11,21 @@ import EmailVerification from "./pages/email-verification-page/email-verificatio
 import FilmPage from "./pages/film-page/film-page.jsx";
 import Profile from "./pages/profile-page/profile-page.jsx";
 import BookingDetailsPage from "./pages/booking-details-page/booking-details-page.jsx";
-// import Payment from "./pages/payment-page/payment-page.jsx";
+import Payment from "./pages/payment-page/payment-page.jsx";
 
 function App( ) {
     return (
         <UserProvider>
             <Router>
                 <Routes>
-                    <Route path="/" element={<BookingDetailsPage/>} />
+                    <Route path="/" element={<MainPage/>} />
+                    <Route path="/booking-detail" element={<BookingDetailsPage/>} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/reset-pass" element={<ResetPass />} />
                     <Route path="/email-verification" element={<EmailVerification />}/>
                     <Route path="/film-page" element={<FilmPage />} />
-                    {/*<Route path="/payment" element={<Payment />} />*/}
+                    <Route path="/payment" element={<Payment />} />
                     <Route path="/profile" element={<Profile />} />
                 </Routes>
             </Router>
