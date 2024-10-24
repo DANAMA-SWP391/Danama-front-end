@@ -1,74 +1,162 @@
 import "./Schedule.css";
-import all from "../../../../assets/cinemaLogos/all.jpg";
-import cgv from "../../../../assets/cinemaLogos/cgv.jpg";
-import lotte from "../../../../assets/cinemaLogos/lotte.jpg";
-import galaxy from "../../../../assets/cinemaLogos/galaxy.jpg";
-import metiz from "../../../../assets/cinemaLogos/metiz.jpg";
-import Date from "../../../common/Date/Date.jsx";
 
 import Price from "../../../../assets/Icons/priceTag.svg";
 import Location from "../../../../assets/Icons/location.svg";
 import ArrowUpward from "../../../../assets/Icons/arrow-upward.svg";
+import PropTypes from "prop-types";
+import Button from "../../../common/Button/Button.jsx";
+import ScheduleDate from "../../../common/Date/Date.jsx";
+import {WebContext} from "../../../../utils/webContext.jsx";
+import {useContext, useEffect, useState} from "react";
 
-function Schedule() {
+// Helper function to format the date into "MMM dd, yyyy"
+const formatDate = (dateObj) => {
+    const options = {month: 'short', day: 'numeric', year: 'numeric'};
+    return dateObj.toLocaleDateString('en-US', options);
+};
 
-    const cinemaLogoList = [[all, "All"], [cgv, "CGV"], [lotte, "Lotte"], [galaxy, "Galaxy"], [metiz, "Metiz"]];
-    const dates = [["Today", 18], ["Wed", 19], ["Thu", 20], ["Fri", 21], ["Sat", 22], ["Sun", 23], ["Mon", 24]];
+// Helper function to convert date into ['Day in week', dd]
+const getDisplayDate = (dateObj) => {
+    const dayOfWeek = dateObj.toLocaleDateString('en-US', {weekday: 'short'});
+    const day = dateObj.getDate();
+    return [dayOfWeek, day];
+};
 
-    return(
-        <div className={"film-schedules"}>
-            <h1>Schedules for Dune Part Two</h1>
+// Helper function to calculate price range for a cinema's showtimes
+const getPriceRangeForCinema = (cinemaId, showtimeList) => {
+    const cinemaShowtimes = showtimeList.filter(showtime => showtime.room.cinema.cinemaId === cinemaId);
+    if (cinemaShowtimes.length === 0) {
+        return null; // No showtimes, no price range
+    }
+
+    const prices = cinemaShowtimes.map(showtime => showtime.basePrice); // Collect prices
+    const minPrice = Math.min(...prices); // Minimum price
+    const maxPrice = Math.max(...prices); // Maximum price
+
+    return {minPrice, maxPrice};
+};
+
+function Schedule({showtimes, film}) {
+    const {cinemaList} = useContext(WebContext);
+    const dates = [
+        new Date("2024-10-04"),
+        new Date("2024-10-05"),
+        new Date("2024-10-06"),
+        new Date("2024-10-07"),
+        new Date("2024-10-08"),
+        new Date("2024-10-09"),
+        new Date("2024-10-10")
+    ];
+    const [selectedCinema, setSelectedCinema] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(formatDate(dates[0]));
+    useEffect(() => {
+        if (cinemaList && cinemaList.length > 0) {
+            const defaultCinema = cinemaList.find(cinema => cinema.name === 'CGV');
+            setSelectedCinema(defaultCinema);
+        }
+    }, [cinemaList]);
+
+    // Function to handle cinema logo click (set selected cinema)
+    const handleCinemaClick = (cinema) => {
+        setSelectedCinema(cinema); // Set selected cinema
+    };
+
+    // Function to handle date click
+    const handleDateClick = (date) => {
+        setSelectedDate(formatDate(date)); // Store the actual date in "MMM dd, yyyy"
+    };
+
+    return (
+        <div className="film-schedules">
+            <h1>Schedules for {film?.name || "Selected Movie"}</h1>
+
+            {/* Date Selection */}
             <div className="dates">
                 {dates.map((date, index) => {
-                    return <Date key={index} date={date}/>
+                    const displayDate = getDisplayDate(date); // Get the ['Day in week', dd] format
+                    return (
+                        <ScheduleDate
+                            key={index}
+                            date={displayDate}
+                            onClick={() => handleDateClick(date)} // Handle date click
+                            selected={selectedDate === formatDate(date)}
+                        />
+                    );
                 })}
             </div>
+
             <div className="schedule-container">
                 <div className="cinema-list">
-                    {cinemaLogoList.map((logo, index) => {
-                        return <div key={index} className="cinema-logo">
-                            <div>
-                                <img src={logo[0]} alt={logo[1]}/>
-                                <p>{logo[1]}</p>
+                    {cinemaList.map((cinema, index) => {
+                        const priceRange = getPriceRangeForCinema(cinema.cinemaId, showtimes);
+
+                        return (
+                            <div key={index} className="cinema-logo" onClick={() => handleCinemaClick(cinema)}>
+                                <div>
+                                    <img src={cinema.logo} alt={cinema.name}/>
+                                    <p>{cinema.name}</p>
+                                </div>
+                                {priceRange ? (
+                                    <p className="price-range">
+                                        {priceRange.minPrice === priceRange.maxPrice
+                                            ? `Price: ${priceRange.minPrice}đ`  // If min equals max, display single price
+                                            : `Price range: ${priceRange.minPrice}đ - ${priceRange.maxPrice}đ`} {/* Else display price range */}
+                                    </p>
+                                ) : (
+                                    <p className="price-range">No showtimes available</p>
+                                )}
                             </div>
-                            <p>Best Price: 100.000đ</p>
-                        </div>
+                        );
                     })}
                 </div>
+
+
                 <div className="schedules">
                     <div className="button-cont">
-                        <button><img src={Price} alt="price"/> Price <img src={ArrowUpward} alt="arrow-up"/></button>
-                        <button><img src={Location} alt="near-you"/>Near You</button>
+                        <Button><img src={Price} alt="price"/> Price <img src={ArrowUpward} alt="arrow-up"/></Button>
+                        <Button><img src={Location} alt="near-you"/> Near You </Button>
                     </div>
-                    <div>
-                        <div className="schedule">
-                            <h2>CGV Vincom Đà Nẵng</h2>
-                            <p className={"address"}>Tầng 4, TTTM Vincom Đà Nẵng, đường Ngô Quyền, P.An Hải Bắc, Q.Sơn
-                                Trà, TP. Đà Nẵng</p>
-                            <p className="format">2D Subtitle</p>
-                            <div className="showtimes">
-                                <div className="showtime">
-                                    <p className={"time"}>9:20 ~ 10:57</p>
-                                    <p className={"price"}>Best Price: 100.000đ</p>
+                    {showtimes
+                        .filter(showtime => showtime.room.cinema.cinemaId === selectedCinema?.cinemaId && showtime.showDate === selectedDate)
+                        .map((showtime, index) => (
+                            <div className="schedule" key={index}>
+                                <h2>{selectedCinema?.name}</h2>
+                                <p className="address">{selectedCinema?.address}</p>
+                                <div className="showtimes">
+                                    <div className="showtime">
+                                        <p className="time">{showtime.startTime} ~ {showtime.endTime}</p>
+                                        <p className="price">Base Price: {showtime.basePrice}đ</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="schedule">
-                            <h2>CGV Vĩnh Trung Plaza</h2>
-                            <p className={"address"}>255-257 Hùng Vương, Phường Vĩnh Trung, Quận Thanh Khê, TP. Đà Nẵng</p>
-                            <p className="format">2D Subtitle</p>
-                            <div className="showtimes">
-                                <div className="showtime">
-                                    <p className={"time"}>9:20 ~ 10:57</p>
-                                    <p className={"price"}>Best Price: 100.000đ</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        ))}
                 </div>
             </div>
         </div>
     );
+
 }
+
+Schedule.propTypes = {
+    showtimes: PropTypes.arrayOf(PropTypes.shape({
+        movie: PropTypes.shape({
+            movieId: PropTypes.string.isRequired,
+        }).isRequired,
+        room: PropTypes.shape({
+            roomId: PropTypes.number.isRequired,
+            cinema: PropTypes.shape({
+                cinemaId: PropTypes.string.isRequired,
+            }).isRequired
+        }).isRequired,
+        showDate: PropTypes.string.isRequired,
+        startTime: PropTypes.string.isRequired,
+        endTime: PropTypes.string.isRequired,
+        basePrice: PropTypes.number.isRequired
+    })).isRequired,
+    film: PropTypes.shape({
+        movieId: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired
+    }).isRequired
+};
 
 export default Schedule;

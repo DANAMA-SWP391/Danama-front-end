@@ -78,7 +78,6 @@
     font-size: 14px;
     font-family: "Albert Sans semi-bold", sans-serif;
 }
-
 .film-schedules .schedule-container .schedules {
     width: 75%;
     display: flex;
@@ -138,12 +137,6 @@
 .film-schedules .schedule-container .schedules .schedule .address {
     font-size: 14px;
     margin-bottom: 40px;
-}
-
-.film-schedules .schedule-container .schedules .schedule .format {
-    font-size: 16px;
-    font-family: "Albert Sans semi-bold", sans-serif;
-    margin-bottom: 20px;
 }
 
 .film-schedules .schedule-container .schedules .schedule .showtimes {
