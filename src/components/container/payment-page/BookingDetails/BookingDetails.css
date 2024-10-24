@@ -48,3 +48,33 @@
 .body__booking-details p {
     color: black; /* Or whatever color you want */
 }
+
+/* Disable pointer events on the entire page when overlay is active */
+.body__booking-details.overlay-active * {
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Allow pointer events on overlay text itself */
+.body__booking-details.overlay-active .overlay {
+    pointer-events: auto;
+}
+
+/* Style for the overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.overlay p {
+    font-size: 20px;
+}

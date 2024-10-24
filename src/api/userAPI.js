@@ -177,25 +177,23 @@ export async function addBooking(booking, tickets) {
     }
 }
 
-export async function paymentConfirm(bookingId) {
+export async function cancelBooking(bookingId) {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/payment', {
+        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/cancelBooking', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({bookingId}), // Send bookingId as the body
+            body: JSON.stringify({ bookingId }) // Send bookingId as JSON in the request body
         });
 
-        const data = await response.json(); // Parse the response as JSON
-
-        if (response.ok && data.success) {
-            return { success: true };
-        } else {
-            throw new Error('Payment confirmation failed');
+        // Check if the response is okay (status in the range 200-299)
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+        return await response.json();
     } catch (error) {
-        console.error('Error confirming payment:', error);
-        return { success: false };
+        console.error('Error during booking cancellation:', error);
+        throw error; // Re-throw the error to be handled by the caller
     }
 }
