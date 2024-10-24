@@ -9,7 +9,7 @@ import Price from "../../../../assets/Icons/priceTag.svg";
 import Location from "../../../../assets/Icons/location.svg";
 import ArrowUp from "../../../../assets/Icons/arrow-upward.svg";
 import { WebContext } from "../../../../utils/webContext.jsx";
-import { useContext, useState } from "react";
+import {useContext, useEffect, useState} from "react";
 import ScheduleDate from "../../../common/Date/Date.jsx";
 
 // Helper function to format the date into "MMM dd, yyyy"
@@ -53,9 +53,14 @@ function Schedule() {
     ];
 
     // Set CGV as the default selected cinema
-    const [selectedCinema, setSelectedCinema] = useState(() => cinemaList.find(cinema => cinema.cinemaId === 1));
+    const [selectedCinema, setSelectedCinema] = useState(null);
     const [selectedDate, setSelectedDate] = useState(formatDate(dates[0])); // Track selected date (default to the first date in "MMM dd, yyyy" format)
-
+    useEffect(() => {
+        if (cinemaList && cinemaList.length > 0) {
+            const defaultCinema = cinemaList.find(cinema => cinema.name === 'CGV');
+            setSelectedCinema(defaultCinema);
+        }
+    }, [cinemaList]);
     // Function to filter films based on selected cinema and date
     const filterFilmsByCinemaAndDate = (cinemaId, date) => {
         const filmShowtimeMap = {};

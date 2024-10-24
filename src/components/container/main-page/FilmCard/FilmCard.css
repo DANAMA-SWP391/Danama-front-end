@@ -1,3 +1,90 @@
+.wrapper {
+    position: relative;
+}
+
+.wrapper p {
+    font-size: 16px;
+}
+
+.darken .overlay {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+}
+
+.book-ticket-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80vw;
+    height: 90vh;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.book-ticket-container img {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.book-ticket-container >   img {
+    position: absolute;
+    top: 3%;
+    left: 10%;
+    width: 30px;
+    height: 30px;
+}
+
+.book-ticket-container h2 {
+    font-family: "Albert Sans semi-bold", sans-serif;
+    font-size: 20px;
+    color: #000000;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.book-ticket-container .seats-info {
+    width: 50%;
+    height: 5%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.book-ticket-container .seats-info .info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.book-ticket-container .seats-info .info p {
+    font-family: "Albert Sans semi-bold", sans-serif;
+    font-size: 14px;
+    color: #000000;
+    margin-left: 5px;
+    text-align: center;
+}
+
+.book-ticket-container .seats-info .info .color {
+    width: 15px;
+    height: 15px;
+}
+
 .schedule-film {
     width: 100%;
     height: 280px;
@@ -86,4 +173,34 @@
     font-family: "Albert Sans", sans-serif;
     font-size: 12px;
     color: #22228f;
+}
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Increase opacity for stronger overlay */
+    z-index: 100; /* Ensure it's on top of all other content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1); /* Light grey */
+    border-left-color: #000; /* Black color for the rotating part */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

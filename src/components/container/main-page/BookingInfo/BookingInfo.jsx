@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from "../../../common/Button/Button.jsx";
 import CancelBtn from "../../../../assets/Icons/cancel.svg";
 
-const BookingInfo = ({ film, handleClick }) => (
+const BookingInfo = ({ film, handlePurchase, handleRemoveSeat }) => (
     <div className="booking-info">
         <div className="film-info">
             <div className="head">
@@ -12,7 +12,7 @@ const BookingInfo = ({ film, handleClick }) => (
                 <div className="film-name"><p>{film.name}</p></div>
             </div>
             <div className="body">
-                <p>15:30 ~ 17:30</p> . <p>23/10/2024</p> . <p>Room Cinema 1</p> . <p>2D Subtitle</p>
+                <p>15:30 ~ 17:30</p> . <p>23/10/2024</p> . <p>Room Cinema 1</p>
             </div>
         </div>
         <div className="seat-infos">
@@ -23,13 +23,14 @@ const BookingInfo = ({ film, handleClick }) => (
             </div>
         </div>
         <div className="price"><p>Price: 100.000đ</p></div>
-        <Button onClick={handleClick}>Purchase</Button>
+        <Button onClick={handlePurchase}>Purchase</Button>
     </div>
 );
 
 BookingInfo.propTypes = {
     film: PropTypes.object.isRequired,
-    handleClick: PropTypes.func.isRequired,
+    handlePurchase: PropTypes.func.isRequired,
+    handleRemoveSeat: PropTypes.func.isRequired
 };
 
 export default BookingInfo;

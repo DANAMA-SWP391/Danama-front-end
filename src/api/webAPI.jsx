@@ -20,14 +20,14 @@ export const fetchDetailMovie = async(movieId) => {
         return null;
     }
 };
-export const fetchDetailShowtime = async (showtimeId) => {
+export const fetchDetailShowtime = async (showtimeId, roomId) => {
     try {
         const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/detailShowtime`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ showtimeId })
+            body: JSON.stringify({ showtimeId, roomId })
         });
 
         if (!response.ok) {
