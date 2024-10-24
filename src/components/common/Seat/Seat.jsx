@@ -1,11 +1,11 @@
 import './Seat.css';
 import PropTypes from 'prop-types';
 
-function Seat({ seat, isBooked, onClick, status, key, color }) {
+function Seat({ seat, onClick, key, color, price }) {
     return (
         <div
-            className={`seat ${isBooked ? 'booked' : ''}`}
-            onClick={onClick}
+            className='seat'
+            onClick={color !== 'black' ? onClick : null}
             style={{ backgroundColor: color }}
         >
             {seat}
@@ -14,9 +14,11 @@ function Seat({ seat, isBooked, onClick, status, key, color }) {
 }
 
 Seat.propTypes = {
+    key: PropTypes.number.isRequired,
     seat: PropTypes.string.isRequired,
-    isBooked: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired,
+    color: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired
 };
 
 export default Seat;

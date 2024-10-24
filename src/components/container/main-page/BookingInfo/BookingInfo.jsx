@@ -1,35 +1,64 @@
-import "./BookingInfo.css";
-
 import PropTypes from 'prop-types';
+import "./BookingInfo.css";
 import Button from "../../../common/Button/Button.jsx";
-import CancelBtn from "../../../../assets/Icons/cancel.svg";
 
-const BookingInfo = ({ film, handleClick }) => (
+const BookingInfo = ({ film, showtime, selectedSeats, handlePurchase, price }) => (
     <div className="booking-info">
+        {/* Film information */}
         <div className="film-info">
             <div className="head">
-                <div className="age"><p>{film.age}</p></div>
-                <div className="film-name"><p>{film.name}</p></div>
+                <div className="age"><p>{film.ageRestricted}+</p></div> {/* Display film age restriction */}
+                <div className="film-name"><p>{film.name}</p></div> {/* Film name */}
             </div>
             <div className="body">
-                <p>15:30 ~ 17:30</p> . <p>23/10/2024</p> . <p>Room Cinema 1</p> . <p>2D Subtitle</p>
+                <p>{showtime.startTime} ~ {showtime.endTime}</p> {/* Showtime */}
+                <p>{new Date(showtime.showDate).toLocaleDateString()}</p> {/* Show date */}
+                <p>{showtime.room.name}</p> {/* Room information */}
             </div>
         </div>
+
+        {/* Seat information */}
         <div className="seat-infos">
             <p>Seat: </p>
-            <div>
-                <p>E8</p>
-                <img src={CancelBtn} alt="cancel-btn"/>
+            <div className="seat-list">
+                {selectedSeats? (
+                    selectedSeats.map((seat, index) => (
+                        <div key={index} className="seat-item">
+                            <p>{seat}</p> {/* Display seat number */}
+                        </div>
+                    ))
+                ) : (
+                    <p>No seats selected</p>  // Display message if no seats are selected
+                )}
             </div>
         </div>
-        <div className="price"><p>Price: 100.000đ</p></div>
-        <Button onClick={handleClick}>Purchase</Button>
+
+        {/* Price information */}
+        <div className="price">
+            <p>Price: {price.toLocaleString()}đ</p> {/* Display total price */}
+        </div>
+
+        {/* Purchase button */}
+        <Button onClick={handlePurchase}>Purchase</Button>
     </div>
 );
 
 BookingInfo.propTypes = {
-    film: PropTypes.object.isRequired,
-    handleClick: PropTypes.func.isRequired,
+    film: PropTypes.shape({
+        ageRestricted: PropTypes.number.isRequired, // Age restriction as a number
+        name: PropTypes.string.isRequired,          // Film name
+    }).isRequired,
+    showtime: PropTypes.shape({
+        startTime: PropTypes.string.isRequired, // Showtime start time
+        endTime: PropTypes.string.isRequired,   // Showtime end time
+        showDate: PropTypes.string.isRequired,  // Showtime date
+        room: PropTypes.shape({
+            name: PropTypes.string.isRequired,  // Room name
+        }).isRequired
+    }).isRequired,
+    selectedSeats: PropTypes.arrayOf(PropTypes.string).isRequired, // List of selected seat numbers
+    handlePurchase: PropTypes.func.isRequired,            // Remove seat handler
+    price: PropTypes.number.isRequired                             // Total price of the selected seats
 };
 
 export default BookingInfo;
