@@ -10,7 +10,6 @@ function BookingDetails() {
 
     return (
         <div className="body__booking-details">
-
             <h2>Booking details</h2>
             <FilmDetails />
             <TimeDetails />
