@@ -1,4 +1,4 @@
-.body .main-slide {
+.main-slide {
     width: 100vw;
     height: 90vh;
     position: relative;
@@ -8,6 +8,38 @@
     align-items: center;
 }
 
+.body .main-slide .dots-container {
+    position: absolute;
+    bottom: 2%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 200px;
+    height: 50px;
+    z-index: 999;
+    overflow: hidden;
+}
+
+.body .main-slide .dots {
+    position: absolute;
+    bottom: 2%;
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.body .main-slide .dots .dot {
+    font-size: 50px;
+    cursor: pointer;
+    color: #ffffff;
+    transition: transform 0.3s ease-in-out;
+}
+
+.body .main-slide .dots .dot.active {
+    transform: scale(1.5);
+
+}
+
 .main-slide .option {
     height: 20%;
     width: 90%;
@@ -15,7 +47,7 @@
     flex-direction: column;
     justify-content: space-around;
     position: absolute;
-    bottom: 10%;
+    bottom: 5%;
     left: 5%;
 }
 
@@ -32,7 +64,7 @@
 
 .main-slide .cont-1 {
     position: absolute;
-    top: 12%;
+    top: 8%;
     left: 5%;
     width: 90%;
     display: flex;

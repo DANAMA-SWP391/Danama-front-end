@@ -11,9 +11,8 @@ function Trailer() {
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        // Start playback from 14 seconds once the video is loaded
+
         if (isLoaded) {
-            playerRef.current.seekTo(14, 'seconds');
             setIsPlaying(true);
         }
     }, [isLoaded]);
@@ -59,7 +58,7 @@ function Trailer() {
         <div className={`video-container ${isLoaded ? "loaded" : ""}`}>
             <ReactPlayer
                 ref={playerRef}
-                url="https://www.youtube.com/watch?v=_YUzQa_1RCE&t=4s" // Replace with your YouTube video URL
+                url="https://www.youtube.com/watch?v=_YUzQa_1RCE&t=4s"
                 playing={isPlaying}
                 muted={isMuted}
                 loop
@@ -69,11 +68,11 @@ function Trailer() {
                 config={{
                     youtube: {
                         playerVars: {
-                            controls: 0,        // Hide controls
-                            modestbranding: 1,  // Hide YouTube logo
-                            rel: 0,             // Disable related videos
-                            showinfo: 0,        // Hide video info
-                            fs: 0,              // Disable fullscreen button
+                            controls: 0,
+                            modestbranding: 1,
+                            rel: 0,
+                            showinfo: 0,
+                            fs: 0,
                         },
                     }
                 }}
