@@ -53,7 +53,7 @@ function FilmPage() {
     return (
         <div className="film-page">
             <Header />
-            <MainSlide isLogged={isLogged} film={film} />
+            <MainSlide isLogged={isLogged} filmLists={film} />
             <ScreenShotSlider screenShots={screenShots} />
             <SeparateLine />
             <CommentSection user={user} reviews={reviews} movieId={film.movieId}/>

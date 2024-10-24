@@ -4,9 +4,11 @@ import FilmLists from "../FilmLists/FilmLists.jsx";
 import Schedule from "../Schedule/Schedule.jsx";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../../../utils/userContext.jsx";
+import {WebContext} from "../../../../utils/webContext.jsx";
 
 function Body() {
     const {user} = useContext(UserContext);
+    const {filmList} = useContext(WebContext);
     const [isLogged, setIsLogged] = useState(false);
 
     useEffect(() => {
@@ -14,7 +16,7 @@ function Body() {
     }, [user]);
     return (
         <div className="body">
-            <MainSlide isLogged={isLogged} />
+            <MainSlide isLogged={isLogged} filmLists={filmList} />
             <FilmLists />
             <Schedule />
         </div>
