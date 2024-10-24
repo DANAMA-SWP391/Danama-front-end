@@ -5,7 +5,7 @@ function Seat({ seat, onClick, key, color, price }) {
     return (
         <div
             className='seat'
-            onClick={onClick}
+            onClick={color !== 'black' ? onClick : null}
             style={{ backgroundColor: color }}
         >
             {seat}

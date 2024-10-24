@@ -10,16 +10,16 @@ function FilmCard({film, showtimes}) {
     const [isClick, setIsClick] = useState(false);
     const [seats, setSeats] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [showtime,setShowtime] =useState({});
     const seatsInfo = [
         ["Booked", "black"], ["Selected", "#BCB3B3"], ["Standard", "#1BA0D4"], ["VIP", "#D64242"]
     ];
     const [price, setPrice] = useState(0);
     const [selectedSeats, setSelectedSeats] = useState([]);
+    const [showtime, setShowtime] =useState({});
     const handleSelectedShowtime = async (showtime) => {
+        setShowtime(showtime);
         setIsClick(true);
         setLoading(true); // Start loading state
-        setShowtime(showtime);
         try {
             // Fetch seat details from API
             const response = await fetchDetailShowtime(showtime.showtimeId, showtime.room.roomId);
@@ -37,6 +37,8 @@ function FilmCard({film, showtimes}) {
     const handleClick =() => {
         setIsClick(!isClick);
         setSeats([]);
+        setSelectedSeats([]);
+        setPrice(0);
     }
     const handleSelectSeat = (seat) => {
         if (selectedSeats.includes(seat.seatNum)) {
@@ -47,10 +49,6 @@ function FilmCard({film, showtimes}) {
             setPrice(price + seat.price); // Increase price by seat price
         }
     };
-    const removeSeat = (seat) => {
-        setSelectedSeats(selectedSeats.filter(s => s !== seat)); // Remove seat
-        setPrice(price - seat.price); // Adjust price
-    };
     const getSeatColor = (type) => {
         switch (type) {
             case 'Booked': return 'black';
@@ -59,6 +57,9 @@ function FilmCard({film, showtimes}) {
             default: return '#1BA0D4';
         }
     };
+    const handlePurchase = () => {
+
+    }
     return (
         <div className={`wrapper ${isClick ? 'darken' : ''}`}>
             {isClick && <div className="overlay"></div>}
@@ -72,7 +73,7 @@ function FilmCard({film, showtimes}) {
                     <img src={BackSpace} alt="back-space" onClick={handleClick}/>
                     <h2>Book Ticket</h2>
 
-                        <SeatLayout selectedSeats={selectedSeats} handleClick={handleSelectSeat} getSeatColor={getSeatColor} seats={seats} basePrice={showtime.basePrice} />
+                    <SeatLayout selectedSeats={selectedSeats} handleClick={handleSelectSeat} getSeatColor={getSeatColor} seats={seats} basePrice={showtime.basePrice} />
 
                     <div className="seats-info">
                         {seatsInfo.map((info, index) => (
@@ -82,7 +83,7 @@ function FilmCard({film, showtimes}) {
                             </div>
                         ))}
                     </div>
-                    <BookingInfo handlePurchase={handleClick()} film={film} handleRemoveSeat={removeSeat} />
+                    <BookingInfo price={price} selectedSeats={selectedSeats} handlePurchase={handlePurchase} film={film}  showtime={showtime} />
                 </div>
             )}
             <div className="schedule-film">
