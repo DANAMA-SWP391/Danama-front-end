@@ -11,8 +11,8 @@ import CommentSection from "../../components/container/film-page/CommentSection/
 
 import FilmLists from "../../components/container/main-page/FilmLists/FilmLists.jsx";
 import Footer from "../../components/container/main-page/Footer/Footer.jsx";
-import {useContext, useEffect, useState} from "react";
-import {UserContext} from "../../utils/userContext.jsx";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../utils/userContext.jsx";
 import MainSlide from "../../components/container/main-page/MainSlide/MainSlide.jsx";
 import Schedule from "../../components/container/film-page/Schedule/Schedule.jsx";
 
@@ -21,30 +21,31 @@ import { useLocation } from "react-router-dom";
 function FilmPage() {
     const location = useLocation();
     const { film } = location.state || {};
+    const filmArray = [film];
 
-    const {user, filmList} = useContext(UserContext);
+    const { user, filmList } = useContext(UserContext);
 
     const screenShots = [screenshot1, screenshot2, screenshot3, screenshot4, screenshot5];
-    
+
     const [isLogged, setIsLogged] = useState(false);
-    
+
     useEffect(() => {
         if (user) {
             setIsLogged(true);
         }
     }, [user]);
-    
+
     return (
         <div className="film-page">
             <Header user={user} />
-            <MainSlide isLogged={isLogged} film={film}/>
+            <MainSlide isLogged={isLogged} filmLists={filmArray} />
             <ScreenShotSlider screenShots={screenShots} />
             <SeparateLine />
             <CommentSection user={user} />
-            <SeparateLine/>
+            <SeparateLine />
             <Schedule />
-            <SeparateLine/>
-            <FilmLists filmLists={filmList}/>
+            <SeparateLine />
+            <FilmLists filmLists={filmList} />
             <Footer />
         </div>
     );
