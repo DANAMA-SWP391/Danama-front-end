@@ -9,7 +9,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 function Sidebar() {
     return (
         <div className="sidebar">
-            <div className="logo">
+            <div className="sidebar-logo">
                 <h2>DANAMA</h2>
             </div>
             <div className="menu">

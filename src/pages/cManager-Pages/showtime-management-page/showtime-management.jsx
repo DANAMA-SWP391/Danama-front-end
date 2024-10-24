@@ -29,6 +29,7 @@ function ShowtimeManagement() {
         basePrice: '',
         roomId: '',
         roomName: '',
+        seatAvailable:'',
         status: ''
     }); // Trạng thái dữ liệu form
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -118,12 +119,16 @@ function ShowtimeManagement() {
             showtimeId: showtime.showtimeId,
             movieId: showtime.movie.movieId,
             showDate: new Date(showtime.showDate).toISOString().split('T')[0],
-            startTime: showtime.startTime,
-            endTime: showtime.startTime,
+            // startTime: convertTo12HourFormat(showtime.startTime),
+            // endTime: convertTo12HourFormat(showtime.endTime),
+            startTime: convertTo24HourFormat(showtime.startTime), // Chuyển sang 24h
+            endTime: convertTo24HourFormat(showtime.endTime) ,// Chuyển sang 24h
             basePrice: showtime.basePrice,
             roomId: showtime.room.roomId,
             status: showtime.status
         });
+        console.log('FormData like:', formData);
+
         setFormError({ // Reset error when open form
             movieId: '',
             showDate: '',
@@ -175,7 +180,12 @@ function ShowtimeManagement() {
             hasError = true;
         }
 
-        if (!formData.status) {
+        // if (!formData.status) {
+        //     errors.status = 'Status is required';
+        //     hasError = true;
+        // }
+
+        if (formData.status === null || formData.status === undefined || formData.status === '') {
             errors.status = 'Status is required';
             hasError = true;
         }
@@ -186,8 +196,8 @@ function ShowtimeManagement() {
             return;
         }
 
-        const formattedStartTime = `${formData.startTime}:00`; //Add SECOND
-        const formattedEndTime = `${formData.endTime}:00`;
+        const formattedStartTime = `${convertTo24HourFormat(formData.startTime)}:00`; //Add SECOND
+        const formattedEndTime = `${convertTo24HourFormat(formData.endTime)}:00`;
 
         const dataToSend = {
             showtimeId: formData.showtimeId,
@@ -206,7 +216,12 @@ function ShowtimeManagement() {
 
             if (isEdit) {
                 await fetchUpdateShowtime({ ...dataToSend, showtimeId: formData.showtimeId });
-                setShowtimes(showtimes.map(showtime => showtime.showtimeId === formData.showtimeId ? { ...dataToSend, showtimeId: formData.showtimeId } : showtime));
+                // setShowtimes(showtimes.map(showtime => showtime.showtimeId === formData.showtimeId ? { ...dataToSend, showtimeId: formData.showtimeId } : showtime));
+                setShowtimes(showtimes.map(showtime =>
+                    showtime.showtimeId === formData.showtimeId
+                    ? { ...showtime, ...dataToSend, room: { name: showtime.room.name }, seatAvailable: formData.seatAvailable } : showtime));
+                await getShowtimes();
+
             } else {
                 await fetchAddShowtime(dataToSend);
                 await getShowtimes();
@@ -237,13 +252,35 @@ function ShowtimeManagement() {
         if (name === 'roomId' && value) {
             setFormError(prev => ({ ...prev, roomId: '' }));
         }
-        if (name === 'seatAvailable' && value > 0) {
-            setFormError(prev => ({ ...prev, seatAvailable: '' }));
-        }
+        // if (name === 'seatAvailable' && value > 0) {
+        //     setFormError(prev => ({ ...prev, seatAvailable: '' }));
+        // }
         if (name === 'status' && value) {
             setFormError(prev => ({ ...prev, status: '' }));
         }
     };
+
+    function convertTo12HourFormat(timeString) {
+        const [hours, minutes] = timeString.split(':');
+        const period = +hours >= 12 ? 'PM' : 'AM';
+        const adjustedHours = +hours % 12 || 12; // Chuyển 0h thành 12h
+        return `${adjustedHours}:${minutes} ${period}`;
+    }
+
+    function convertTo24HourFormat(timeString) {
+        const [time, modifier] = timeString.split(' ');
+        let [hours, minutes] = time.split(':');
+
+        if (hours === '12') {
+            hours = '00';
+        }
+
+        if (modifier === 'PM') {
+            hours = parseInt(hours, 10) + 12;
+        }
+
+        return `${hours}:${minutes}`;
+    }
 
 
         const indexOfLastShowtime = currentPage * showtimesPerPage;
@@ -297,8 +334,11 @@ function ShowtimeManagement() {
                                             <td>{showtime.showDate
                                                 ? new Date(showtime.showDate).toLocaleDateString('vi-VN')
                                                 : 'N/A'}</td>
-                                            <td>{showtime.startTime}</td>
-                                            <td>{showtime.endTime}</td>
+
+                                            <td>{convertTo12HourFormat(showtime.startTime)}</td>
+                                            {/*<td>{showtime.startTime}</td>*/}
+                                            {/*<td>{showtime.endTime}</td>*/}
+                                            <td>{convertTo12HourFormat(showtime.endTime)}</td>
                                             <td>{showtime.basePrice}</td>
                                             <td>{showtime.room ? showtime.room.name : 'N/A'}</td>
                                             <td>{showtime.seatAvailable}</td>

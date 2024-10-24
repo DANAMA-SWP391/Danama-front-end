@@ -16,8 +16,8 @@ function CManagerHeader() {
     const {user} = useContext(UserContext);
     console.log(user);
 
-    const logo = "/assets/cinemaLogos/cgv.jpg";
-    const cinemalogo = "CGV"
+    const logo = "/src/assets/cinemaLogos/cgv.jpg";
+    // const cinemalogo = "CGV"
 
     return (
         <div className="header">
@@ -26,7 +26,9 @@ function CManagerHeader() {
                 {/*<OptionList />*/}
 
 
-                <CinemaLogo logo ={logo} name={cinemalogo} />
+                {/*<CinemaLogo logo ={logo} name={cinemalogo} />*/}
+                <CinemaLogo logo ={logo}  />
+
                 {
                     user ?
                         <HeaderUser user={user} /> : <LoginBtn to={"/login"} />

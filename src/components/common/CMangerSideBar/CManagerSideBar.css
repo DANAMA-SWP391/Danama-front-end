@@ -11,9 +11,8 @@
     position: fixed; /* Sidebar cố định khi cuộn */
 }
 
-.logo {
+.sidebar-logo {
     margin-bottom: 40px; /* Tạo khoảng cách lớn hơn với các menu items */
-    color: #FFD700; /* Màu vàng nổi bật */
     font-size: 28px; /* Kích thước lớn hơn cho logo */
     font-weight: bold; /* Đậm cho logo */
     text-transform: uppercase; /* Chuyển tất cả chữ thành chữ hoa */
@@ -21,7 +20,7 @@
     transition: color 0.3s;
 }
 
-.logo:hover {
+.sidebar-logo:hover {
     color: #FF4500; /* Đổi sang màu cam khi hover */
     transition: color 0.3s; /* Hiệu ứng chuyển màu mượt mà */
 }
