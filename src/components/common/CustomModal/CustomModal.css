@@ -1,0 +1,50 @@
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Transparent black background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Modal Container */
+.modal-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal Close Button */
+.modal-close-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+}
+
+/* Modal Content */
+.modal-content {
+    padding: 10px 0;
+}
+/* Thêm class cho field có lỗi */
+.input-error {
+    border: 2px solid red;
+}
+
+/* Đoạn CSS tùy chọn để hiển thị lỗi dưới form */
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}

@@ -1,17 +1,16 @@
 /* General container and layout */
 .movie-management-container {
     display: flex;
-    height: 100vh;
+
     background-color: #f4f4f9;
 }
 
 .movie-management-content {
-    flex: 1;
+    width: calc(100% - 250px); /* Chiếm phần còn lại của trang */
     padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px;
-    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    min-height: 100vh; /* Đảm bảo content bao phủ toàn bộ chiều cao */
 }
 
 /* Header section */
@@ -281,4 +280,18 @@ button.add-genre-btn {
 
 button.add-genre-btn:hover {
     background-color: #45a049;
+}
+.sidebar {
+    width: 250px;
+    background-color: #6A2222;
+    height: 100vh;
+    color: white;
+    padding: 20px 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

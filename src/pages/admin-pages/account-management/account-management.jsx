@@ -1,52 +1,95 @@
 import React, { useState, useEffect } from 'react';
-import {fetchAccountById, fetchAccountList, fetchAddAccount, fetchBanAccount} from "../../../api/admin-api.js";
-import Sidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
-import Modal from "../../../components/common/Modal/Modal.jsx";
-
+import {
+    fetchAccountById,
+    fetchAccountList,
+    fetchAddAccount,
+    fetchBanAccount,
+    fetchUpdateAccount,
+} from '../../../api/admin-api.js';
+import Sidebar from '../../../components/common/AdminSideBar/AdminSideBar.jsx';
+import Modal from '../../../components/common/Modal/Modal.jsx';
+import './account-management.css';
+import { upFileToAzure } from '../../../api/webAPI.jsx';
+import CustomModal from '../../../components/common/CustomModal/CustomModal.jsx';
+import Header from "../../../components/common/Header/Header.jsx";
 
 const AccountManagement = () => {
     const [accounts, setAccounts] = useState([]);
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-    const [newAccount, setNewAccount] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        avatar: '',
-        googleId: '',
-        roleId: '',
-        password: '',
-    });
+    const [newAccount, setNewAccount] = useState(initialAccountState());
     const [selectedAccount, setSelectedAccount] = useState(null);
 
+    // State for controlling modal visibility
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalType, setModalType] = useState(''); // 'view', 'edit', or 'delete'
+    const [selectedFile, setSelectedFile] = useState(null); // State để lưu ảnh được chọn
+    const [errors, setErrors] = useState({}); // State để lưu lỗi validation
+
+    // Load accounts on component mount
     useEffect(() => {
         const loadAccounts = async () => {
-            const data = await fetchAccountList();
-            setAccounts(data || []); // Đảm bảo dữ liệu luôn là một mảng
+            try {
+                const data = await fetchAccountList();
+                setAccounts(data || []);
+            } catch (error) {
+                console.error('Failed to load accounts:', error);
+            }
         };
 
         loadAccounts();
     }, []);
 
-    // Hàm mở modal để thêm tài khoản
-    const handleAddAccountClick = () => {
-        setIsAddModalOpen(true);
+    // Hàm kiểm tra email hợp lệ
+    const validateEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
     };
-// Hàm xử lý khi nhấn vào nút View để xem thông tin chi tiết tài khoản
-    const handleViewAccount = async (UID) => {
-        const accountDetails = await fetchAccountById(UID); // Gọi API để lấy thông tin tài khoản
-        console.log(accountDetails);
-        if (accountDetails) {
-            setSelectedAccount(accountDetails); // Lưu thông tin tài khoản được chọn
-            setIsViewModalOpen(true);    // Mở modal view
-        } else {
-            alert("Account not found");
+
+    // Hàm kiểm tra số điện thoại hợp lệ (chỉ chứa 10 chữ số)
+    const validatePhone = (phone) => {
+        const regex = /^[0-9]{10}$/;
+        return regex.test(phone);
+    };
+
+    // Hàm kiểm tra password hợp lệ (hơn 3 kí tự và có chứa kí tự đặc biệt)
+    const validatePassword = (password) => {
+        const regex = /^(?=.*[!@#$%^&*(),.?":{}|<>]).{4,}$/; // Ít nhất 4 kí tự và có ký tự đặc biệt
+        return regex.test(password);
+    };
+
+    // Hàm kiểm tra tên hợp lệ (không có kí tự đặc biệt và không quá 100 ký tự)
+    const validateName = (name) => {
+        const regex = /^[a-zA-Z0-9\s]{1,100}$/; // Không chứa ký tự đặc biệt, tối đa 100 ký tự
+        return regex.test(name);
+    };
+
+    // Hàm kiểm tra form có hợp lệ hay không
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!validateName(newAccount.name)) {
+            newErrors.name = 'Name must not contain special characters and should be less than 100 characters.';
         }
+
+        if (!validateEmail(newAccount.email)) {
+            newErrors.email = 'Invalid email address.';
+        }
+
+        if (!validatePassword(newAccount.password)) {
+            newErrors.password = 'Password must be longer than 3 characters and contain at least one special character.';
+        }
+
+        if (!validatePhone(newAccount.phone)) {
+            newErrors.phone = 'Phone must contain exactly 10 digits.';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0; // Trả về true nếu không có lỗi
     };
-    // Hàm đóng modal
-    const handleCloseAddModal  = () => {
-        setIsAddModalOpen(false);
-        setNewAccount({ // Reset lại form khi đóng modal
+
+    // Initial state for new account
+    function initialAccountState() {
+        return {
             name: '',
             email: '',
             phone: '',
@@ -54,13 +97,10 @@ const AccountManagement = () => {
             googleId: '',
             roleId: '',
             password: '',
-        });
-    };
-    const handleCloseViewModal = () => {
-        setIsViewModalOpen(false);
-    };
+        };
+    }
 
-    // Hàm xử lý khi có thay đổi trong form
+    // Handle input change in forms
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewAccount((prev) => ({
@@ -69,179 +109,271 @@ const AccountManagement = () => {
         }));
     };
 
-    // Hàm xử lý thêm tài khoản
+    // Function to handle the addition of a new account
     const handleAddAccount = async (e) => {
         e.preventDefault();
-        const success = await fetchAddAccount(newAccount); // Gọi API thêm tài khoản
-        if (success) {
-            alert("Account added successfully!");
-            setAccounts((prevAccounts) => [...prevAccounts, newAccount]); // Cập nhật danh sách tài khoản
-            handleCloseAddModal(); // Đóng modal sau khi thêm thành công
-        } else {
-            alert("Failed to add account");
+
+        // Kiểm tra form có hợp lệ không
+        if (!validateForm()) {
+            alert('Please fix the validation errors.');
+            return;
         }
-    };
 
+        let avatarUrl = newAccount.avatar; // Initially, use the existing avatar URL (if provided)
 
-    // Hàm xử lý ban tài khoản
-    const handleBanAccount = async (UID) => {
-        const confirmed = window.confirm('Are you sure you want to ban this account?');
-        if (confirmed) {
-            const success = await fetchBanAccount(UID); // Gọi API cấm tài khoản
-            if (success) {
-                alert('Account banned successfully!');
-                setAccounts((prevAccounts) =>
-                    prevAccounts.filter((account) => account.UID !== UID) // Loại bỏ tài khoản bị cấm khỏi danh sách
-                );
-            } else {
-                alert('Failed to ban account');
+        // If a new file (image) is selected, upload it first
+        if (selectedFile) {
+            try {
+                const uploadedImageUrl = await upFileToAzure(selectedFile); // Call the upload function
+                if (uploadedImageUrl) {
+                    avatarUrl = uploadedImageUrl; // Update the avatar URL after a successful upload
+                } else {
+                    alert('Failed to upload image.');
+                    return;
+                }
+            } catch (error) {
+                console.error('Image upload failed:', error);
+                alert('Error uploading image.');
+                return;
             }
         }
+
+        // Proceed to add the account using the fetched or existing avatar URL
+        try {
+            const success = await fetchAddAccount({ ...newAccount, avatar: avatarUrl }); // Add account API call
+            if (success) {
+                alert('Account added successfully!'); // Show success message
+
+                // Update account list in UI
+                setAccounts((prevAccounts) => [
+                    ...prevAccounts,
+                    { ...newAccount, avatar: avatarUrl },
+                ]);
+
+                // Reset form data
+                setNewAccount(initialAccountState());
+                setIsModalOpen(false); // Close modal
+                setSelectedFile(null); // Clear selected file
+            } else {
+                alert('Failed to add account.'); // Show error if adding account failed
+            }
+        } catch (error) {
+            console.error('Failed to add account:', error);
+            alert('Error adding account.');
+        }
     };
+
+    // Ban or Unban account based on roleId
+    const handleBanUnbanAccount = async (UID, roleId) => {
+        const action = roleId === 0 ? 'unban' : 'ban';
+        const confirmed = window.confirm(`Are you sure you want to ${action} this account?`);
+        if (!confirmed) return;
+
+        try {
+            if (roleId === 0) {
+                // Unban logic
+                const updatedAccount = accounts.find((account) => account.UID === UID);
+                const success = await fetchUpdateAccount(UID, { ...updatedAccount, roleId: 1 });
+                if (success) {
+                    setAccounts((prevAccounts) =>
+                        prevAccounts.map((account) =>
+                            account.UID === UID ? { ...account, roleId: 1 } : account
+                        )
+                    );
+                    alert('Account unbanned successfully!');
+                }
+            } else {
+                // Ban logic
+                const success = await fetchBanAccount(UID);
+                if (success) {
+                    setAccounts((prevAccounts) =>
+                        prevAccounts.filter((account) => account.UID !== UID)
+                    );
+                    alert('Account banned successfully!');
+                }
+            }
+        } catch (error) {
+            console.error(`Failed to ${action} account:`, error);
+        }
+    };
+
+    const handleCloseViewModal = () => {
+        setIsViewModalOpen(false);
+    };
+
+    // Open view account modal
+    const handleViewAccount = async (UID) => {
+        try {
+            const accountDetails = await fetchAccountById(UID);
+            if (accountDetails) {
+                setSelectedAccount(accountDetails);
+                setIsViewModalOpen(true);
+            } else {
+                alert('Account not found');
+            }
+        } catch (error) {
+            console.error('Failed to view account:', error);
+        }
+    };
+
+    // Function to handle the file change event when an image is selected
+    const handleFileChange = (event) => {
+        setSelectedFile(event.target.files[0]); // Store the selected file in state
+    };
+
     return (
-        <div className="account-management-container">
-            <Sidebar /> {/* Sidebar nằm bên trái */}
-            <div className="account-management-content">
-                <div className="account-management-header">
-                    <h2>ACCOUNT MANAGEMENT</h2>
-                    <button className="add-account-btn" onClick={handleAddAccountClick}>
-                        + Add new account
-                    </button>
-                </div>
-                <table className="account-table">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Account</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Role</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {accounts.map((account) => (
-                        <tr key={account.id}>
-                            <td>{account.id}</td>
-                            <td>{account.email}</td>
-                            <td>{account.name}</td>
-                            <td>{account.phone}</td>
-                            <td>{account.roleId}</td>
-                            <td>
-                                <button className="view-btn" onClick={() => handleViewAccount(account.UID)}>
-                                    👁️ View
-                                </button>
-                                <button className="ban-btn" onClick={() => handleBanAccount(account.UID)}>
-                                    Ban
-                                </button>
-                            </td>
+        <>
+            <Header />
+            <div className="account-management-container">
+
+                <Sidebar />
+                <div className="account-management-content">
+                    <div className="account-management-header">
+                        <h2>ACCOUNT MANAGEMENT</h2>
+                        <button
+                            className="add-account-btn"
+                            onClick={() => {
+                                setModalType('add');
+                                setIsModalOpen(true);
+                            }}
+                        >
+                            + Add new Account
+                        </button>
+                    </div>
+                    <table className="account-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Account</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Role</th>
+                            <th>Action</th>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
-                <div className="pagination">
-                    <button className="pagination-btn">{'<'}</button>
-                    <span>1</span>
-                    <button className="pagination-btn">{'>'}</button>
+                        </thead>
+                        <tbody>
+                        {accounts.map((account) => (
+                            <tr key={account.id}>
+                                <td>{account.id}</td>
+                                <td>{account.email}</td>
+                                <td>{account.name}</td>
+                                <td>{account.phone}</td>
+                                <td>{account.roleId}</td>
+                                <td>
+                                    <button
+                                        className="view-btn"
+                                        onClick={() => handleViewAccount(account.UID)}
+                                    >
+                                        👁️ View
+                                    </button>
+                                    <button
+                                        className="ban-btn"
+                                        onClick={() => handleBanUnbanAccount(account.UID, account.roleId)}
+                                    >
+                                        {account.roleId === 0 ? 'Unban' : 'Ban'}
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+
+                    <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                        {modalType === 'add' && (
+                            <div>
+                                <h3>Add Account</h3>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={newAccount.name}
+                                    onChange={handleInputChange}
+                                    placeholder="Account Name *"
+                                    className={errors.name ? 'input-error' : ''}
+                                />
+                                {errors.name && <p className="error-message">{errors.name}</p>}
+                                <input
+                                    type="text"
+                                    name="email"
+                                    value={newAccount.email}
+                                    onChange={handleInputChange}
+                                    placeholder="Email *"
+                                    className={errors.email ? 'input-error' : ''}
+                                />
+                                {errors.email && <p className="error-message">{errors.email}</p>}
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    value={newAccount.phone}
+                                    onChange={handleInputChange}
+                                    placeholder="Phone *"
+                                    className={errors.phone ? 'input-error' : ''}
+                                />
+                                {errors.phone && <p className="error-message">{errors.phone}</p>}
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                />
+                                <input
+                                    type="text"
+                                    name="googleId"
+                                    value={newAccount.googleId}
+                                    onChange={handleInputChange}
+                                    placeholder="Google ID"
+                                />
+                                <input
+                                    type="number"
+                                    name="roleId"
+                                    value={newAccount.roleId}
+                                    onChange={handleInputChange}
+                                    placeholder="Role ID"
+                                />
+                                <input
+                                    type="password"
+                                    name="password"
+                                    value={newAccount.password}
+                                    onChange={handleInputChange}
+                                    placeholder="Password *"
+                                    className={errors.password ? 'input-error' : ''}
+                                />
+                                {errors.password && <p className="error-message">{errors.password}</p>}
+                                <button onClick={handleAddAccount}>Add</button>
+                            </div>
+                        )}
+                    </CustomModal>
+
+                    {/* Modal View Account */}
+                    {isViewModalOpen && selectedAccount && (
+                        <Modal isOpen={isViewModalOpen} onClose={handleCloseViewModal}>
+                            <div className="view-account-details">
+                                <h3>Account Details</h3>
+                                <p>
+                                    <strong>Name:</strong> {selectedAccount.name}
+                                </p>
+                                <p>
+                                    <strong>Email:</strong> {selectedAccount.email}
+                                </p>
+                                <p>
+                                    <strong>Phone:</strong> {selectedAccount.phone}
+                                </p>
+                                <p>
+                                    <strong>Role:</strong> {selectedAccount.roleId}
+                                </p>
+                                <p>
+                                    <strong>Google ID:</strong> {selectedAccount.googleId}
+                                </p>
+                                <p>
+                                    <strong>Avatar:</strong>{' '}
+                                    <img src={selectedAccount.avatar} alt="Avatar" />
+                                </p>
+                                <button onClick={handleCloseViewModal}>Close</button>
+                            </div>
+                        </Modal>
+                    )}
                 </div>
             </div>
-            {/* Modal View Account */}
-            {isViewModalOpen && selectedAccount && (
-                <Modal isOpen={isViewModalOpen} onClose={handleCloseViewModal}>
-                    <div className="view-account-details">
-                        <h3>Account Details</h3>
-                        <p><strong>Name:</strong> {selectedAccount.name}</p>
-                        <p><strong>Email:</strong> {selectedAccount.email}</p>
-                        <p><strong>Phone:</strong> {selectedAccount.phone}</p>
-                        <p><strong>Role:</strong> {selectedAccount.roleId}</p>
-                        <p><strong>Google ID:</strong> {selectedAccount.googleId}</p>
-                        <p><strong>Avatar:</strong> <img src={selectedAccount.avatar} alt="Avatar" /></p>
-                        <button onClick={handleCloseViewModal}>Close</button>
-                    </div>
-                </Modal>
-            )}
+        </>
 
-            {/* Modal Add Account */}
-            <Modal isOpen={isAddModalOpen} onClose={handleCloseAddModal}>
-                <div className="add-account-form">
-                    <h3>Add New Account</h3>
-                    <form onSubmit={handleAddAccount}>
-                        <label>
-                            Name:
-                            <input
-                                type="text"
-                                name="name"
-                                value={newAccount.name}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </label>
-                        <label>
-                            Email:
-                            <input
-                                type="email"
-                                name="email"
-                                value={newAccount.email}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </label>
-                        <label>
-                            Phone:
-                            <input
-                                type="text"
-                                name="phone"
-                                value={newAccount.phone}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </label>
-                        <label>
-                            Avatar URL:
-                            <input
-                                type="text"
-                                name="avatar"
-                                value={newAccount.avatar}
-                                onChange={handleInputChange}
-                            />
-                        </label>
-                        <label>
-                            Google ID:
-                            <input
-                                type="text"
-                                name="googleId"
-                                value={newAccount.googleId}
-                                onChange={handleInputChange}
-                            />
-                        </label>
-                        <label>
-                            Role ID:
-                            <input
-                                type="number"
-                                name="roleId"
-                                value={newAccount.roleId}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </label>
-                        <label>
-                            Password:
-                            <input
-                                type="password"
-                                name="password"
-                                value={newAccount.password}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </label>
-                        <div className="form-actions">
-                            <button type="submit">Add Account</button>
-                            <button type="button" onClick={handleCloseAddModal}>Cancel</button>
-                        </div>
-                    </form>
-                </div>
-            </Modal>
-        </div>
     );
 };
 

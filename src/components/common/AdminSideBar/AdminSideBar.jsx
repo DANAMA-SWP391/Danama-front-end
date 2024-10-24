@@ -1,9 +1,9 @@
 import Button from "../Button/Button.jsx";
 import './AdminSideBar.css'; // Make sure to style the sidebar
 import { MdDashboard } from "react-icons/md";
-import { FaClipboardList } from "react-icons/fa";
-import { BsDoorOpenFill } from "react-icons/bs";
-import { FaCalendarAlt } from "react-icons/fa";
+import {FaCalendarAlt, FaClipboardList} from "react-icons/fa";
+import {BsDoorOpenFill} from "react-icons/bs";
+
 
 
 function Sidebar() {
