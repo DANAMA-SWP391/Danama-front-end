@@ -7,8 +7,10 @@ import SeatDetails from "../SeatDetails/SeatDetails.jsx";
 import TotalDetails from "../TotalDetails/TotalsDetails.jsx";
 
 function BookingDetails() {
+
     return (
         <div className="body__booking-details">
+
             <h2>Booking details</h2>
             <FilmDetails />
             <TimeDetails />
