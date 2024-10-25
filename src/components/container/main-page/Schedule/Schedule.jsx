@@ -136,14 +136,16 @@ function Schedule() {
                         <div className="cinema-list-box">
                             {cinemaList.map((cinema, index) => {
                                 const priceRange = getPriceRangeForCinema(cinema.cinemaId, showtimeList); // Calculate price range
+                                const isSelected = selectedCinema?.cinemaId === cinema.cinemaId; // Check if this cinema is selected
                                 return (
-                                    <div className="cinema" key={index}>
+                                    <div className={`cinema ${isSelected ? 'selected' : ''}`} key={index}
+                                         onClick={() => handleCinemaClick(cinema)}>
                                         <p className="name">{cinema.name}</p>
                                         {priceRange ? (
                                             <p className="price-range">
                                                 {priceRange.minPrice === priceRange.maxPrice
-                                                    ? `Price: ${priceRange.minPrice}đ`  // If min equals max, display single price
-                                                    : `Price range: ${priceRange.minPrice}đ - ${priceRange.maxPrice}đ`}  {/* Else display price range */}
+                                                    ? `Price: ${priceRange.minPrice}đ` // If min equals max, display single price
+                                                    : `Price range: ${priceRange.minPrice}đ - ${priceRange.maxPrice}đ`}
                                             </p>
                                         ) : (
                                             <p className="price-range">No showtimes available</p>

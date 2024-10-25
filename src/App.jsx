@@ -12,6 +12,7 @@ import FilmPage from "./pages/film-page/film-page.jsx";
 import Profile from "./pages/profile-page/profile-page.jsx";
 import BookingDetailsPage from "./pages/booking-details-page/booking-details-page.jsx";
 import Payment from "./pages/payment-page/payment-page.jsx";
+import FilmListPage from "./pages/film-list-page/film-list-page.jsx";
 
 function App( ) {
     return (
@@ -19,6 +20,7 @@ function App( ) {
             <Router>
                 <Routes>
                     <Route path="/" element={<MainPage/>} />
+                    <Route path="/film-list" element={<FilmListPage/>} />
                     <Route path="/booking-detail" element={<BookingDetailsPage/>} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
