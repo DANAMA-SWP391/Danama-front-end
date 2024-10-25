@@ -49,7 +49,6 @@ function FilmPage() {
 
         getMovieDetails();
     }, [film]);
-    console.log(reviews);
     return (
         <div className="film-page">
             <Header />

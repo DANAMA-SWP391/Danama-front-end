@@ -39,7 +39,6 @@ function CommentSection({ reviews, movieId }) {
             })));
         }
     }, [reviews]);
-    console.log(reviews);
     // Calculate the total number of pages
     const totalPages = Math.ceil(commentList.length / commentsPerPage);
 
@@ -80,7 +79,6 @@ function CommentSection({ reviews, movieId }) {
             comment: updatedComment, // Updated comment content
             date: new Date().toISOString().slice(0, 19).replace('T', ' ') // Current date formatted
         };
-        console.log(updatedReview);
         try {
             const result = await updateReview(updatedReview); // Call the API to update the review
             if (result.success) {

@@ -3,6 +3,7 @@ import "./Schedule.css";
 import Price from "../../../../assets/Icons/priceTag.svg";
 import Location from "../../../../assets/Icons/location.svg";
 import ArrowUpward from "../../../../assets/Icons/arrow-upward.svg";
+import ArrowDownward from "../../../../assets/Icons/arrow_downward.svg";
 import PropTypes from "prop-types";
 import Button from "../../../common/Button/Button.jsx";
 import ScheduleDate from "../../../common/Date/Date.jsx";
@@ -12,13 +13,13 @@ import ShowtimeCard from "../ShowtimeCard/ShowtimeCard.jsx";
 
 // Helper function to format the date into "MMM dd, yyyy"
 const formatDate = (dateObj) => {
-    const options = {month: 'short', day: 'numeric', year: 'numeric'};
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
     return dateObj.toLocaleDateString('en-US', options);
 };
 
 // Helper function to convert date into ['Day in week', dd]
 const getDisplayDate = (dateObj) => {
-    const dayOfWeek = dateObj.toLocaleDateString('en-US', {weekday: 'short'});
+    const dayOfWeek = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
     const day = dateObj.getDate();
     return [dayOfWeek, day];
 };
@@ -34,11 +35,13 @@ const getPriceRangeForCinema = (cinemaId, showtimeList) => {
     const minPrice = Math.min(...prices); // Minimum price
     const maxPrice = Math.max(...prices); // Maximum price
 
-    return {minPrice, maxPrice};
+    return { minPrice, maxPrice };
 };
 
-function Schedule({showtimes, film}) {
-    const {cinemaList} = useContext(WebContext);
+function Schedule({ showtimes, film }) {
+    const { cinemaList } = useContext(WebContext);
+    const [userLocation, setUserLocation] = useState(null);
+
     const dates = [
         new Date("2024-10-04"),
         new Date("2024-10-05"),
@@ -48,14 +51,72 @@ function Schedule({showtimes, film}) {
         new Date("2024-10-09"),
         new Date("2024-10-10")
     ];
+
     const [selectedCinema, setSelectedCinema] = useState(null);
     const [selectedDate, setSelectedDate] = useState(formatDate(dates[0]));
+    const [sortByPrice, setSortByPrice] = useState(false); // State to track sorting by price
+    const [sortOrder, setSortOrder] = useState('desc'); // Track ascending or descending sort order
+
     useEffect(() => {
         if (cinemaList && cinemaList.length > 0) {
             const defaultCinema = cinemaList.find(cinema => cinema.name === 'CGV');
             setSelectedCinema(defaultCinema);
         }
     }, [cinemaList]);
+    // Get user's current location using the Geolocation API
+    const getUserLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    setUserLocation({ latitude, longitude });
+                },
+                (error) => {
+                    console.error("Error fetching location", error);
+                    alert("Unable to retrieve your location.");
+                }
+            );
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    };
+    // Function to generate Google Maps direction URL
+    const getDirectionsUrl = () => {
+        if (!selectedCinema || !userLocation) return "#"; // No selected cinema or no user location yet
+
+        const destination = encodeURIComponent(selectedCinema.name);
+        const { latitude, longitude } = userLocation;
+        const origin = `${latitude},${longitude}`;
+
+        return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
+    };
+    // Handle the directions button click
+    const handleDirectionOnClick = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+
+                    // Generate the Google Maps directions URL
+                    if (selectedCinema) {
+                        const destination = encodeURIComponent(selectedCinema.address);
+                        const origin = `${latitude},${longitude}`;
+                        const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
+                        window.open(url, '_blank'); // Open the URL in a new tab
+                    }
+                    else {
+                        alert("Select a cinema!!");
+                    }
+                },
+                (error) => {
+                    console.error("Error fetching location", error);
+                    alert("Unable to retrieve your location.");
+                }
+            );
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    };
 
     // Function to handle cinema logo click (set selected cinema)
     const handleCinemaClick = (cinema) => {
@@ -65,6 +126,25 @@ function Schedule({showtimes, film}) {
     // Function to handle date click
     const handleDateClick = (date) => {
         setSelectedDate(formatDate(date)); // Store the actual date in "MMM dd, yyyy"
+    };
+
+    // Function to sort cinemas by price range based on sort order
+    const sortCinemasByPrice = (cinemas) => {
+        return cinemas.sort((a, b) => {
+            const priceA = getPriceRangeForCinema(a.cinemaId, showtimes);
+            const priceB = getPriceRangeForCinema(b.cinemaId, showtimes);
+
+            const maxPriceA = priceA ? priceA.maxPrice : 0;
+            const maxPriceB = priceB ? priceB.maxPrice : 0;
+
+            return sortOrder === 'asc' ? maxPriceB - maxPriceA : maxPriceA - maxPriceB; // Ascending or descending
+        });
+    };
+
+    // Handle the sorting toggle and update the sort order
+    const handleSortByPrice = () => {
+        setSortByPrice(true);
+        setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc'); // Toggle sort order
     };
 
     return (
@@ -88,11 +168,13 @@ function Schedule({showtimes, film}) {
 
             <div className="schedule-container">
                 <div className="cinema-list">
-                    {cinemaList.map((cinema, index) => {
+                    {(sortByPrice ? sortCinemasByPrice([...cinemaList]) : cinemaList).map((cinema, index) => {
                         const priceRange = getPriceRangeForCinema(cinema.cinemaId, showtimes);
 
                         return (
-                            <div key={index} className="cinema-logo" onClick={() => handleCinemaClick(cinema)}>
+                            <div key={index}
+                                 className={`cinema-logo ${selectedCinema?.cinemaId === cinema.cinemaId ? 'selected-cinema' : ''}`}
+                                 onClick={() => handleCinemaClick(cinema)}>
                                 <div>
                                     <img src={cinema.logo} alt={cinema.name}/>
                                     <p>{cinema.name}</p>
@@ -100,22 +182,30 @@ function Schedule({showtimes, film}) {
                                 {priceRange ? (
                                     <p className="price-range">
                                         {priceRange.minPrice === priceRange.maxPrice
-                                            ? `Price: ${priceRange.minPrice}đ`  // If min equals max, display single price
-                                            : `Price range: ${priceRange.minPrice}đ - ${priceRange.maxPrice}đ`} {/* Else display price range */}
+                                            ? `Price: ${priceRange.minPrice}đ`
+                                            : `Price range: ${priceRange.minPrice}đ - ${priceRange.maxPrice}đ`}
                                     </p>
                                 ) : (
                                     <p className="price-range">No showtimes available</p>
                                 )}
                             </div>
+
                         );
                     })}
                 </div>
 
-
                 <div className="schedules">
                     <div className="button-cont">
-                        <Button><img src={Price} alt="price"/> Price <img src={ArrowUpward} alt="arrow-up"/></Button>
-                        <Button><img src={Location} alt="near-you"/> Near You </Button>
+                        <Button onClick={handleSortByPrice}>
+                            <img src={Price} alt="price"/> Price
+                            <img
+                                src={sortOrder === 'desc' ? ArrowUpward : ArrowDownward}
+                                alt={sortOrder === 'desc' ? "arrow-up" : "arrow-down"}
+                            />
+                        </Button>
+                        <Button onClick={handleDirectionOnClick}>
+                            <img src={Location} alt="directions" /> Get Directions
+                        </Button>
                     </div>
                     {showtimes
                         .filter(showtime => showtime.room.cinema.cinemaId === selectedCinema?.cinemaId && showtime.showDate === selectedDate)
@@ -124,7 +214,7 @@ function Schedule({showtimes, film}) {
                                 <h2>{selectedCinema?.name}</h2>
                                 <p className="address">{selectedCinema?.address}</p>
                                 <div className="showtimes">
-                                    <ShowtimeCard showtime={showtime} film={film}/>
+                                    <ShowtimeCard showtime={showtime} film={film} />
                                 </div>
                             </div>
                         ))}
@@ -132,7 +222,6 @@ function Schedule({showtimes, film}) {
             </div>
         </div>
     );
-
 }
 
 Schedule.propTypes = {
