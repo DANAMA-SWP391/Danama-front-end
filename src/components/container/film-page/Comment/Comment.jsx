@@ -7,6 +7,17 @@ function Comment({ comment, uid, handleDeleteReview, handleUpdateReview }) {
     const [editedComment, setEditedComment] = useState(comment.comment); // For the updated comment content
     const [editedRating, setEditedRating] = useState(comment.rating); // For the updated rating
 
+    // Format date in "HH:mm:ss, dd/MM/YYYY" format
+    const formattedDate = new Date(comment.date).toLocaleString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour12: false
+    });
+
     const handleEditClick = () => {
         setIsEditing(true); // Enable edit mode
     };
@@ -28,7 +39,7 @@ function Comment({ comment, uid, handleDeleteReview, handleUpdateReview }) {
                 <img src={comment.avatar} alt="user" />
                 <div>
                     <h4>{comment.user}</h4>
-                    <p className="date">{comment.date}</p>
+                    <p className="date">{formattedDate}</p> {/* Display formatted date */}
                 </div>
             </div>
             {!isEditing ? (

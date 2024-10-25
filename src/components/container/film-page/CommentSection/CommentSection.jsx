@@ -39,7 +39,7 @@ function CommentSection({ reviews, movieId }) {
             })));
         }
     }, [reviews]);
-
+    console.log(reviews);
     // Calculate the total number of pages
     const totalPages = Math.ceil(commentList.length / commentsPerPage);
 
@@ -61,8 +61,8 @@ function CommentSection({ reviews, movieId }) {
         try {
             const result = await deleteReview(reviewId); // Call the API to delete the review
             if (result.success) {
-                // Remove the review from the local state
-                setCommentList(commentList.filter((review) => review.reviewId !== reviewId));
+                alert("Delete review successfully.");
+                window.location.reload();
             } else {
                 alert("Failed to delete review.");
             }
@@ -76,7 +76,7 @@ function CommentSection({ reviews, movieId }) {
     const handleUpdateReview = async (reviewId, updatedComment, updatedRating) => {
         const updatedReview = {
             reviewId,
-            rate: updatedRating, // Updated rating
+            rating: updatedRating, // Updated rating
             comment: updatedComment, // Updated comment content
             date: new Date().toISOString().slice(0, 19).replace('T', ' ') // Current date formatted
         };
@@ -84,14 +84,9 @@ function CommentSection({ reviews, movieId }) {
         try {
             const result = await updateReview(updatedReview); // Call the API to update the review
             if (result.success) {
+                alert("Update review successfully.");
                 // Update the review in the local state
-                setCommentList(
-                    commentList.map((review) =>
-                        review.reviewId === reviewId
-                            ? { ...review, comment: updatedComment, rating: updatedRating }
-                            : review
-                    )
-                );
+                window.location.reload();
             } else {
                 alert("Failed to update review.");
             }
@@ -111,12 +106,14 @@ function CommentSection({ reviews, movieId }) {
     };
 
     return (
-        <div className="comment-section">
-            {isCommentBoxVisible && <div className="overlay" onClick={() => setIsCommentBoxVisible(false)}></div>}
+        <div className={`comment-section wrapper ${isCommentBoxVisible ? 'darken' : ''}`}>
+            {isCommentBoxVisible && <div className="overlay"></div>}
             <Button onClick={handleCommentClick}>Leave rate and comment?</Button>
             {isCommentBoxVisible && (
-                <CommentBox setIsCommentBoxVisible={setIsCommentBoxVisible} movieId={movieId} uid={user.UID} />
+                <CommentBox setIsCommentBoxVisible={setIsCommentBoxVisible} movieId={movieId} uid={user.UID}/>
             )}
+
+            {/* Comments Header */}
             <div className="comment-section__header">
                 <h3>Comments</h3>
             </div>
@@ -138,13 +135,14 @@ function CommentSection({ reviews, movieId }) {
                     Previous
                 </Button>
                 <span>
-                    Page {currentPage} of {totalPages}
-                </span>
+            Page {currentPage} of {totalPages}
+        </span>
                 <Button onClick={goToNextPage} disabled={currentPage === totalPages}>
                     Next
                 </Button>
             </div>
         </div>
+
     );
 }
 
