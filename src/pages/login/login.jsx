@@ -42,7 +42,6 @@ function Login() {
                 const response = await login(email, password); // Use the login function
 
                 if (response.success) {
-                    console.log(response.user);
                     setUser(response.user);
                     handleLoginSuccess(response.user); // Call your success handler
                 } else {

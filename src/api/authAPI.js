@@ -47,7 +47,6 @@ export async function loginByGoogle(token) {
         }
 
         const data = await response.json();
-        console.log(data);
         // Return the response data, which includes success and message
         if (data.success && data.jwtToken) {
             // Store the JWT token in localStorage
