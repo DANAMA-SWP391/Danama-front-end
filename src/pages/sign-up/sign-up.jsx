@@ -57,7 +57,7 @@ function SignUp() {
                 name: name,
                 phone: phone,
                 avatar: defaultAvatar,
-                roleId: 1
+                roleId: 3
             }
             setHasError(false);
             navigate('/email-verification', {state: {user}});

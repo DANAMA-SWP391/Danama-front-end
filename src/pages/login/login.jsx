@@ -11,7 +11,7 @@ import { UserContext } from "../../utils/userContext.jsx";
 import {login} from "../../api/authAPI.js";
 
 function Login() {
-    const { setUser } = useContext(UserContext);
+    const {setUser } = useContext(UserContext);
     const navigate = useNavigate();
 
     const [isSuccess, setIsSuccess] = useState(true);
@@ -42,8 +42,9 @@ function Login() {
                 const response = await login(email, password); // Use the login function
 
                 if (response.success) {
+                    console.log(response.user);
                     setUser(response.user);
-                    handleLoginSuccess(); // Call your success handler
+                    handleLoginSuccess(response.user); // Call your success handler
                 } else {
                     handleLoginFailed(); // Call your failure handler
                     setContent(response.message || "Login failed!"); // Optionally set an error message
@@ -64,9 +65,16 @@ function Login() {
         setIsSuccess(false);
     };
 
-    const handleLoginSuccess = () => {
+    const handleLoginSuccess = (user) => {
         setIsSuccess(true);
-        navigate("/");
+        if(user.roleId === 2) {
+            navigate("/Cmanager");
+        }
+        else if(user.roleId === 1) {
+            navigate("/admin");
+        } else {
+            navigate("/");
+        }
     };
 
     return (
