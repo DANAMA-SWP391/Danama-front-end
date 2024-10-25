@@ -8,6 +8,7 @@ import Button from "../../../common/Button/Button.jsx";
 import ScheduleDate from "../../../common/Date/Date.jsx";
 import {WebContext} from "../../../../utils/webContext.jsx";
 import {useContext, useEffect, useState} from "react";
+import ShowtimeCard from "../ShowtimeCard/ShowtimeCard.jsx";
 
 // Helper function to format the date into "MMM dd, yyyy"
 const formatDate = (dateObj) => {
@@ -123,10 +124,7 @@ function Schedule({showtimes, film}) {
                                 <h2>{selectedCinema?.name}</h2>
                                 <p className="address">{selectedCinema?.address}</p>
                                 <div className="showtimes">
-                                    <div className="showtime">
-                                        <p className="time">{showtime.startTime} ~ {showtime.endTime}</p>
-                                        <p className="price">Base Price: {showtime.basePrice}đ</p>
-                                    </div>
+                                    <ShowtimeCard showtime={showtime} film={film}/>
                                 </div>
                             </div>
                         ))}

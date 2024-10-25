@@ -3,7 +3,7 @@ import "./FilmCard.css";
 import SeatLayout from "../SeatLayout/SeatLayout.jsx";
 import BookingInfo from "../BookingInfo/BookingInfo.jsx";
 import BackSpace from '../../../../assets/Icons/back-space.svg';
-import {useEffect, useState} from "react";
+import { useState} from "react";
 import {fetchDetailShowtime} from "../../../../api/webAPI.jsx";
 import {fetchJwtToken} from "../../../../api/authAPI.js";
 import {addBooking} from "../../../../api/userAPI.js";
@@ -21,42 +21,35 @@ function FilmCard({film, showtimes}) {
     const [showtime, setShowtime] =useState({});
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
-    // Fetch user info once when the component loads
-    useEffect(() => {
-        const validateToken = async () => {
+    const handleSelectedShowtime = async (showtime) => {
+        setIsClick(true);
+        setShowtime(showtime);
+        setLoading(true);
+        if(!user) {
             try {
-                const result = await fetchJwtToken(); // Validate token and get user info
+                const result = await fetchJwtToken(); // Fetch user info by validating token
                 if (result.success) {
-                    setUser(result.user); // Set user info
+                    setUser(result.user); // Set user info if token is valid
+                } else {
+                    alert('Please log in to select seats.');
+                    navigate('/login');
+                    return; // Exit if user not logged in
                 }
             } catch (error) {
                 console.error("Error fetching user data:", error);
+                return;
             }
-        };
-        validateToken();
-    }, []);
-    const handleSelectedShowtime = async (showtime) => {
-        if (!user) {
-            // Nếu người dùng chưa đăng nhập, điều hướng tới trang đăng nhập
-            alert('Please log in to select seats.');
-            navigate('/login');
-            return; // Ngăn không cho tiếp tục nếu chưa đăng nhập
         }
 
-        setShowtime(showtime);
-        setIsClick(true);
-        setLoading(true); // Start loading state
         try {
-            // Fetch seat details from API
             const response = await fetchDetailShowtime(showtime.showtimeId, showtime.room.roomId);
             if (response) {
-                const { seats } = response; // Assuming response contains seats as an array
-                setSeats(seats); // Update seats with 2D grid
+                setSeats(response.seats);
             }
         } catch (error) {
             console.error("Error fetching showtime details:", error);
         } finally {
-            setLoading(false); // End loading state after fetch is complete
+            setLoading(false);
         }
     };
     const handleClick =() => {
@@ -89,30 +82,27 @@ function FilmCard({film, showtimes}) {
         }
     };
     const handlePurchase = async () => {
+        setLoading(true);
         try {
-            // Create booking object
             const bookingData = {
                 user: { UID: user.UID },
                 totalCost: price,
-                timestamp: new Date().toISOString(), // Set current timestamp
-                status: 0, // Initial status
+                timestamp: new Date().toISOString(),
+                status: 0,
             };
 
-            // Create ticket objects for each selected seat
             const tickets = selectedSeats.map(seat => ({
                 price: seat.price,
-                name: user.name, // Assuming you will pass the user name
-                email: user.email, // Assuming you have user email
-                phone: user.phone, // Assuming you have user phone
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
                 showtime: { showtimeId: showtime.showtimeId },
-                seat: { seatId: seat.seatId }
+                seat: { seatId: seat.seatId },
             }));
 
-            // Send booking and tickets to backend
             const response = await addBooking(bookingData, tickets);
 
             if (response.success) {
-                // Navigate to the payment page with bookingId and booking details
                 navigate('/payment', {
                     state: {
                         bookingId: response.bookingId,
@@ -122,15 +112,16 @@ function FilmCard({film, showtimes}) {
                             selectedSeats,
                             price,
                             cinema: showtime.room.cinema,
-                        }
-                    }
+                        },
+                    },
                 });
             } else {
                 alert('Booking failed');
-                console.error('Booking failed');
+                setLoading(false);
             }
         } catch (error) {
             console.error('Error during booking creation:', error);
+            setLoading(false);
         }
     };
     return (

@@ -16,9 +16,6 @@ function FilmLists() {
             upcomingFilms.push(film);
         }
     });
-    console.log(filmList);
-    console.log(playingFilms);
-    console.log(upcomingFilms);
 
     return (
         <div className="film-lists">

@@ -23,7 +23,7 @@ import {WebContext} from "../../utils/webContext.jsx";
 function FilmPage() {
     const location = useLocation();
     const { film } = location.state || {};
-    const { user, filmList } = useContext(UserContext);
+    const { user } = useContext(UserContext);
     const screenShots = [screenshot1, screenshot2, screenshot3, screenshot4, screenshot5];
     const {showtimeList} = useContext(WebContext);
     const [isLogged, setIsLogged] = useState(false);
@@ -60,7 +60,7 @@ function FilmPage() {
             <SeparateLine />
             <Schedule showtimes={showtimes} film={film} />
             <SeparateLine />
-            <FilmLists filmLists={filmList} />
+            <FilmLists />
             <Footer />
         </div>
     );

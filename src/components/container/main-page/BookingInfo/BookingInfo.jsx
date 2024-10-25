@@ -21,21 +21,21 @@ const BookingInfo = ({ film, showtime, selectedSeats, handlePurchase, price }) =
         <div className="seat-infos">
             <p>Seat: </p>
             <div className="seat-list">
-                {selectedSeats? (
+                {selectedSeats && selectedSeats.length > 0 ? (
                     selectedSeats.map((seat, index) => (
                         <div key={index} className="seat-item">
                             <p>{seat.seatNum}</p> {/* Display seat number */}
                         </div>
                     ))
                 ) : (
-                    <p>No seats selected</p>  // Display message if no seats are selected
+                    <p></p>// Display message if no seats are selected
                 )}
             </div>
         </div>
 
         {/* Price information */}
         <div className="price">
-            <p>Price: {price.toLocaleString()}đ</p> {/* Display total price */}
+            <p>Total Price: {price.toLocaleString()}đ</p> {/* Display total price */}
         </div>
 
         {/* Purchase button */}
@@ -56,8 +56,10 @@ BookingInfo.propTypes = {
             name: PropTypes.string.isRequired,  // Room name
         }).isRequired
     }).isRequired,
-    selectedSeats: PropTypes.arrayOf(PropTypes.string).isRequired, // List of selected seat numbers
-    handlePurchase: PropTypes.func.isRequired,            // Remove seat handler
+    selectedSeats: PropTypes.arrayOf(PropTypes.shape({
+        seatNum: PropTypes.string.isRequired, // Seat number
+    })).isRequired, // List of selected seat numbers
+    handlePurchase: PropTypes.func.isRequired,            // Purchase handler
     price: PropTypes.number.isRequired                             // Total price of the selected seats
 };
 
