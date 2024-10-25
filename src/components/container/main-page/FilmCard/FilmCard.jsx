@@ -175,8 +175,7 @@ FilmCard.propTypes = {
     film: PropTypes.shape({
         poster: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
-        ageRestricted: PropTypes.number.isRequired, // Ensure it's a number as you mentioned
-        genre: PropTypes.string.isRequired,
+        ageRestricted: PropTypes.number.isRequired
     }).isRequired,
     showtimes: PropTypes.arrayOf(PropTypes.shape({
         startTime: PropTypes.string.isRequired, // String in HH:mm:ss format

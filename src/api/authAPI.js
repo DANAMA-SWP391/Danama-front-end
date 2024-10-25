@@ -21,6 +21,9 @@ export async function login(email, password) {
             localStorage.setItem('jwtToken', data.jwtToken);
             localStorage.setItem('user', JSON.stringify(data.user));
             // console.log(data);
+            if(data.user.roleId === 2) {
+                localStorage.setItem('cinema',data.cinema);
+            }
         }
         return data;
     } catch (error) {

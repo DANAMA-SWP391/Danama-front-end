@@ -36,7 +36,7 @@ export async function doVNPayPayment(amount, bookingId) {
 export async function checkPaymentStatus(bookingId) {
     try {
         const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/checkPaymentStatus?bookingId=${bookingId}`);
-        return await response.json(); // Return the payment status
+        return await response.json(); // { status: 0, 1, or 2 }
     } catch (error) {
         console.error("Error checking payment status:", error);
         return { status: 'error', message: 'Failed to check payment status' };

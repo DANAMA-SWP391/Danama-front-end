@@ -70,25 +70,29 @@ function BookingDetails({bookingData, paymentMethod, bookingId}) {
         }
     };
 
-    // Polling function for payment completion
     const pollForPaymentCompletion = async (bookingId) => {
-        const maxRetries = 15;
+        const maxRetries = 20;
         let retries = 0;
         let paymentCompleted = false;
 
         while (!paymentCompleted && retries < maxRetries) {
             const result = await checkPaymentStatus(bookingId);
             console.log(result);
-            if (result.success) {
+
+            if (result.status === 1) { // Status 1 indicates success
                 paymentCompleted = true;
-            }  else {
+            } else if (result.status === 2) { // Status 2 indicates failure
+                paymentCompleted = false;
+                break; // Exit loop if payment has failed
+            } else { // Status 0 or other indicates pending
                 retries += 1;
-                await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 3 seconds before checking again
+                await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 5 seconds before checking again
             }
         }
 
         return paymentCompleted;
     };
+
 
     return (
         <div className={`body__booking-details ${isPaymentInProgress ? 'overlay-active' : ''}`}>
