@@ -15,7 +15,7 @@ import RoomManagement from "./pages/cManager-Pages/room-management-page/room-man
 import ShowtimeManagement from "./pages/cManager-Pages/showtime-management-page/showtime-management.jsx";
 import CinemaDashboard from "./pages/cManager-Pages/dashboard-page/dash-board.jsx";
 import SeatManagement    from "./pages/cManager-Pages/seat-management-page/seat-management.jsx";
-// import Profile from "./pages/profile-page/profile-page.jsx";
+import Profile from "./pages/profile-page/profile-page.jsx";
 
 function App( ) {
     return (
@@ -38,7 +38,7 @@ function App( ) {
                     <Route path="/film-page" element={<FilmPage />} />
 
                     {/*<Route path="/payment" element={<Payment />} />*/}
-                    {/*<Route path="/profile" element={<Profile />} />*/}
+                    <Route path="/profile" element={<Profile />} />
                 </Routes>
             </Router>
         </UserProvider>

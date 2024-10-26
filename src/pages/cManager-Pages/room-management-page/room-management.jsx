@@ -55,8 +55,8 @@ function RoomManagement() {
         }
     };
 
-    const handleNavigate = (roomId) => {
-        navigate(`/seat-management/${roomId}`);
+    const handleNavigate = (room) => {
+        navigate(`/seat-management/${room.roomId}` , {state: {room}}) ;
     };
 
     const openDeleteModal = (roomId) => {
@@ -149,7 +149,7 @@ function RoomManagement() {
                                         <td>{room.name}</td>
                                         <td>{room.numberOfSeat}</td>
                                         <td>
-                                            <Button className="edit-seat-button" onClick={() => handleNavigate(room.roomId)}>
+                                            <Button className="edit-seat-button" onClick={() => handleNavigate(room)}>
                                                 <span className="icon"><MdEventSeat style={{fontSize: '20px'}}/></span>
                                             </Button>
                                         </td>

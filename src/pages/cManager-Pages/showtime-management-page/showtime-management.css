@@ -99,93 +99,17 @@
     width: 10px;
     text-align: center; /* Optional: to center the icons */
 }
-/*.modal {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    justify-content: center; !* Căn giữa theo chiều dọc *!*/
-/*    align-items: center; !* Căn giữa theo chiều ngang *!*/
-/*    max-width: 500px; !* Đặt chiều rộng tối đa cho modal *!*/
-/*    margin: auto; !* Căn giữa modal *!*/
-/*    padding: 20px; !* Thêm padding bên trong modal *!*/
-/*    border-radius: 10px; !* Bo góc modal *!*/
-/*    background-color: #fff; !* Màu nền của modal *!*/
-/*    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); !* Đổ bóng cho modal *!*/
-/*}*/
 
-/*.modal-header {*/
-/*    width: 100%; !* Đặt chiều rộng 100% *!*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*    align-items: center;*/
-/*    padding: 10px 20px;*/
-/*    background-color: #6A2222; !* Màu nền của header *!*/
-/*    color: white; !* Màu chữ *!*/
-/*    border-radius: 10px 10px 0 0; !* Bo góc trên cho header *!*/
-/*}*/
-
-/*.modal-title {*/
-/*    font-size: 1.5em;*/
-/*    margin: 0;*/
-/*}*/
-
-/*.modal-body {*/
-/*    width: 100%; !* Đặt chiều rộng 100% *!*/
-/*    padding: 20px;*/
-/*}*/
-
-/*.modal-footer {*/
-/*    display: flex;*/
-/*    justify-content: center; !* Căn giữa các nút *!*/
-/*    padding: 10px 0; !* Thêm padding cho footer *!*/
-/*    width: 100%; !* Đặt chiều rộng 100% *!*/
-/*}*/
-
-/*.modal-footer button {*/
-/*    margin: 0 10px; !* Khoảng cách giữa các nút *!*/
-/*}*/
-
-/*.modal {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    justify-content: center; !* Căn giữa theo chiều dọc *!*/
-/*    align-items: center; !* Căn giữa theo chiều ngang *!*/
-/*    max-width: 500px; !* Đặt chiều rộng tối đa cho modal *!*/
-/*    margin: auto; !* Căn giữa modal *!*/
-/*    padding: 0; !* Bỏ padding bên ngoài modal *!*/
-/*    border-radius: 10px; !* Bo góc modal *!*/
-/*    background-color: #fff; !* Màu nền của modal *!*/
-/*    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); !* Đổ bóng cho modal *!*/
-/*}*/
-
-/*.modal {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    max-width: 500px;*/
-/*    margin: auto;*/
-/*    padding: 0;*/
-/*    border-radius: 10px;*/
-/*    background-color: #fff;*/
-/*    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);*/
-/*    position: relative; !* Thay đổi position thành relative *!*/
-/*    z-index: 1000; !* Đặt z-index cao hơn để modal nằm trên header *!*/
-/*    margin-top: 60px; !* Thêm khoảng cách từ trên xuống *!*/
-/*}*/
-
-/*.modal-header {*/
-/*    width: 100%; !* Đặt chiều rộng 100% *!*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*    align-items: center;*/
-/*    padding: 10px 20px; !* Thêm padding cho header *!*/
-/*    background-color: #6A2222; !* Màu nền của header *!*/
-/*    color: white; !* Màu chữ *!*/
-/*    border-radius: 10px 10px 0 0; !* Bo góc trên cho header *!*/
-/*}*/
-/*.add-room-button{*/
-
-/*}*/
+.select-dropdown {
+    width: 100%; /* Chiếm toàn bộ chiều rộng của container */
+    padding: 8px; /* Đảm bảo khoảng cách nội dung bên trong */
+    font-size: 16px; /* Đảm bảo kích thước chữ tương đương */
+    border-radius: 4px; /* Bo tròn cạnh tương tự */
+    border: 1px solid #ccc; /* Viền tương tự các ô khác */
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng chiều rộng */
+    margin-bottom: 15px;
+    margin-top:10px;
+}
 
 .modal {
     display: flex;
@@ -199,7 +123,7 @@
     background-color: #fff;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     position: relative;
-    z-index: 1000;
+    /*z-index: 1000;*/
     margin-top: 60px; /* Adjust this if needed */
     max-height: 90vh; /* Limit height to 90% of viewport height */
     overflow-y: auto; /* Allow scrolling if the content is too tall */
@@ -296,8 +220,9 @@
     gap: 10px; /* Khoảng cách giữa label và thông báo lỗi */
 }
 
-.error-message {
+.showtime-error-message {
     color: red;
     font-size: 12px;
     margin-left: 10px;
+    margin-top:0px;
 }

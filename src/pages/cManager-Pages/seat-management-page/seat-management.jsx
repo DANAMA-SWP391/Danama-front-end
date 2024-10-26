@@ -1,3 +1,7 @@
+
+
+
+
 import { useEffect, useState } from "react";
 import Sidebar from "../../../components/common/CMangerSideBar/CManagerSideBar.jsx";
 import "./seat-management.css";
@@ -5,14 +9,15 @@ import CManagerHeader from "../../../components/common/CManagerHeader/CManagerHe
 import { fetchSeatList, fetchDeleteSeat, fetchAddSeat, fetchChangeSeatType } from "../../../api/cManagerAPI.js";
 import Button from "../../../components/common/Button/Button.jsx";
 import Modal from "react-modal";
-import { MdDeleteOutline } from "react-icons/md";
-import { FaPencilAlt } from "react-icons/fa";
-import PropTypes from 'prop-types';  // Import PropTypes
-import { useParams } from 'react-router-dom';
-
+import {  useLocation,useNavigate } from 'react-router-dom';
+import CManagerSeatLayout from "../../../components/container/CManager-page/CManagerSeatLayout/CManagerSeatLayout.jsx";
+import BackSpace from "../../../assets/Icons/back-space.svg";
 
 function SeatManagement() {
-    const { roomId } = useParams();  // Lấy roomId từ URL
+    // const { roomId } = useParams();
+    const location = useLocation(); // Lấy dữ liệu từ state
+    const navigate = useNavigate(); // Hook điều hướng
+    const room = location.state?.room; // Truy cập object room
     const [seats, setSeats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -21,16 +26,18 @@ function SeatManagement() {
     const [formData, setFormData] = useState({ seatId: '', row: '', col: '', seatNum: '', type: '' });
     const [seatToDelete, setSeatToDelete] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [selectedSeat, setSelectedSeat] = useState(null);  // Chứa thông tin của ghế được chọn
+    const [errorMessage, setErrorMessage] = useState('');
+    const seatsInfo = [
+         ["Standard", "#1BA0D4"], ["VIP", "#D64242"]
+    ];
 
-    // Lấy danh sách ghế khi component được mount
     const getSeats = async () => {
         setLoading(true);
         try {
-            const data = await fetchSeatList(roomId);  // Sử dụng roomId lấy từ URL
-            console.log(data);
+            const data = await fetchSeatList(room.roomId);
             setSeats(data.seats || []);
         } catch (error) {
-            console.error('Error fetching seat list:', error);
             setError('Could not fetch seats.');
         }
         setLoading(false);
@@ -38,66 +45,87 @@ function SeatManagement() {
 
     useEffect(() => {
         getSeats();
-        console.log("Data seats" ,seats);  // Thêm dòng này để kiểm tra dữ liệu các ghế
-    }, [roomId]);
+    }, [room.roomId]);
 
-    // Xử lý xóa ghế
     const handleDeleteSeat = async () => {
         const result = await fetchDeleteSeat(seatToDelete);
         if (result) {
             setSeats(seats.filter(seat => seat.seatId !== seatToDelete));
             setIsDeleteModalOpen(false);
-        } else {
-            console.error('Failed to delete seat');
         }
     };
 
-    const openDeleteModal = (seatId) => {
-        setSeatToDelete(seatId);
+    const openDeleteModal = () => {
+        setSeatToDelete(selectedSeat.seatId);
         setIsDeleteModalOpen(true);
+        setSelectedSeat(null); // Đóng choice-popup
+
     };
 
-    const openAddSeatModal = () => {
+    const openAddSeatModal = (seat) => {
         setIsEdit(false);
-        setFormData({ row: '', col: '', seatNum: '', type: '' });
+        // Tạo seatNum dựa trên row và col
+        const rowLetter = String.fromCharCode(64 + seat.row); // Convert row 1 -> A, row 2 -> B, etc.
+        const seatNum = `${rowLetter}${seat.col}`; // Ví dụ: B4
+
+        setFormData({
+            row: seat.row,
+            col: seat.col,
+            seatNum: seatNum, // Tự động set giá trị seatNum
+            type: ''
+        });
         setIsModalOpen(true);
     };
 
-    const openUpdateSeatModal = (seat) => {
+    useEffect(() => {
+        if (!isEdit && formData.row && formData.col) {
+            setIsModalOpen(true); // Chỉ mở modal sau khi row và col được cập nhật
+            console.log("Modal mở với formData:", formData); // Kiểm tra dữ liệu
+        }
+    }, [formData.row, formData.col]);
+
+
+    const openUpdateSeatModal = () => {
         setIsEdit(true);
-        setFormData({ seatId: seat.seatId, row: seat.row, col: seat.col, seatNum: seat.seatNum, type: seat.type });
+        setFormData({
+            seatId: selectedSeat.seatId,
+            row: selectedSeat.row,
+            col: selectedSeat.col,
+            seatNum: selectedSeat.seatNum,
+            type: selectedSeat.type
+        });
         setIsModalOpen(true);
+        setSelectedSeat(null); // Đóng choice-popup
+
     };
 
     const handleSubmit = async () => {
+        if (!formData.type) {
+            setErrorMessage("Please select a Seat Type");
+            return; // Dừng submit nếu không chọn loại ghế
+        }
+
         const dataToSend = {
             row: formData.row,
             col: formData.col,
             seatNum: formData.seatNum,
             type: formData.type,
-            room: { roomId: roomId }
+            room: { roomId: room.roomId }
         };
 
-        // if (isEdit) {
-        //     await fetchChangeSeatType({ ...dataToSend, seatId: formData.seatId });
-        //     setSeats(seats.map(seat => seat.seatId === formData.seatId ? { ...dataToSend, seatId: formData.seatId } : seat));
-        // } else {
-        //     await fetchAddSeat(dataToSend);
-        //     await getSeats();
-        // }
-        // setIsModalOpen(false);
         if (isEdit) {
             await fetchChangeSeatType({ ...dataToSend, seatId: formData.seatId });
             setSeats(seats.map(seat => seat.seatId === formData.seatId ? { ...dataToSend, seatId: formData.seatId } : seat));
         } else {
-            const newSeat = await fetchAddSeat(dataToSend);  // Thêm ghế mới và nhận phản hồi từ server
+            const newSeat = await fetchAddSeat(dataToSend);
             if (newSeat && newSeat.seatId) {
-                setSeats([...seats, newSeat]);  // Cập nhật danh sách ghế với ghế mới
+                setSeats([...seats, newSeat]);
             } else {
-                await getSeats();  // Nếu không có phản hồi đầy đủ, gọi lại để lấy danh sách ghế mới
+                await getSeats();
             }
         }
         setIsModalOpen(false);
+        setErrorMessage(''); // Reset lại thông báo lỗi sau khi submit thành công
 
     };
 
@@ -106,109 +134,117 @@ function SeatManagement() {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    const getSeatColor = (seatType) => {
+        switch (seatType) {
+            case 'VIP':
+                return '#e74c3c';
+            case 'Standard':
+                return '#3498db';
+            case 'Booked':
+                return 'black';
+            case 'Selected':
+                return '#D3D3D3';
+            default:
+                return '#FFFFFF';
+        }
+    };
+
+    const handleSeatClick = (seat) => {
+        // setSelectedSeat(seat);  // Lưu ghế được chọn
+        // Nếu seat có ID, đó là ghế đã có, mở modal Update/Delete
+        if (seat.seatId) {
+            setSelectedSeat(seat);
+        } else {
+            // // Nếu seat không có ID, đó là ghế trống, mở modal thêm ghế mới
+            // setFormData({ row: seat.row, col: seat.col, seatNum: '', type: '' });
+            // // openAddSeatModal();
+            // setIsEdit(false);
+            // setIsModalOpen(true); // Mở modal để thêm ghế mới ngay lập tức
+            openAddSeatModal(seat); // Gọi hàm thêm ghế mới với thông tin row và col
+
+        }
+    };
+
     return (
         <div className="seat-management-page">
-            <CManagerHeader />
-            <div className="seat-layout">
+            <CManagerHeader  />
+            <div className="seat-management-layout">
                 <Sidebar />
                 <div className="seat-management-content">
-                    <h2 className="title">Seat List</h2>
-                    <Button className="add-seat-button" onClick={openAddSeatModal}>+ Add new seat</Button>
+                    <div className="seat-header-container">
+                        <img
+                            src={BackSpace}
+                            alt="Back"
+                            className="back-icon"
+                            onClick={() => navigate('/room-management')}
+                        />
+                        <div className="room-name-display">{room.name}</div>
+                    </div>
+                    {/*<h2 className="title">Seat Management</h2>*/}
 
                     {loading ? (
                         <p>Loading...</p>
                     ) : error ? (
                         <p>{error}</p>
                     ) : (
-                        <table className="seat-table">
-                            <thead>
-                            <tr>
-                                <th>Seat ID</th>
-                                <th>Row</th>
-                                <th>Col</th>
-                                <th>SeatNum</th>
-                                <th>Type</th>
-                                <th className="icon-seat-column">Edit</th>
-                                <th className="icon-seat-column">Delete</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {seats.map((seat) => (
-                                <tr key={seat.seatId}>
-                                    <td>{seat.seatId}</td>
-                                    <td>{seat.row}</td>
-                                    <td>{seat.col}</td>
-                                    <td>{seat.seatNum}</td>
-                                    <td>{seat.type}</td>
-                                    <td>
-                                        <Button className="update-seat-button" onClick={() => openUpdateSeatModal(seat)}>
-                                            <span className="icon"><FaPencilAlt style={{ fontSize: '20px' }} /></span>
-                                        </Button>
-                                    </td>
-                                    <td>
-                                        <Button className="delete-seat-button" onClick={() => openDeleteModal(seat.seatId)}>
-                                            <span className="icon"><MdDeleteOutline style={{ fontSize: '20px' }} /></span>
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
+                        <>
+                        <CManagerSeatLayout
+                            seats={seats}
+                            selectedSeats={[]}
+                            getSeatColor={getSeatColor}
+                            handleClick={handleSeatClick}
+                        />
+
+                            <div className="seats-management-info">
+                                {seatsInfo.map((info, index) => (
+                                    <div className="info" key={index}>
+                                        <div className="color" style={{backgroundColor: info[1]}}></div>
+                                        <p>{info[0]}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </>
+
+
+                    )}
+
+
+                    {selectedSeat && (
+
+
+                        <div className="choice-popup">
+                            <h3>Seat {selectedSeat.seatNum}</h3>
+                            <Button onClick={openUpdateSeatModal}>Update</Button>
+                            <Button onClick={openDeleteModal}>Delete</Button>
+                            <Button onClick={() => setSelectedSeat(null)}>Cancel</Button>
+
+                        </div>
+
+
                     )}
 
                     <Modal
                         isOpen={isModalOpen}
-                        onRequestClose={() => setIsModalOpen(false)}
-                        contentLabel={isEdit ? "Update Seat" : "Add Seat"}
-                        className="modal"
+                        onRequestClose={() => {
+                            setIsModalOpen(false);
+                    setErrorMessage(''); // Reset thông báo lỗi khi đóng modal
+                        }}
+                    contentLabel={isEdit ? "Update Seat" : "Add Seat"}
+                        className="seatmanagement-modal"
+
                     >
-                        <div className="modal-header">
-                            <h2 className="modal-title">{isEdit ? "Update Seat" : "Add Seat"}</h2>
+                        <div className="seatmanagement-modal-header">
+                            <h2 className="modal-title">{isEdit ? "Update Seat" : "Add Seat" }</h2>
                         </div>
-                        <div className="modal-body">
+                        <div className="seatmanagment-modal-body">
                             <form onSubmit={handleSubmit}>
+
+
                                 <div>
-                                    <label>Row:</label>
-                                    <input
-                                        type="text"
-                                        name="row"
-                                        value={formData.row}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label>Col:</label>
-                                    <input
-                                        type="text"
-                                        name="col"
-                                        value={formData.col}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label>Seat Number:</label>
-                                    <input
-                                        type="text"
-                                        name="seatNum"
-                                        value={formData.seatNum}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                {/*<div>*/}
-                                {/*    <label>Type:</label>*/}
-                                {/*    <input*/}
-                                {/*        type="text"*/}
-                                {/*        name="type"*/}
-                                {/*        value={formData.type}*/}
-                                {/*        onChange={handleChange}*/}
-                                {/*        required*/}
-                                {/*    />*/}
-                                {/*</div>*/}
-                                <div>
-                                    <label>Type:</label>
+                                    <div>
+                                        <label>Type:</label>
+                                    {errorMessage && <p className="seattype-error" style={{ color: 'red' }}>{errorMessage}</p>}
+                                    </div>
                                     <select
                                         name="type"
                                         value={formData.type}
@@ -216,12 +252,11 @@ function SeatManagement() {
                                         required
                                     >
                                         <option value="">Select Seat Type</option>
-                                        {/* Default placeholder */}
                                         <option value="VIP">VIP</option>
                                         <option value="Standard">Standard</option>
                                     </select>
                                 </div>
-                                <div className="modal-footer">
+                                <div className="seatmanagement-modal-footer">
                                     <Button onClick={handleSubmit}>{isEdit ? "Update" : "Add"}</Button>
                                     <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
                                 </div>
@@ -233,30 +268,24 @@ function SeatManagement() {
                         isOpen={isDeleteModalOpen}
                         onRequestClose={() => setIsDeleteModalOpen(false)}
                         contentLabel="Confirm Delete"
-                        className="modal"
+                        className="seatmanagement-modal"
                     >
-                        <div className="modal-header">
+                        <div className="seatmanagement-modal-header">
                             <h2 className="modal-title">Confirm Delete</h2>
                         </div>
-                        <div className="modal-body">
+                        <div className="seatmanagement-modal-body">
                             <p>Are you sure you want to delete this seat?</p>
                         </div>
-                        <div className="modal-footer">
+                        <div className="seatmanagement-modal-footer">
                             <Button onClick={handleDeleteSeat}>Yes</Button>
                             <Button onClick={() => setIsDeleteModalOpen(false)}>Cancel</Button>
                         </div>
                     </Modal>
-
                 </div>
             </div>
         </div>
-
     );
 }
 
-// Định nghĩa propTypes cho component
-SeatManagement.propTypes = {
-    roomId: PropTypes.number.isRequired  // Kiểm tra roomId là số và bắt buộc
-};
-
 export default SeatManagement;
+

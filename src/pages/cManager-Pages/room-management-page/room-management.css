@@ -179,7 +179,7 @@
     background-color: #fff;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     position: relative; /* Thay đổi position thành relative */
-    z-index: 1000; /* Đặt z-index cao hơn để modal nằm trên header */
+    /*z-index: 1000; !* Đặt z-index cao hơn để modal nằm trên header *!*/
     margin-top: 60px; /* Thêm khoảng cách từ trên xuống */
 }
 

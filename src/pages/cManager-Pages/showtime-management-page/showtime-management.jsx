@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useContext, useEffect, useState} from "react";
 import Sidebar from "../../../components/common/CMangerSideBar/CManagerSideBar.jsx";
 import "./showtime-management.css";
 import CManagerHeader from "../../../components/common/CManagerHeader/CManagerHeader.jsx";
@@ -13,10 +13,13 @@ import {MdDeleteOutline} from "react-icons/md";
 
 import {FaPencilAlt} from "react-icons/fa";
 import Modal from "react-modal";
+import {WebContext} from "../../../utils/webContext.jsx";
 
 
 function ShowtimeManagement() {
     const [showtimes, setShowtimes] = useState([]);
+    const {filmList} = useContext(WebContext);
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
@@ -55,6 +58,7 @@ function ShowtimeManagement() {
         try {
             const data = await fetchShowtimeList(cinemaId);
             console.log(data); //Check data
+            console.log("filmlist:", filmList);
             setShowtimes(data.showtimes || []);
         } catch (error) {
             console.error('Error fetching showtime list:', error);
@@ -156,7 +160,7 @@ function ShowtimeManagement() {
         };
 
         if (!formData.movieId) {
-            errors.movieId = 'Movie ID is required';
+            errors.movieId = 'Movie is required';
             hasError = true;
         }
         if (!formData.showDate) {
@@ -260,6 +264,11 @@ function ShowtimeManagement() {
         }
     };
 
+    const getMovieName = (movieId) => {
+        const movie = filmList.find(film => film.movieId === movieId);
+        return movie ? movie.name : 'N/A';
+    };
+
     function convertTo12HourFormat(timeString) {
         const [hours, minutes] = timeString.split(':');
         const period = +hours >= 12 ? 'PM' : 'AM';
@@ -330,14 +339,12 @@ function ShowtimeManagement() {
 
                                         <tr key={showtime.showtimeId}>
                                             <td>{showtime.showtimeId}</td>
-                                            <td>{showtime.movie ? showtime.movie.name : 'N/A'}</td>
+                                            <td>{getMovieName(showtime.movie.movieId)}</td>
                                             <td>{showtime.showDate
                                                 ? new Date(showtime.showDate).toLocaleDateString('vi-VN')
                                                 : 'N/A'}</td>
 
                                             <td>{convertTo12HourFormat(showtime.startTime)}</td>
-                                            {/*<td>{showtime.startTime}</td>*/}
-                                            {/*<td>{showtime.endTime}</td>*/}
                                             <td>{convertTo12HourFormat(showtime.endTime)}</td>
                                             <td>{showtime.basePrice}</td>
                                             <td>{showtime.room ? showtime.room.name : 'N/A'}</td>
@@ -414,24 +421,32 @@ function ShowtimeManagement() {
                                 <form onSubmit={handleSubmit}>
                                     <div>
                                         <div className="label-group">
-                                            <label>Movie Id:</label>
+                                            <label>Movie:</label>
                                             {formError.movieId && (
-                                                <span className="error-message">{formError.movieId}</span>
+                                                <span className="showtime-error-message">{formError.movieId}</span>
                                             )}
                                         </div>
-                                        <input
-                                            type="number"
+                                        <select
                                             name="movieId"
                                             value={formData.movieId}
                                             onChange={handleChange}
                                             required
-                                        />
+                                            className="select-dropdown"
+
+                                        >
+                                            <option value="">Select Movie</option>
+                                            {filmList.map(film => (
+                                                <option key={film.movieId} value={film.movieId}>
+                                                    {film.name}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
                                     <div>
                                         <div className="label-group">
                                             <label>Show Date:</label>
                                             {formError.showDate && (
-                                                <span className="error-message">{formError.showDate}</span>
+                                                <span className="showtime-error-message">{formError.showDate}</span>
                                             )}
                                         </div>
                                         <input
@@ -446,7 +461,7 @@ function ShowtimeManagement() {
                                         <div className="label-group">
                                             <label>Start Time:</label>
                                             {formError.startTime && (
-                                                <span className="error-message">{formError.startTime}</span>
+                                                <span className="showtime-error-message">{formError.startTime}</span>
                                             )}
                                         </div>
                                         <input
@@ -460,7 +475,7 @@ function ShowtimeManagement() {
                                         <div className="label-group">
                                             <label>End Time:</label>
                                             {formError.endTime && (
-                                                <span className="error-message">{formError.endTime}</span>
+                                                <span className="showtime-error-message">{formError.endTime}</span>
                                             )}
                                         </div>
                                         <input
@@ -476,7 +491,7 @@ function ShowtimeManagement() {
                                         <div className="label-group">
                                             <label>Base Price:</label>
                                             {formError.basePrice && (
-                                                <span className="error-message">{formError.basePrice}</span>
+                                                <span className="showtime-error-message">{formError.basePrice}</span>
                                             )}
                                         </div>
                                         <input
@@ -491,7 +506,7 @@ function ShowtimeManagement() {
                                         <div className="label-group">
                                             <label>Room ID:</label>
                                             {formError.roomId && (
-                                                <span className="error-message">{formError.roomId}</span>
+                                                <span className="showtime-error-message">{formError.roomId}</span>
                                             )}
                                         </div>
                                         <input
@@ -503,27 +518,12 @@ function ShowtimeManagement() {
                                         />
                                     </div>
 
-                                    {/*<div>*/}
-                                    {/*    <div className="label-group">*/}
-                                    {/*        <label>Status:</label>*/}
-                                    {/*        {formError.status && (*/}
-                                    {/*            <span className="error-message">{formError.status}</span>*/}
-                                    {/*        )}*/}
-                                    {/*    </div>*/}
-                                    {/*    <input*/}
-                                    {/*        type="number"*/}
-                                    {/*        name="status"*/}
-                                    {/*        value={formData.status}*/}
-                                    {/*        onChange={handleChange}*/}
-                                    {/*        required*/}
-                                    {/*    />*/}
 
-                                    {/*</div>*/}
                                     <div>
                                         <div className="label-group">
                                             <label>Status:</label>
                                             {formError.status && (
-                                                <span className="error-message">{formError.status}</span>
+                                                <span className="showtime-error-message">{formError.status}</span>
                                             )}
                                         </div>
                                         <select
