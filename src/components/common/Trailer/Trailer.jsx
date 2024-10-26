@@ -4,14 +4,13 @@ import ReactPlayer from 'react-player/youtube';
 import SoundBtn from "../SoundBtn/SoundBtn.jsx";
 import PlayBtn from "../PlayBtn/PlayBtn.jsx";
 
-function Trailer() {
+function Trailer({ url, onReady }) {
     const playerRef = useRef(null);
     const [isMuted, setIsMuted] = useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-
         if (isLoaded) {
             setIsPlaying(true);
         }
@@ -58,7 +57,7 @@ function Trailer() {
         <div className={`video-container ${isLoaded ? "loaded" : ""}`}>
             <ReactPlayer
                 ref={playerRef}
-                url="https://www.youtube.com/watch?v=_YUzQa_1RCE&t=4s"
+                url={url}
                 playing={isPlaying}
                 muted={isMuted}
                 loop
