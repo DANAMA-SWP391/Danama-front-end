@@ -1,10 +1,18 @@
-function FilmDetails() {
+import "./FilmDetails.css";
+import PropTypes from "prop-types";
+
+function FilmDetails({ film }) {
     return (
-        <div className="booking-details__film">
-            <h3>Film name:</h3>
-            <p>Dune Part Two</p>
+        <div className="film-details">
+            <p>Film name: {film.name}</p>
         </div>
     );
 }
-
+FilmDetails.propTypes = {
+    film: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        poster: PropTypes.string.isRequired,
+        ageRestricted: PropTypes.number.isRequired,
+    }).isRequired,
+};
 export default FilmDetails;

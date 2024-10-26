@@ -78,7 +78,6 @@
     font-size: 14px;
     font-family: "Albert Sans semi-bold", sans-serif;
 }
-
 .film-schedules .schedule-container .schedules {
     width: 75%;
     display: flex;
@@ -140,12 +139,6 @@
     margin-bottom: 40px;
 }
 
-.film-schedules .schedule-container .schedules .schedule .format {
-    font-size: 16px;
-    font-family: "Albert Sans semi-bold", sans-serif;
-    margin-bottom: 20px;
-}
-
 .film-schedules .schedule-container .schedules .schedule .showtimes {
     width: 90%;
     display: inline-flex;
@@ -166,5 +159,16 @@
 
 .film-schedules .schedule-container .schedules .schedule .showtimes .showtime:hover {
     background-color: #f2f2f2;
-    color: #fff;
+    color: #7e7878;
+}
+.film-schedules .schedule-container .cinema-list .cinema-logo.selected-cinema {
+    background-color: #f0f0f0;
+    border-left: 5px solid #1f70c8; /* Highlight with a border */
+    padding-left: 15px; /* Adjust padding to account for border */
+    scale: 1.05; /* Slightly enlarge the selected cinema */
+    transition: all 0.25s ease; /* Smooth transition */
+}
+
+.film-schedules .schedule-container .cinema-list .cinema-logo.selected-cinema p {
+    font-weight: bold; /* Make the text bold for the selected cinema */
 }

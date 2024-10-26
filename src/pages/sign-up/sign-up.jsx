@@ -11,11 +11,8 @@ import {
     validateConfirmPassword,
     validateExistEmail
 } from "../../utils/validateHelper";
-import {addUser, users} from "../../utils/userData.js";
 import defaultAvatar from "../../assets/avatars/default-avatar.svg";
 import {useNavigate} from "react-router-dom";
-
-import EmailVerification from "../email-verification-page/email-verification-page";
 
 function SignUp() {
     const [name, setName] = useState('');
@@ -57,7 +54,7 @@ function SignUp() {
                 name: name,
                 phone: phone,
                 avatar: defaultAvatar,
-                roleId: 1
+                roleId: 3
             }
             setHasError(false);
             navigate('/email-verification', {state: {user}});

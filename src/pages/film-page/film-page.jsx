@@ -18,15 +18,16 @@ import Schedule from "../../components/container/film-page/Schedule/Schedule.jsx
 
 import { useLocation } from "react-router-dom";
 import {fetchDetailMovie} from "../../api/webAPI.jsx";
+import {WebContext} from "../../utils/webContext.jsx";
 
 function FilmPage() {
     const location = useLocation();
     const { film } = location.state || {};
-    const { user, filmList } = useContext(UserContext);
+    const { user } = useContext(UserContext);
     const screenShots = [screenshot1, screenshot2, screenshot3, screenshot4, screenshot5];
-
+    const {showtimeList} = useContext(WebContext);
     const [isLogged, setIsLogged] = useState(false);
-    const [showtimes, setShowtimes] = useState([]);
+    const showtimes = showtimeList?.filter(showtime => showtime.movie.movieId === film.movieId) || [];
     const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
@@ -41,7 +42,6 @@ function FilmPage() {
             if (film) {
                 const data = await fetchDetailMovie(film.movieId);
                 if (data) {
-                    setShowtimes(data.showtimes || []);
                     setReviews(data.reviews || []);
                 }
             }
@@ -49,7 +49,6 @@ function FilmPage() {
 
         getMovieDetails();
     }, [film]);
-    console.log(reviews);
     return (
         <div className="film-page">
             <Header />
@@ -58,9 +57,9 @@ function FilmPage() {
             <SeparateLine />
             <CommentSection user={user} reviews={reviews} movieId={film.movieId}/>
             <SeparateLine />
-            <Schedule showtimes={showtimes} />
+            <Schedule showtimes={showtimes} film={film} />
             <SeparateLine />
-            <FilmLists filmLists={filmList} />
+            <FilmLists />
             <Footer />
         </div>
     );

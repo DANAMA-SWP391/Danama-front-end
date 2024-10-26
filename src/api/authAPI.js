@@ -21,6 +21,9 @@ export async function login(email, password) {
             localStorage.setItem('jwtToken', data.jwtToken);
             localStorage.setItem('user', JSON.stringify(data.user));
             // console.log(data);
+            if (data.user && data.user.roleId === 2) {
+                localStorage.setItem('cinema', data.cinema);
+            }
         }
         return data;
     } catch (error) {
@@ -44,7 +47,6 @@ export async function loginByGoogle(token) {
         }
 
         const data = await response.json();
-        console.log(data);
         // Return the response data, which includes success and message
         if (data.success && data.jwtToken) {
             // Store the JWT token in localStorage
