@@ -1,7 +1,9 @@
 import './BookingHistory.css';
 import PropTypes from 'prop-types';
+import {useNavigate} from "react-router-dom";
 
 function BookingHistory({ history }) {
+    const navigate = useNavigate();
     const renderStatus = (status) => {
         switch (status) {
             case 0:
@@ -25,7 +27,6 @@ function BookingHistory({ history }) {
         });
         return `${formattedDate} ${formattedTime}`;
     };
-
     return (
         <table className="booking-history-table">
             <thead>
@@ -45,7 +46,8 @@ function BookingHistory({ history }) {
                     <td>{booking.totalCost.toLocaleString()} VND</td>
                     <td>{renderStatus(booking.status)}</td>
                     <td className="details-column">
-                        <button className="details-button">Details</button>
+                        <button className="details-button"
+                                onClick={() => navigate(`/booking-detail?bookingId=${booking.bookingId}`)}>Details</button>
                     </td>
                 </tr>
             ))}
