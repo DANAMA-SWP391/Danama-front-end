@@ -6,7 +6,7 @@ function TimeDetails({ showtime }) {
     const parsedDate = parse(showtime.showDate, 'MMM d, yyyy', new Date());
 
     // Format the parsed date to be displayed
-    const formattedDate = format(parsedDate, 'MMMM d, yyyy'); // e.g., "October 4, 2024"
+    const formattedDate = format(parsedDate, 'dd/MM/yyyy'); // e.g., "October 4, 2024"
 
     return (
         <div className="time-details">

@@ -27,12 +27,6 @@ function PaymentMethod({ setMethod }) {
             >
                 VNPAY
             </Button>
-            <Button
-                onClick={() => handleMethodClick('ATM')}
-                className={selectedMethod === 'ATM' ? 'selected' : ''}
-            >
-                ATM
-            </Button>
         </div>
     );
 }
