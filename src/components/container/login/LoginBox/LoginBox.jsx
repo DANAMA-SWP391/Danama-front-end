@@ -18,7 +18,6 @@ function LoginBox({ handleButtonClick, isSuccess, setEmail, setPassword }) {
     };
 
     const onEmailChange = () => {
-        console.log(emailRef.current.value);
         setEmail(emailRef.current.value);
     }
 

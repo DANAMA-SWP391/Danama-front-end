@@ -1,10 +1,15 @@
-function TotalDetails() {
+import PropTypes from "prop-types";
+import "./TotalDetails.css";
+
+
+function TotalDetails({ totalPrice }) {
     return (
-        <div className="booking-details__total">
-            <h3>Total:</h3>
-            <p>100.000đ</p>
+        <div className="total-details">
+            <p>Total Price: {totalPrice.toLocaleString('vi-VN')}đ</p>
         </div>
     );
 }
-
+TotalDetails.propTypes = {
+    totalPrice: PropTypes.number.isRequired,
+};
 export default TotalDetails;

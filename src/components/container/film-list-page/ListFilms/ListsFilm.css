@@ -1,0 +1,12 @@
+.filtered-films {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center the content */
+    gap: 20px; /* Add space between cards */
+}
+
+.filtered-films .film-card {
+    flex: 1 1 200px; /* Allow the cards to adjust their width and wrap when necessary */
+    max-width: 200px; /* Limit the maximum width of each card */
+    margin: 10px;
+}

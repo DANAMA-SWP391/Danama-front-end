@@ -45,7 +45,7 @@ function Slider({ filmLists }) {
                     }}
                 >
                     {filmLists.map((film, index) => (
-                        <FilmCard film={film} index={index} key={film.id}
+                        <FilmCard film={film} index={index} key={film.movieId}
                             // key={film.id}
                             // poster={film.poster}
                             // name={film.name}

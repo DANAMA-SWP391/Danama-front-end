@@ -1,61 +1,45 @@
 import { useRef, useEffect, useState } from "react";
 import "./Trailer.css";
+import ReactPlayer from 'react-player/youtube';
 import SoundBtn from "../SoundBtn/SoundBtn.jsx";
 import PlayBtn from "../PlayBtn/PlayBtn.jsx";
 
 function Trailer() {
-    const videoRef = useRef(null);
+    const playerRef = useRef(null);
     const [isMuted, setIsMuted] = useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        const handleLoadedData = () => {
-            const video = videoRef.current;
-            if (video) {
-                video.currentTime = 14;
-                setIsLoaded(true);
-                setIsPlaying(true);
-                video.play();
-            }
-        };
-        const video = videoRef.current;
-        video.addEventListener("loadeddata", handleLoadedData);
 
-        return () => {
-            video.removeEventListener("loadeddata", handleLoadedData);
-        };
-    }, [videoRef]);
+        if (isLoaded) {
+            setIsPlaying(true);
+        }
+    }, [isLoaded]);
 
     const togglePlay = () => {
-        const video = videoRef.current;
-        if (video.paused) {
-            video.play();
-            setIsPlaying(true);
-        } else {
-            video.pause();
+        if (isPlaying) {
             setIsPlaying(false);
+        } else {
+            setIsPlaying(true);
         }
     };
 
     const toggleMute = () => {
-        const video = videoRef.current;
-        video.muted = !video.muted;
-        setIsMuted(video.muted);
+        setIsMuted((prevMuted) => !prevMuted);
     };
 
     useEffect(() => {
         const mainSlideSection = document.querySelector('.video-container');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if(entry.isIntersecting && isPlaying) {
-                    videoRef.current.play();
+                if (entry.isIntersecting && isPlaying) {
+                    setIsPlaying(true);
                 } else {
-                    videoRef.current.pause();
                     setIsPlaying(false);
                 }
             });
-        },{
+        }, {
             threshold: 0.5
         });
 
@@ -68,14 +52,32 @@ function Trailer() {
                 observer.unobserve(mainSlideSection);
             }
         };
-    }, []);
+    }, [isPlaying]);
 
     return (
         <div className={`video-container ${isLoaded ? "loaded" : ""}`}>
-            <video ref={videoRef} muted={isMuted} autoPlay loop>
-                <source src="/trailer/Dune2.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
+            <ReactPlayer
+                ref={playerRef}
+                url="https://www.youtube.com/watch?v=_YUzQa_1RCE&t=4s"
+                playing={isPlaying}
+                muted={isMuted}
+                loop
+                onReady={() => setIsLoaded(true)}
+                width="100%"
+                height="100%"
+                config={{
+                    youtube: {
+                        playerVars: {
+                            controls: 0,
+                            modestbranding: 1,
+                            rel: 0,
+                            showinfo: 0,
+                            fs: 0,
+                        },
+                    }
+                }}
+                className="react-player"
+            />
             <div className="btn-container">
                 <PlayBtn isPlaying={isPlaying} togglePlay={togglePlay} />
                 <SoundBtn isMuted={isMuted} toggleSound={toggleMute} />

@@ -1,3 +1,5 @@
+import {openDB} from "idb";
+
 export const fetchDetailMovie = async(movieId) => {
     try {
         const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/detailMovie?movieId=${movieId}`, {
@@ -18,14 +20,14 @@ export const fetchDetailMovie = async(movieId) => {
         return null;
     }
 };
-export const fetchDetailShowtime = async (showtimeId) => {
+export const fetchDetailShowtime = async (showtimeId, roomId) => {
     try {
         const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/detailShowtime`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ showtimeId })
+            body: JSON.stringify({ showtimeId, roomId })
         });
 
         if (!response.ok) {
@@ -108,9 +110,32 @@ export async function fetchHomePage() {
 
         // Parse the response JSON
         const data = await response.json();
+        const { movies, showtimes, cinemas } = data;
 
-        // Return the homepage data
-        return data;
+        // Open IndexedDB and update the database
+        const db = await openDB('DANAMA_DB', 1, {
+            upgrade(db) {
+                // Create object stores if they do not exist
+                if (!db.objectStoreNames.contains('films')) {
+                    db.createObjectStore('films');
+                }
+                if (!db.objectStoreNames.contains('showtimes')) {
+                    db.createObjectStore('showtimes');
+                }
+                if (!db.objectStoreNames.contains('cinemas')) {
+                    db.createObjectStore('cinemas');
+                }
+            },
+        });
+
+        // Save or update data in IndexedDB
+        await db.put('films', movies, 'filmList');
+        await db.put('showtimes', showtimes, 'showtimeList');
+        await db.put('cinemas', cinemas, 'cinemaList');
+        await db.put('films', new Date().getTime(), 'lastUpdated'); // Update timestamp
+
+        return { movies, showtimes, cinemas }; // Return the data to be used in your app
+
     } catch (error) {
         // Handle any errors
         console.error('Failed to fetch home page data:', error);

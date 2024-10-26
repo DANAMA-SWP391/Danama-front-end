@@ -73,7 +73,7 @@
 
 .schedule-section h1 {
     font-size: 20px;
-    margin-bottom: 70px;
+    margin-bottom: 50px;
 }
 
 .schedule-section .cinematic-info {
@@ -82,13 +82,42 @@
 
 .schedule-section .cinematic-info h2 {
     font-size: 18px;
-    margin-bottom: 5px;
+    display: inline-block;
+    margin-bottom: 10px; /* Ensure there's some space below the title */
 }
 
-.schedule-section .cinematic-info p {
-    font-size: 12px;
-    font-weight: lighter;
+.schedule-section .address-row {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Add spacing between the address and the map link */
 }
+
+.schedule-section .address-row p {
+    font-size: 14px;
+    font-weight: lighter;
+    margin: 0;
+}
+
+.schedule-section .map-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 10px; /* Space between address and map link */
+}
+
+.schedule-section .map-link img {
+    width: 30px;  /* Increased size for better visibility */
+    height: 30px; /* Increased size for better visibility */
+    margin-right: 5px; /* Space between icon and map text */
+}
+
+.schedule-section .map-link:hover {
+    color: #357ae8;
+}
+
 
 .schedule-section .buttons-cont button {
     display: inline-flex;
@@ -149,12 +178,13 @@
     border-bottom: 1px solid rgba(0,0,0,0.25);
 }
 
-.schedule-section .cinema-list-box .cinema:first-child {
-    background: lightgray;
+.schedule-section .cinema-list-box .cinema.selected {
+    background-color: lightblue; /* Color for selected cinema */
 }
 
 .schedule-section .cinema-list-box .cinema:hover {
     cursor: pointer;
+    background-color: lightgray;
 }
 
 .schedule-section .cinema-list-box .cinema p {

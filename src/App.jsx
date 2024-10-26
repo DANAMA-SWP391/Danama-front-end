@@ -9,13 +9,16 @@ import ResetPass from "./pages/reset-pass/reset-pass.jsx";
 import MainPage from "./pages/main-page/main-page.jsx";
 import EmailVerification from "./pages/email-verification-page/email-verification-page.jsx";
 import FilmPage from "./pages/film-page/film-page.jsx";
+import Profile from "./pages/profile-page/profile-page.jsx";
+import BookingDetailsPage from "./pages/booking-details-page/booking-details-page.jsx";
+import Payment from "./pages/payment-page/payment-page.jsx";
+import FilmListPage from "./pages/film-list-page/film-list-page.jsx";
 import CinemaManagement from "./pages/admin-pages/cinema-management/cinema-management.jsx";
 import MovieManagement from "./pages/admin-pages/movie-management/movie-management.jsx";
 import AccountManagement from "./pages/admin-pages/account-management/account-management.jsx";
 import AdminDashboardPage from "./pages/admin-page/admin-dashboard-page.jsx";
 
 // import Payment from "./pages/payment-page/payment-page.jsx";
- import Profile from "./pages/profile-page/profile-page.jsx";
 
 function App( ) {
     return (
@@ -28,12 +31,14 @@ function App( ) {
                     <Route path="/cinema-management" element={<CinemaManagement/>} />
 
                     <Route path="/" element={<MainPage/>} />
+                    <Route path="/film-list" element={<FilmListPage/>} />
+                    <Route path="/booking-detail" element={<BookingDetailsPage/>} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/reset-pass" element={<ResetPass />} />
                     <Route path="/email-verification" element={<EmailVerification />}/>
                     <Route path="/film-page" element={<FilmPage />} />
-                    {/*<Route path="/payment" element={<Payment />} />*/}
+                    <Route path="/payment" element={<Payment />} />
                     <Route path="/profile" element={<Profile />} />
                 </Routes>
             </Router>

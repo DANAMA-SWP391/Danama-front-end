@@ -9,7 +9,7 @@ function OptionList() {
     return (
         <div className="option-list">
             <div className="option">
-                <a href="" onClick={(e) => handleScroll(".film-lists", e)}>Films</a>
+                <a href="/film-list" >Films</a>
             </div>
             <div className="option">
                 <a href="" onClick={(e) => handleScroll(".schedule-section", e)}>Cinemas</a>

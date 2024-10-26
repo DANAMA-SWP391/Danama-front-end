@@ -1,18 +1,20 @@
 import "./email-verification-page.css";
 import {useLocation, useNavigate} from "react-router-dom";
 import {register, sendVerificationCode} from "../../api/authAPI.js";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 function EmailVerification() {
     const location = useLocation();
     const [verifyCode, setVerifyCode]= useState('');
     const { user } = location.state || {};
     const [code, setCode] = useState('');
+    const fetchCalled = useRef(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user && user.email) {
-            sendCode(user.email); // Call sendCode to send the verification code when the component mounts
+        if (!fetchCalled.current) {
+            sendCode(user.email);
+            fetchCalled.current = true;
         }
     }, [user]);
 
