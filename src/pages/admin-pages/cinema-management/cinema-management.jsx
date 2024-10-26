@@ -176,18 +176,18 @@ const CinemaManagement = () => {
                                 <td>{cinema.managerId}</td>
                                 <td>{cinema.address}</td>
                                 <td>
-                                    <button className="view-btn" onClick={() => {
+                                    <button className="edit-btn" onClick={() => {
                                         handleEditCinema(cinema);
                                         setEditCinemaId(cinema.cinemaId);
                                         setModalType('edit');
                                         setIsModalOpen(true);
-                                    }}>Edit
+                                    }}>✏️
                                     </button>
                                     <button className="delete-btn" onClick={() => {
                                         setEditCinemaId(cinema.cinemaId);
                                         setModalType('delete');
                                         setIsModalOpen(true);
-                                    }}>Delete
+                                    }}>🗑️
                                     </button>
                                 </td>
                             </tr>

@@ -267,10 +267,11 @@ const AccountManagement = () => {
                                         👁️ View
                                     </button>
                                     <button
-                                        className="ban-btn"
+                                        className={account.roleId === 0 ? '' : 'ban-btn'}
                                         onClick={() => handleBanUnbanAccount(account.UID, account.roleId)}
                                     >
                                         {account.roleId === 0 ? 'Unban' : 'Ban'}
+
                                     </button>
                                 </td>
                             </tr>

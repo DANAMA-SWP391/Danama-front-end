@@ -276,7 +276,7 @@ const MovieManagement = () => {
                         <tr>
                             <th>ID</th>
                             <th>Title</th>
-                            <th>Category</th>
+                            <th>Genres</th>
                             <th>Release Day</th>
                             <th>Action</th>
                         </tr>
@@ -300,38 +300,72 @@ const MovieManagement = () => {
                         ))}
                         </tbody>
                     </table>
+                    {/*/!* Modal View Movie *!/*/}
+                    {/*{isViewModalOpen && selectedMovie && (*/}
+                    {/*    <Modal isOpen={isViewModalOpen} onClose={handleCloseViewModal}>*/}
+                    {/*        <div className="view-account-details">*/}
+                    {/*            <h3>Movie Details</h3>*/}
+                    {/*            <p><strong>Name:</strong> {selectedMovie.name} </p>*/}
+                    {/*            <p><strong>Description:</strong> {selectedMovie.description}</p>*/}
+                    {/*            <p><strong>Release Date:</strong> {selectedMovie.releaseDate}</p>*/}
+                    {/*            <p><strong>Poster:</strong> <img src={selectedMovie.poster}/></p>*/}
+                    {/*            <p><strong>Trailer:</strong> {selectedMovie.trailer}</p>*/}
+                    {/*            <p><strong>Country:</strong> {selectedMovie.country}</p>*/}
+                    {/*            <p><strong>Director:</strong> {selectedMovie.director}</p>*/}
+                    {/*            <p><strong>Age Restricted:</strong> {selectedMovie.ageRestricted}</p>*/}
+                    {/*            <p><strong>Actors:</strong> {selectedMovie.actors}</p>*/}
+                    {/*            <p><strong>Duration:</strong> {selectedMovie.duration}</p>*/}
+                    {/*            <p><strong>Status:</strong> {selectedMovie.status}</p>*/}
+                    {/*            /!* Hiển thị danh sách thể loại (genres) *!/*/}
+                    {/*            <p><strong>Genres:</strong></p>*/}
+                    {/*            <ul>*/}
+                    {/*                {selectedMovie.genres && selectedMovie.genres.length > 0 ? (*/}
+                    {/*                    selectedMovie.genres.map((genre, index) => (*/}
+                    {/*                        <li key={index}>{genre.name}</li>*/}
+                    {/*                    ))*/}
+                    {/*                ) : (*/}
+                    {/*                    <li>No genres available</li>*/}
+                    {/*                )}*/}
+                    {/*            </ul>*/}
+
+                    {/*            <button onClick={handleCloseViewModal}>Close</button>*/}
+                    {/*        </div>*/}
+                    {/*    </Modal>*/}
+                    {/*)}*/}
+
                     {/* Modal View Movie */}
                     {isViewModalOpen && selectedMovie && (
                         <Modal isOpen={isViewModalOpen} onClose={handleCloseViewModal}>
-                            <div className="view-account-details">
-                                <h3>Account Details</h3>
-                                <p><strong>Name:</strong> {selectedMovie.name} </p>
+                            <div className="movie-details-modal"> {/* Thêm className cho modal */}
+                                <h3>{selectedMovie.name}</h3> {/* Giữ nguyên, h3 đã được CSS */}
+                                <p><img src={selectedMovie.poster} alt={selectedMovie.name} /></p> {/* Giữ nguyên, hình ảnh sẽ tự động điều chỉnh */}
                                 <p><strong>Description:</strong> {selectedMovie.description}</p>
                                 <p><strong>Release Date:</strong> {selectedMovie.releaseDate}</p>
-                                <p><strong>Poster:</strong> <img src={selectedMovie.poster}/></p>
-                                <p><strong>Trailer:</strong> {selectedMovie.trailer}</p>
+                                <p><strong>Trailer:</strong> <a href={selectedMovie.trailer} target="_blank" rel="noopener noreferrer">Watch Trailer</a></p> {/* Link trailer */}
                                 <p><strong>Country:</strong> {selectedMovie.country}</p>
                                 <p><strong>Director:</strong> {selectedMovie.director}</p>
                                 <p><strong>Age Restricted:</strong> {selectedMovie.ageRestricted}</p>
                                 <p><strong>Actors:</strong> {selectedMovie.actors}</p>
-                                <p><strong>Duration:</strong> {selectedMovie.duration}</p>
-                                <p><strong>Status:</strong> {selectedMovie.status}</p>
+                                <p><strong>Duration:</strong> {selectedMovie.duration} mins</p>
+                                <p><strong>Status:</strong> {selectedMovie.status === 1 ? "Available" : "Unavailable"}</p> {/* Hiển thị trạng thái rõ ràng */}
+
                                 {/* Hiển thị danh sách thể loại (genres) */}
                                 <p><strong>Genres:</strong></p>
                                 <ul>
                                     {selectedMovie.genres && selectedMovie.genres.length > 0 ? (
                                         selectedMovie.genres.map((genre, index) => (
-                                            <li key={index}>{genre.name}</li>
+                                            <li key={index}>{genre.name}</li> /* Thêm key cho mỗi genre */
                                         ))
                                     ) : (
-                                        <li>No genres available</li>
+                                        <li>No genres available</li> /* Trường hợp không có thể loại */
                                     )}
                                 </ul>
 
-                                <button onClick={handleCloseViewModal}>Close</button>
+                                <button onClick={handleCloseViewModal}>Close</button> {/* Giữ nút đóng modal */}
                             </div>
                         </Modal>
                     )}
+
                     {/* Modal hiển thị Add */}
                     <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
                         {isAdding && (

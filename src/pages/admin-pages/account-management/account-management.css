@@ -81,49 +81,9 @@
 .account-table tbody tr:hover {
     background-color: #f1f1f1;
 }
-
-/* Button styling */
-.edit-btn, .delete-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 5px;
+.ban-btn {
+    background-color: red;
 }
 
-.edit-btn:hover {
-    background-color: #0056b3;
-}
 
-.delete-btn:hover {
-    background-color: #d9534f;
-}
 
-/* Pagination */
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.pagination-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    margin: 0 5px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.pagination-btn:hover {
-    background-color: #0056b3;
-}
-
-.pagination span {
-    margin: 0 10px;
-    font-size: 16px;
-}
