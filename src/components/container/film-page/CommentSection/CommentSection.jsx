@@ -13,7 +13,9 @@ function CommentSection({ reviews, movieId }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [user, setUser] = useState(null); // To store user info after JWT validation
     const commentsPerPage = 3; // Adjust this to set how many comments you want per page
-
+    const averageRating = reviews.length > 0
+        ? (reviews.reduce((sum, review) => sum + (review.rating || 0), 0) / reviews.length).toFixed(1)
+        : "N/A";
     // Fetch JWT token and set user when component mounts
     useEffect(() => {
         const validateToken = async () => {
@@ -26,7 +28,6 @@ function CommentSection({ reviews, movieId }) {
 
         validateToken();
     }, []);
-
     useEffect(() => {
         if (reviews) {
             setCommentList(reviews.map(review => ({
@@ -115,6 +116,7 @@ function CommentSection({ reviews, movieId }) {
             {/* Comments Header */}
             <div className="comment-section__header">
                 <h3>Comments</h3>
+                <p className="average-rating">Rating: {averageRating}/10</p>
             </div>
 
             {/* Display the current page of comments */}
