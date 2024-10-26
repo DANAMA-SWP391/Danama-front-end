@@ -64,3 +64,80 @@
     color: #FF4500; /* Icon chuyển sang màu cam khi hover */
 }
 
+
+
+
+
+
+
+
+
+.sidebar {
+    width: 250px;
+    background-color: #6A2222; /* Dark maroon */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    color: white;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 15px;
+}
+
+.menu-item {
+    background: none;
+    border: none;
+    width: 90%;
+    padding: 15px;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+    color: #FF4500;
+}
+
+.menu-item:active {
+    transform: scale(0.95);
+}
+
+.menu-item .icon {
+    margin-right: 12px;
+    font-size: 1.6rem;
+}
+
+.menu-item:hover .icon {
+    color: #FF4500;
+}
+
+/* Active state styling */
+.menu-item.active {
+    background-color: #FF4500; /* Orange background for active item */
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+
+.menu-item.active .icon {
+    color: #fff; /* White icon for active item */
+}
+

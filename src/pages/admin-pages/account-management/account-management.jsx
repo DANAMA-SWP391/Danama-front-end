@@ -11,7 +11,7 @@ import Modal from '../../../components/common/Modal/Modal.jsx';
 import './account-management.css';
 import { upFileToAzure } from '../../../api/webAPI.jsx';
 import CustomModal from '../../../components/common/CustomModal/CustomModal.jsx';
-import Header from "../../../components/common/Header/Header.jsx";
+import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx";
 
 const AccountManagement = () => {
     const [accounts, setAccounts] = useState([]);
@@ -24,6 +24,15 @@ const AccountManagement = () => {
     const [modalType, setModalType] = useState(''); // 'view', 'edit', or 'delete'
     const [selectedFile, setSelectedFile] = useState(null); // State để lưu ảnh được chọn
     const [errors, setErrors] = useState({}); // State để lưu lỗi validation
+
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    const paginatedAccounts = accounts.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
 
     // Load accounts on component mount
     useEffect(() => {
@@ -38,6 +47,24 @@ const AccountManagement = () => {
 
         loadAccounts();
     }, []);
+
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentAccounts = accounts.slice(indexOfFirstItem, indexOfLastItem);
+
+    const handleNextPage = () => {
+        if (currentPage < Math.ceil(accounts.length / itemsPerPage)) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
 
     // Hàm kiểm tra email hợp lệ
     const validateEmail = (email) => {
@@ -223,7 +250,7 @@ const AccountManagement = () => {
 
     return (
         <>
-            <Header />
+            <AdminHeader />
             <div className="account-management-container">
 
                 <Sidebar />
@@ -252,7 +279,7 @@ const AccountManagement = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {accounts.map((account) => (
+                        {paginatedAccounts.map((account) => (
                             <tr key={account.id}>
                                 <td>{account.id}</td>
                                 <td>{account.email}</td>
@@ -264,20 +291,32 @@ const AccountManagement = () => {
                                         className="view-btn"
                                         onClick={() => handleViewAccount(account.UID)}
                                     >
-                                        👁️ View
+                                        👁️
                                     </button>
                                     <button
-                                        className={account.roleId === 0 ? '' : 'ban-btn'}
+                                        className={account.roleId === 3 ? 'ban-btn' : 'ban-btn-disabled'} // Add a conditional class
                                         onClick={() => handleBanUnbanAccount(account.UID, account.roleId)}
+                                        disabled={account.roleId !== 3} // Disable the button for roleId 1 and 2
                                     >
-                                        {account.roleId === 0 ? 'Unban' : 'Ban'}
-
+                                        {account.roleId === 3 ? 'Ban' : 'Unavailable'}
                                     </button>
                                 </td>
                             </tr>
                         ))}
                         </tbody>
                     </table>
+
+                    {/* Pagination controls */}
+                    <div className="pagination-controls">
+                        <button onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
+                        <span>Page {currentPage} of {Math.ceil(accounts.length / itemsPerPage)}</span>
+                        <button
+                            onClick={handleNextPage}
+                            disabled={currentPage === Math.ceil(accounts.length / itemsPerPage)}
+                        >
+                            Next
+                        </button>
+                    </div>
 
                     <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                         {modalType === 'add' && (

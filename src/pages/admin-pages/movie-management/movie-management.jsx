@@ -11,6 +11,7 @@ import {
 import Modal from "../../../components/common/Modal/Modal.jsx";
 import {upFileToAzure} from "../../../api/webAPI.jsx";
 import Header from "../../../components/common/Header/Header.jsx";
+import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx";
 
 const MovieManagement = () => {
     const [movies, setMovies] = useState([]);
@@ -23,6 +24,26 @@ const MovieManagement = () => {
     const [isAdding, setIsAdding] = useState(false);
     const [posterFile, setPosterFile] = useState(null); // New state for file selection
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+
+    const [itemsPerPage] = useState(10); // Số mục hiển thị trên mỗi trang
+    const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
+
+    const paginatedMovies = movies.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    const handleNextPage = () => {
+        if (currentPage < Math.ceil(movies.length / itemsPerPage)) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
 
 
     useEffect(() => {
@@ -101,7 +122,15 @@ const MovieManagement = () => {
         const success = await fetchAddMovie(movieToAdd);
         if (success) {
             alert('Movie added successfully!');
-            setMovies([...movies, movieToAdd]); // Thêm phim mới vào danh sách phim
+
+            // setMovies([...movies, movieToAdd]); // Thêm phim mới vào danh sách phim
+
+            // Re-fetch the movie list after adding a new movie
+            const updatedMovies = await fetchMovieList();
+            if (updatedMovies) {
+                setMovies(updatedMovies.movies); // Use the updated list from the server
+            }
+
             setIsAdding(false);
             setIsModalOpen(false);
         } else {
@@ -135,34 +164,6 @@ const MovieManagement = () => {
             setIsAdding(false);
         }
     };
-    // const handleUpdateMovie = async (e) => {
-    //     e.preventDefault();
-    //
-    //     // Check nếu các genre không hợp lệ
-    //     const hasInvalidGenres = selectedMovie.genres.some(genre => !genre.genreId || genre.genreId === "");
-    //     if (hasInvalidGenres) {
-    //         alert('Please ensure all genres have been selected properly.');
-    //         return;
-    //     }
-    //
-    //     // Giữ nguyên giá trị ban đầu của releaseDate nếu người dùng không thay đổi
-    //     const movieToUpdate = {
-    //         ...selectedMovie,
-    //         genres: selectedMovie.genres.map(genre => ({ genreId: genre.genreId }))
-    //     };
-    //
-    //     const success = await fetchUpdateMovie(movieToUpdate);
-    //     if (success) {
-    //         alert('Movie updated successfully!');
-    //
-    //         setMovies(movies.map(movie => movie.movieId === selectedMovie.movieId ? selectedMovie : movie));
-    //
-    //         setIsEditing(false);
-    //         setIsModalOpen(false);
-    //     } else {
-    //         alert('Failed to update movie.');
-    //     }
-    // };
 
     const handleUpdateMovie = async (e) => {
         e.preventDefault();
@@ -261,7 +262,7 @@ const MovieManagement = () => {
 
     return (
         <>
-            <Header />
+            <AdminHeader />
             <div className="movie-management-container">
                 <Sidebar/> {/* Hiển thị Sidebar */}
                 <div className="movie-management-content">
@@ -282,7 +283,7 @@ const MovieManagement = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {movies.map((movie) => (
+                        {paginatedMovies.map((movie) => (
                             <tr key={movie.movieId}>
                                 <td>{movie.movieId}</td>
                                 <td>{movie.name}</td>
@@ -291,8 +292,10 @@ const MovieManagement = () => {
                                 </td>
                                 <td>{movie.releaseDate}</td>
                                 <td>
-                                    <button className="view-btn" onClick={() => handleViewMovie(movie.movieId)}>👁️</button>
-                                    <button className="edit-btn" onClick={() => handleEditMovie(movie.movieId)}>✏️</button>
+                                    <button className="view-btn" onClick={() => handleViewMovie(movie.movieId)}>👁️
+                                    </button>
+                                    <button className="edit-btn" onClick={() => handleEditMovie(movie.movieId)}>✏️
+                                    </button>
                                     <button className="delete-btn" onClick={() => handleDeleteMovie(movie.movieId)}>🗑️
                                     </button>
                                 </td>
@@ -300,54 +303,32 @@ const MovieManagement = () => {
                         ))}
                         </tbody>
                     </table>
-                    {/*/!* Modal View Movie *!/*/}
-                    {/*{isViewModalOpen && selectedMovie && (*/}
-                    {/*    <Modal isOpen={isViewModalOpen} onClose={handleCloseViewModal}>*/}
-                    {/*        <div className="view-account-details">*/}
-                    {/*            <h3>Movie Details</h3>*/}
-                    {/*            <p><strong>Name:</strong> {selectedMovie.name} </p>*/}
-                    {/*            <p><strong>Description:</strong> {selectedMovie.description}</p>*/}
-                    {/*            <p><strong>Release Date:</strong> {selectedMovie.releaseDate}</p>*/}
-                    {/*            <p><strong>Poster:</strong> <img src={selectedMovie.poster}/></p>*/}
-                    {/*            <p><strong>Trailer:</strong> {selectedMovie.trailer}</p>*/}
-                    {/*            <p><strong>Country:</strong> {selectedMovie.country}</p>*/}
-                    {/*            <p><strong>Director:</strong> {selectedMovie.director}</p>*/}
-                    {/*            <p><strong>Age Restricted:</strong> {selectedMovie.ageRestricted}</p>*/}
-                    {/*            <p><strong>Actors:</strong> {selectedMovie.actors}</p>*/}
-                    {/*            <p><strong>Duration:</strong> {selectedMovie.duration}</p>*/}
-                    {/*            <p><strong>Status:</strong> {selectedMovie.status}</p>*/}
-                    {/*            /!* Hiển thị danh sách thể loại (genres) *!/*/}
-                    {/*            <p><strong>Genres:</strong></p>*/}
-                    {/*            <ul>*/}
-                    {/*                {selectedMovie.genres && selectedMovie.genres.length > 0 ? (*/}
-                    {/*                    selectedMovie.genres.map((genre, index) => (*/}
-                    {/*                        <li key={index}>{genre.name}</li>*/}
-                    {/*                    ))*/}
-                    {/*                ) : (*/}
-                    {/*                    <li>No genres available</li>*/}
-                    {/*                )}*/}
-                    {/*            </ul>*/}
-
-                    {/*            <button onClick={handleCloseViewModal}>Close</button>*/}
-                    {/*        </div>*/}
-                    {/*    </Modal>*/}
-                    {/*)}*/}
-
+                    <div className="pagination-controls">
+                        <button onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
+                        <span>Page {currentPage} of {Math.ceil(movies.length / itemsPerPage)}</span>
+                        <button onClick={handleNextPage}
+                                disabled={currentPage === Math.ceil(movies.length / itemsPerPage)}>Next
+                        </button>
+                    </div>
                     {/* Modal View Movie */}
                     {isViewModalOpen && selectedMovie && (
                         <Modal isOpen={isViewModalOpen} onClose={handleCloseViewModal}>
                             <div className="movie-details-modal"> {/* Thêm className cho modal */}
                                 <h3>{selectedMovie.name}</h3> {/* Giữ nguyên, h3 đã được CSS */}
-                                <p><img src={selectedMovie.poster} alt={selectedMovie.name} /></p> {/* Giữ nguyên, hình ảnh sẽ tự động điều chỉnh */}
+                                <p><img src={selectedMovie.poster} alt={selectedMovie.name}/>
+                                </p> {/* Giữ nguyên, hình ảnh sẽ tự động điều chỉnh */}
                                 <p><strong>Description:</strong> {selectedMovie.description}</p>
                                 <p><strong>Release Date:</strong> {selectedMovie.releaseDate}</p>
-                                <p><strong>Trailer:</strong> <a href={selectedMovie.trailer} target="_blank" rel="noopener noreferrer">Watch Trailer</a></p> {/* Link trailer */}
+                                <p><strong>Trailer:</strong> <a href={selectedMovie.trailer} target="_blank"
+                                                                rel="noopener noreferrer">Watch Trailer</a>
+                                </p> {/* Link trailer */}
                                 <p><strong>Country:</strong> {selectedMovie.country}</p>
                                 <p><strong>Director:</strong> {selectedMovie.director}</p>
                                 <p><strong>Age Restricted:</strong> {selectedMovie.ageRestricted}</p>
                                 <p><strong>Actors:</strong> {selectedMovie.actors}</p>
                                 <p><strong>Duration:</strong> {selectedMovie.duration} mins</p>
-                                <p><strong>Status:</strong> {selectedMovie.status === 1 ? "Available" : "Unavailable"}</p> {/* Hiển thị trạng thái rõ ràng */}
+                                <p><strong>Status:</strong> {selectedMovie.status === 1 ? "Available" : "Unavailable"}
+                                </p> {/* Hiển thị trạng thái rõ ràng */}
 
                                 {/* Hiển thị danh sách thể loại (genres) */}
                                 <p><strong>Genres:</strong></p>
@@ -361,7 +342,8 @@ const MovieManagement = () => {
                                     )}
                                 </ul>
 
-                                <button onClick={handleCloseViewModal}>Close</button> {/* Giữ nút đóng modal */}
+                                <button onClick={handleCloseViewModal}>Close</button>
+                                {/* Giữ nút đóng modal */}
                             </div>
                         </Modal>
                     )}
@@ -378,7 +360,10 @@ const MovieManagement = () => {
                                             <input
                                                 type="text"
                                                 value={selectedMovie.name}
-                                                onChange={(e) => setSelectedMovie({...selectedMovie, name: e.target.value})}
+                                                onChange={(e) => setSelectedMovie({
+                                                    ...selectedMovie,
+                                                    name: e.target.value
+                                                })}
                                             />
                                         </label>
                                         <label>
@@ -417,7 +402,8 @@ const MovieManagement = () => {
                                             <label>
                                                 <strong>Upload Poster:</strong>
                                                 <input type="file" onChange={handlePosterChange}/>
-                                                <button type="button" onClick={handleUploadPoster}>Upload Poster</button>
+                                                <button type="button" onClick={handleUploadPoster}>Upload Poster
+                                                </button>
                                             </label>
                                         </div>
 
@@ -462,14 +448,20 @@ const MovieManagement = () => {
                                             <input
                                                 type="number"
                                                 value={selectedMovie.ageRestricted}
-                                                onChange={(e) => setSelectedMovie({ ...selectedMovie, ageRestricted: e.target.value })}
+                                                onChange={(e) => setSelectedMovie({
+                                                    ...selectedMovie,
+                                                    ageRestricted: e.target.value
+                                                })}
                                             />
                                         </label>
                                         <label>
                                             <strong>Actors:</strong>
                                             <textarea
                                                 value={selectedMovie.actors}
-                                                onChange={(e) => setSelectedMovie({ ...selectedMovie, actors: e.target.value })}
+                                                onChange={(e) => setSelectedMovie({
+                                                    ...selectedMovie,
+                                                    actors: e.target.value
+                                                })}
                                             />
                                         </label>
                                         <label>
@@ -477,7 +469,10 @@ const MovieManagement = () => {
                                             <input
                                                 type="number"
                                                 value={selectedMovie.duration}
-                                                onChange={(e) => setSelectedMovie({ ...selectedMovie, duration: e.target.value })}
+                                                onChange={(e) => setSelectedMovie({
+                                                    ...selectedMovie,
+                                                    duration: e.target.value
+                                                })}
                                             />
                                         </label>
                                         <label>
@@ -505,12 +500,15 @@ const MovieManagement = () => {
                                                         >
                                                             {/* Populate the dropdown with available genres */}
                                                             {availableGenres.map((availableGenre) => (
-                                                                <option key={availableGenre.genreId} value={availableGenre.genreId}>
+                                                                <option key={availableGenre.genreId}
+                                                                        value={availableGenre.genreId}>
                                                                     {availableGenre.name}
                                                                 </option>
                                                             ))}
                                                         </select>
-                                                        <button type="button" onClick={() => handleRemoveGenre(index)}>X</button>
+                                                        <button type="button"
+                                                                onClick={() => handleRemoveGenre(index)}>X
+                                                        </button>
                                                     </div>
                                                 ))}
                                                 <button type="button" onClick={handleAddGenre}>+ Add Genre</button>
@@ -546,7 +544,10 @@ const MovieManagement = () => {
                                             <input
                                                 type="text"
                                                 value={selectedMovie.name}
-                                                onChange={(e) => setSelectedMovie({...selectedMovie, name: e.target.value})}
+                                                onChange={(e) => setSelectedMovie({
+                                                    ...selectedMovie,
+                                                    name: e.target.value
+                                                })}
                                             />
                                         </label>
                                         <label>
@@ -585,7 +586,8 @@ const MovieManagement = () => {
                                             <label>
                                                 <strong>Upload Poster:</strong>
                                                 <input type="file" onChange={handlePosterChange}/>
-                                                <button type="button" onClick={handleUploadPoster}>Upload Poster</button>
+                                                <button type="button" onClick={handleUploadPoster}>Upload Poster
+                                                </button>
                                             </label>
                                         </div>
                                         <label>
@@ -618,7 +620,10 @@ const MovieManagement = () => {
                                             <input
                                                 type="text"
                                                 value={selectedMovie.director}
-                                                onChange={(e) => setSelectedMovie({ ...selectedMovie, director: e.target.value })}
+                                                onChange={(e) => setSelectedMovie({
+                                                    ...selectedMovie,
+                                                    director: e.target.value
+                                                })}
                                             />
                                         </label>
                                         <label>
@@ -626,14 +631,20 @@ const MovieManagement = () => {
                                             <input
                                                 type="number"
                                                 value={selectedMovie.ageRestricted}
-                                                onChange={(e) => setSelectedMovie({ ...selectedMovie, ageRestricted: e.target.value })}
+                                                onChange={(e) => setSelectedMovie({
+                                                    ...selectedMovie,
+                                                    ageRestricted: e.target.value
+                                                })}
                                             />
                                         </label>
                                         <label>
                                             <strong>Actors:</strong>
                                             <textarea
                                                 value={selectedMovie.actors}
-                                                onChange={(e) => setSelectedMovie({ ...selectedMovie, actors: e.target.value })}
+                                                onChange={(e) => setSelectedMovie({
+                                                    ...selectedMovie,
+                                                    actors: e.target.value
+                                                })}
                                             />
                                         </label>
                                         <label>
@@ -641,14 +652,20 @@ const MovieManagement = () => {
                                             <input
                                                 type="number"
                                                 value={selectedMovie.duration}
-                                                onChange={(e) => setSelectedMovie({ ...selectedMovie, duration: e.target.value })}
+                                                onChange={(e) => setSelectedMovie({
+                                                    ...selectedMovie,
+                                                    duration: e.target.value
+                                                })}
                                             />
                                         </label>
                                         <label>
                                             <strong>Status:</strong>
                                             <select
                                                 value={selectedMovie.status}
-                                                onChange={(e) => setSelectedMovie({ ...selectedMovie, status: e.target.value })}
+                                                onChange={(e) => setSelectedMovie({
+                                                    ...selectedMovie,
+                                                    status: e.target.value
+                                                })}
                                             >
                                                 <option value="1">Nowplaying</option>
                                                 <option value="2">Incomming Soon</option>
@@ -665,12 +682,15 @@ const MovieManagement = () => {
                                                             onChange={(e) => handleGenreChange(e, index)}
                                                         >
                                                             {availableGenres.map((availableGenre) => (
-                                                                <option key={availableGenre.genreId} value={availableGenre.genreId}>
+                                                                <option key={availableGenre.genreId}
+                                                                        value={availableGenre.genreId}>
                                                                     {availableGenre.name}
                                                                 </option>
                                                             ))}
                                                         </select>
-                                                        <button type="button" onClick={() => handleRemoveGenre(index)}>X</button>
+                                                        <button type="button"
+                                                                onClick={() => handleRemoveGenre(index)}>X
+                                                        </button>
                                                     </div>
                                                 ))}
                                                 <button type="button" onClick={handleAddGenre}>+ Add Genre</button>
@@ -680,7 +700,8 @@ const MovieManagement = () => {
 
                                     <div className="form-actions">
                                         <button type="submit" className="save-btn">Save Changes</button>
-                                        <button type="button" className="cancel-btn" onClick={handleCloseModal}>Cancel</button>
+                                        <button type="button" className="cancel-btn" onClick={handleCloseModal}>Cancel
+                                        </button>
                                     </div>
                                 </form>
                             </div>

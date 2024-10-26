@@ -4,7 +4,7 @@ import Sidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
 import CustomModal from "../../../components/common/CustomModal/CustomModal.jsx";
 import { upFileToAzure } from "../../../api/webAPI.jsx";
 import "./cinema-management.css";
-import Header from "../../../components/common/Header/Header.jsx";
+import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx";
 
 const CinemaManagement = () => {
     const [cinemas, setCinemas] = useState([]);
@@ -23,6 +23,26 @@ const CinemaManagement = () => {
         setNewCinema({ name: '', logo: '', address: '', description: '', managerId: '' });
         setSelectedFile(null);
         setFormError({});
+    };
+
+    const [itemsPerPage] = useState(10); // Số mục hiển thị trên mỗi trang
+    const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
+
+    const paginatedCinemas = cinemas.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    const handleNextPage = () => {
+        if (currentPage < Math.ceil(cinemas.length / itemsPerPage)) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
     };
 
     // Khi modal đóng, reset lại form
@@ -93,9 +113,18 @@ const CinemaManagement = () => {
 
         const success = await fetchAddCinema({ ...newCinema, logo: logoUrl });
         if (success) {
+            // alert('Cinema added successfully!');
+            // setCinemas([...cinemas, { ...newCinema, logo: logoUrl }]);
+            // handleCloseModal(); // Reset form và đóng modal sau khi thêm thành công
             alert('Cinema added successfully!');
-            setCinemas([...cinemas, { ...newCinema, logo: logoUrl }]);
-            handleCloseModal(); // Reset form và đóng modal sau khi thêm thành công
+
+            // Fetch the updated list of cinemas
+            const updatedCinemas = await fetchCinemaList();
+            if (updatedCinemas) {
+                setCinemas(updatedCinemas);
+            }
+
+            handleCloseModal(); // Reset form and close modal after successful addition
         } else {
             alert('Failed to add cinema.');
         }
@@ -142,13 +171,20 @@ const CinemaManagement = () => {
     };
 
     const handleDeleteCinema = async (cinemaId) => {
-        const success = await fetchDeleteCinema(cinemaId);
-        if (success) {
-            alert('Cinema deleted successfully!');
-            setCinemas(cinemas.filter((cinema) => cinema.cinemaId !== cinemaId));
-            handleCloseModal(); // Reset form và đóng modal sau khi xóa thành công
+        const isConfirmed = window.confirm('Are you sure you want to delete this cinema?');
+
+        if (isConfirmed) {
+            const success = await fetchDeleteCinema(cinemaId);
+            if (success) {
+                alert('Cinema deleted successfully!');
+                setCinemas(cinemas.filter((cinema) => cinema.cinemaId !== cinemaId));
+                handleCloseModal(); // Reset form and close modal after successful deletion
+            } else {
+                alert('Failed to delete cinema.');
+            }
         } else {
-            alert('Failed to delete cinema.');
+            // Optional: handle cancel action or close modal
+            alert('Delete action canceled.');
         }
     };
 
@@ -162,7 +198,7 @@ const CinemaManagement = () => {
 
     return (
         <>
-            <Header />
+            <AdminHeader />
             <div className="cinema-list-container">
                 <Sidebar />
                 <div className="cinema-list-content">
@@ -187,21 +223,31 @@ const CinemaManagement = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {cinemas.map((cinema) => (
+                        {paginatedCinemas.map((cinema) => (
                             <tr key={cinema.cinemaId}>
                                 <td>{cinema.cinemaId}</td>
                                 <td>{cinema.name}</td>
-                                <td><img src={cinema.logo} className="cinema-logo" alt="cinema logo" /></td>
+                                <td><img src={cinema.logo} className="cinema-logo" alt="cinema logo"/></td>
                                 <td>{cinema.managerId}</td>
                                 <td>{cinema.address}</td>
                                 <td>
-                                    <button className="edit-btn" onClick={() => handleEditCinema(cinema)}>Edit</button>
-                                    <button className="delete-btn" onClick={() => handleDeleteCinema(cinema.cinemaId)}>Delete</button>
+                                    <button className="edit-btn" onClick={() => handleEditCinema(cinema)}>✏️</button>
+                                    <button className="delete-btn"
+                                            onClick={() => handleDeleteCinema(cinema.cinemaId)}>🗑️
+                                    </button>
                                 </td>
                             </tr>
                         ))}
                         </tbody>
                     </table>
+
+                    <div className="pagination-controls">
+                        <button onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
+                        <span>Page {currentPage} of {Math.ceil(cinemas.length / itemsPerPage)}</span>
+                        <button onClick={handleNextPage}
+                                disabled={currentPage === Math.ceil(cinemas.length / itemsPerPage)}>Next
+                        </button>
+                    </div>
 
                     <CustomModal isOpen={isModalOpen} onClose={handleCloseModal}>
                         {modalType === 'add' && (
@@ -247,7 +293,7 @@ const CinemaManagement = () => {
                                 />
                                 {formError.managerId && <p className="error-message">{formError.managerId}</p>}
 
-                                <input type="file" accept="image/*" onChange={handleFileChange} />
+                                <input type="file" accept="image/*" onChange={handleFileChange}/>
                                 <button onClick={handleAddCinema}>Add</button>
                                 <button onClick={handleCancel}>Cancel</button>
                             </div>
@@ -266,7 +312,7 @@ const CinemaManagement = () => {
                                 />
                                 {formError.name && <p className="error-message">{formError.name}</p>}
 
-                                <input type="file" accept="image/*" onChange={handleFileChange} />
+                                <input type="file" accept="image/*" onChange={handleFileChange}/>
                                 <input
                                     type="text"
                                     name="address"
