@@ -173,11 +173,11 @@ const AccountManagement = () => {
             if (roleId === 0) {
                 // Unban logic
                 const updatedAccount = accounts.find((account) => account.UID === UID);
-                const success = await fetchUpdateAccount(UID, { ...updatedAccount, roleId: 1 });
+                const success = await fetchUpdateAccount(UID, { ...updatedAccount, roleId: 3 });
                 if (success) {
                     setAccounts((prevAccounts) =>
                         prevAccounts.map((account) =>
-                            account.UID === UID ? { ...account, roleId: 1 } : account
+                            account.UID === UID ? { ...account, roleId: 3 } : account
                         )
                     );
                     alert('Account unbanned successfully!');
