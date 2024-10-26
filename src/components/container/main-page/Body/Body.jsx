@@ -14,9 +14,10 @@ function Body() {
     useEffect(() => {
         setIsLogged(!!user);
     }, [user]);
+
     return (
         <div className="body">
-            <MainSlide isLogged={isLogged} filmLists={filmList} />
+            <MainSlide isLogged={isLogged} filmLists={filmList}  />
             <FilmLists />
             <Schedule />
         </div>

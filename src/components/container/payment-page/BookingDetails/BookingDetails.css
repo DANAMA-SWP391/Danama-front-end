@@ -1,80 +1,128 @@
-.body__booking-details {
-    width: 80%;
-    height: 500px;
+.booking-details-page {
+
+}
+
+.booking-details-page p {
+    font-size: 16px;
+    color: #000000;
+}
+
+.booking-details-page .booking-details-page__content {
+    margin: 0 auto;
+    width: 90%;
+}
+
+.booking-details-page .booking-details-page__content h1 {
+    font-size: 24px;
+    color: #000000;
+    font-family: "Albert Sans semi-bold", sans-serif;
+    border-bottom: 1px solid #000000;
+    padding-bottom: 10px;
+    margin-top: 10px;
+}
+
+.booking-details-page .booking-details-page__content h2 {
+    font-size: 20px;
+    color: #000000;
+    font-family: "Albert Sans semi-bold", sans-serif;
+    margin-top: 10px;
+}
+
+.booking-details-page .booking-details-page__content .booking-overview {
+    margin-top: 20px;
+}
+
+.booking-details-page .booking-details-page__content .booking-overview p {
+    font-size: 16px;
+    font-family: "Albert Sans semi-bold", sans-serif;
+    color: #000000;
+    margin-bottom: 5px;
+}
+
+.booking-details-page .booking-details-page__content .booking-details {
+    margin-top: 20px;
+    border: 1px solid #000000;
+    border-radius: 15px;
+    padding: 2.5%;
+    width: 90%;
+    margin-bottom: 50px;
+}
+
+.booking-details-page__content .booking-details > div {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    margin-top: 20px;
+   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    padding-bottom: 10px;
+    margin-bottom: 5px;
 }
 
-.body__booking-details > div {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-    margin-top: 20px;
-
-    display: flex;
-}
-
-.body__booking-details h2 {
-    font-size: 24px;
-    font-family: "Albert Sans semi-bold", sans-serif;
-    margin-bottom: 20px;
-}
-
-.body__booking-details > div h3 {
-    font-family: "Albert Sans semi-bold", sans-serif;
+.booking-details-page__content .booking-details > div > p:first-child {
     font-size: 16px;
+    font-family: "Albert Sans semi-bold", sans-serif;
     margin-right: 20px;
 }
 
-.booking-details__time > div {
+.booking-details-page__content .booking-details .film-name {
     display: flex;
+    flex-direction: row;
 }
 
-.booking-details__time div:first-child {
-    margin-right: 50%;
-}
-
-.booking-details__cinema p:nth-child(2) {
-    font-size: 12px;
-}
-
-.booking-details__seats > div {
+.booking-details-page__content .booking-details .cinema > div:first-child {
+    margin-top: 10px;
     display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    width: 70%;
+    justify-content: space-between;
 }
 
-.booking-details__seats > div:first-child {
-    margin-right: 50%;
-}
-.body__booking-details p {
-    color: black; /* Or whatever color you want */
-}
-
-/* Disable pointer events on the entire page when overlay is active */
-.body__booking-details.overlay-active * {
-    pointer-events: none;
-    user-select: none;
+.booking-details-page__content .booking-details .cinema > div:first-child > div > p:first-child {
+    font-size: 16px;
+    font-family: "Albert Sans semi-bold", sans-serif;
+    margin-right: 20px;
 }
 
-/* Allow pointer events on overlay text itself */
-.body__booking-details.overlay-active .overlay {
-    pointer-events: auto;
-}
-
-/* Style for the overlay */
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
+.booking-details-page__content .booking-details .cinema > div:nth-child(2) {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+    flex-direction: column;
+    margin-bottom: 10px;
+    justify-content: space-between;
 }
 
-.overlay p {
-    font-size: 20px;
+.booking-details-page__content .booking-details .cinema > div:nth-child(2)  .cinema-name {
+    display: flex;
+    flex-direction: row;
+}
+
+.booking-details-page__content .booking-details .cinema > div:nth-child(2)  .cinema-name > p:first-child {
+    font-family: "Albert Sans semi-bold", sans-serif;
+    margin-right: 20px;
+}
+
+.booking-details-page__content .booking-details .cinema > div:nth-child(2) .cinema-address p {
+    font-size: 14px;
+}
+
+.booking-details-page__content .booking-details .cinema .room {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.booking-details-page__content .booking-details .cinema .room p:first-child {
+    font-family: "Albert Sans semi-bold", sans-serif;
+    margin-right: 20px;
+}
+
+.booking-details-page__content .booking-details .seats {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.booking-details-page__content .booking-details .total-cost {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
 }

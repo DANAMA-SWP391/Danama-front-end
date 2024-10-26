@@ -17,7 +17,6 @@ import MainSlide from "../../components/container/main-page/MainSlide/MainSlide.
 import Schedule from "../../components/container/film-page/Schedule/Schedule.jsx";
 
 import { useLocation } from "react-router-dom";
-import {fetchDetailMovie} from "../../api/webAPI.jsx";
 import {WebContext} from "../../utils/webContext.jsx";
 
 function FilmPage() {
@@ -28,7 +27,7 @@ function FilmPage() {
     const {showtimeList} = useContext(WebContext);
     const [isLogged, setIsLogged] = useState(false);
     const showtimes = showtimeList?.filter(showtime => showtime.movie.movieId === film.movieId) || [];
-    const [reviews, setReviews] = useState([]);
+    const [reviews] = useState([]);
 
     useEffect(() => {
         if (user) {
@@ -36,24 +35,11 @@ function FilmPage() {
         }
     }, [user]);
 
-    // Fetch movie details on component mount
-    useEffect(() => {
-        const getMovieDetails = async () => {
-            if (film) {
-                const data = await fetchDetailMovie(film.movieId);
-                if (data) {
-                    setReviews(data.reviews || []);
-                }
-            }
-        };
-
-        getMovieDetails();
-    }, [film]);
     return (
         <div className="film-page">
             <Header />
-            <MainSlide isLogged={isLogged} filmLists={film} />
-            <ScreenShotSlider screenShots={screenShots} />
+            <MainSlide isLogged={isLogged} filmLists={[film]} />
+            {/*<ScreenShotSlider screenShots={screenShots} />*/}
             <SeparateLine />
             <CommentSection user={user} reviews={reviews} movieId={film.movieId}/>
             <SeparateLine />
