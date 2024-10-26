@@ -21,6 +21,7 @@ function CommentSection({ reviews, movieId }) {
             if (result.success) {
                 setUser(result.user); // Set user info if the token is valid
             }
+
         };
 
         validateToken();
