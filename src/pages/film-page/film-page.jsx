@@ -17,34 +17,35 @@ import MainSlide from "../../components/container/main-page/MainSlide/MainSlide.
 import Schedule from "../../components/container/film-page/Schedule/Schedule.jsx";
 
 import { useLocation } from "react-router-dom";
+import {WebContext} from "../../utils/webContext.jsx";
 
 function FilmPage() {
     const location = useLocation();
     const { film } = location.state || {};
-
-    const {user, filmList} = useContext(UserContext);
-
+    const { user } = useContext(UserContext);
     const screenShots = [screenshot1, screenshot2, screenshot3, screenshot4, screenshot5];
-    
+    const {showtimeList} = useContext(WebContext);
     const [isLogged, setIsLogged] = useState(false);
-    
+    const showtimes = showtimeList?.filter(showtime => showtime.movie.movieId === film.movieId) || [];
+    const [reviews] = useState([]);
+
     useEffect(() => {
         if (user) {
             setIsLogged(true);
         }
     }, [user]);
-    
+
     return (
         <div className="film-page">
-            <Header user={user} />
-            <MainSlide isLogged={isLogged} film={film}/>
-            <ScreenShotSlider screenShots={screenShots} />
+            <Header />
+            <MainSlide isLogged={isLogged} filmLists={[film]} />
+            {/*<ScreenShotSlider screenShots={screenShots} />*/}
             <SeparateLine />
-            <CommentSection user={user} />
-            <SeparateLine/>
-            <Schedule />
-            <SeparateLine/>
-            <FilmLists filmLists={filmList}/>
+            <CommentSection user={user} reviews={reviews} movieId={film.movieId}/>
+            <SeparateLine />
+            <Schedule showtimes={showtimes} film={film} />
+            <SeparateLine />
+            <FilmLists />
             <Footer />
         </div>
     );

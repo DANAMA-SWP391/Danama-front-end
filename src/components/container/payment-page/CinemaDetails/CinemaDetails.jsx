@@ -1,13 +1,18 @@
-function CinemaDetails() {
+import  "./CinemaDetails.css";
+import PropTypes from "prop-types";
+function CinemaDetails({ cinema }) {
     return (
-        <div className="booking-details__cinema">
-            <h3>Cinema:</h3>
-            <div>
-                <p>CGV Vincom Center</p>
-                <p>Level 4 - Vincom Da Nang Shopping Mall, Ngo Quyen Street - An Hai Bac Ward - Son Tra District Da Nang</p>
-            </div>
+        <div className="cinema-details">
+            <p>Cinema: {cinema.name}</p>
+            <p>Address: {cinema.address}</p>
         </div>
     );
 }
-
+CinemaDetails.propTypes = {
+    cinema: PropTypes.shape({
+        cinemaId: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        address: PropTypes.string.isRequired,
+    }).isRequired,
+};
 export default CinemaDetails;

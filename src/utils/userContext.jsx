@@ -7,27 +7,26 @@ export const UserContext = createContext();
 // Create the provider component
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null); // State for user information
-    const [filmList, setFilmList] = useState([]); // State for film list
 
+    // Load user info from localStorage
     useEffect(() => {
-        const storedUser = localStorage.getItem('user'); // Use 'user' as the key
-        console.log(storedUser);
+        const storedUser = localStorage.getItem('user');
         if (storedUser) {
-            setUser(JSON.parse(storedUser)); // Parse the user string back into an object
+            setUser(JSON.parse(storedUser));
         }
     }, []);
 
+    // Save user info to localStorage when it changes
     useEffect(() => {
         if (user) {
-            localStorage.setItem('user', JSON.stringify(user)); // Use 'user' as the key
+            localStorage.setItem('user', JSON.stringify(user));
         } else {
-            localStorage.removeItem('user'); // Remove user data if user is logged out
+            localStorage.removeItem('user');
         }
     }, [user]);
 
-
     return (
-        <UserContext.Provider value={{ user, setUser, filmList, setFilmList }}>
+        <UserContext.Provider value={{ user, setUser }}>
             {children}
         </UserContext.Provider>
     );

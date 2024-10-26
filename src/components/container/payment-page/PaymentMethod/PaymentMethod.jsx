@@ -1,17 +1,44 @@
-import "./PaymentMethod.css";
+import { useState } from "react";
+import PropTypes from 'prop-types';
 import Button from "../../../common/Button/Button.jsx";
+import "./PaymentMethod.css"; // Assuming there's a PaymentMethod.css file for styling
 
-function PaymentMethod() {
+function PaymentMethod({ setMethod }) {
+    const [selectedMethod, setSelectedMethod] = useState('');
+
+    const handleMethodClick = (method) => {
+        setSelectedMethod(method);
+        setMethod(method); // Pass the selected method back to the parent component
+    };
+
     return (
-        <div className="body__payment-method">
-            <h2>Which Payment do you like to?</h2>
-            <ul>
-                <li><Button>MoMo e-wallet</Button></li>
-                <li><Button>QR-VNPAY</Button></li>
-                <li><Button>ATM</Button></li>
-            </ul>
+        <div className="payment-methods">
+            <h2>Which Payment do you like?</h2>
+            {/* Using Button component for payment options */}
+            <Button
+                onClick={() => handleMethodClick('MoMo')}
+                className={selectedMethod === 'MoMo' ? 'selected' : ''}
+            >
+                MoMo e-wallet
+            </Button>
+            <Button
+                onClick={() => handleMethodClick('VNPay')}
+                className={selectedMethod === 'VNPay' ? 'selected' : ''}
+            >
+                VNPAY
+            </Button>
+            <Button
+                onClick={() => handleMethodClick('ATM')}
+                className={selectedMethod === 'ATM' ? 'selected' : ''}
+            >
+                ATM
+            </Button>
         </div>
     );
 }
+
+PaymentMethod.propTypes = {
+    setMethod: PropTypes.func.isRequired, // Set the payment method in the parent component
+};
 
 export default PaymentMethod;

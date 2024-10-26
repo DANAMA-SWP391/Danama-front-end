@@ -9,7 +9,6 @@ import {UserContext} from "../../../utils/userContext.jsx";
 
 function Header() {
     const {user} = useContext(UserContext);
-    console.log(user);
 
     return (
         <div className="header">
