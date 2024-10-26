@@ -110,9 +110,7 @@ export async function fetchHomePage() {
 
         // Parse the response JSON
         const data = await response.json();
-        console.log(data);
         const { movies, showtimes, cinemas } = data;
-        console.log(data);
 
         // Open IndexedDB and update the database
         const db = await openDB('DANAMA_DB', 1, {

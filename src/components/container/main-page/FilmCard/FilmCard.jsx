@@ -3,8 +3,11 @@ import "./FilmCard.css";
 import SeatLayout from "../SeatLayout/SeatLayout.jsx";
 import BookingInfo from "../BookingInfo/BookingInfo.jsx";
 import BackSpace from '../../../../assets/Icons/back-space.svg';
-import {useState} from "react";
+import { useState} from "react";
 import {fetchDetailShowtime} from "../../../../api/webAPI.jsx";
+import {fetchJwtToken} from "../../../../api/authAPI.js";
+import {addBooking} from "../../../../api/userAPI.js";
+import {useNavigate} from "react-router-dom";
 
 function FilmCard({film, showtimes}) {
     const [isClick, setIsClick] = useState(false);
@@ -16,36 +19,57 @@ function FilmCard({film, showtimes}) {
     const [price, setPrice] = useState(0);
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [showtime, setShowtime] =useState({});
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
     const handleSelectedShowtime = async (showtime) => {
-        setShowtime(showtime);
         setIsClick(true);
-        setLoading(true); // Start loading state
+        setShowtime(showtime);
+        setLoading(true);
+        if(!user) {
+            try {
+                const result = await fetchJwtToken(); // Fetch user info by validating token
+                if (result.success) {
+                    setUser(result.user); // Set user info if token is valid
+                } else {
+                    alert('Please log in to select seats.');
+                    navigate('/login');
+                    return; // Exit if user not logged in
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+                return;
+            }
+        }
+
         try {
-            // Fetch seat details from API
             const response = await fetchDetailShowtime(showtime.showtimeId, showtime.room.roomId);
             if (response) {
-                const { seats } = response; // Assuming response contains seats as an array
-                setSeats(seats); // Update seats with 2D grid
+                setSeats(response.seats);
             }
         } catch (error) {
             console.error("Error fetching showtime details:", error);
         } finally {
-            setLoading(false); // End loading state after fetch is complete
+            setLoading(false);
         }
     };
-    console.log(seats);
     const handleClick =() => {
         setIsClick(!isClick);
         setSeats([]);
         setSelectedSeats([]);
         setPrice(0);
     }
+    // Function to handle seat selection (add or remove)
     const handleSelectSeat = (seat) => {
-        if (selectedSeats.includes(seat.seatNum)) {
-            setSelectedSeats(selectedSeats.filter(s => s !== seat.seatNum)); // Remove seat
+        // Check if the seat is already selected
+        const isAlreadySelected = selectedSeats.some(selectedSeat => selectedSeat.seatNum === seat.seatNum);
+
+        if (isAlreadySelected) {
+            // Remove seat from selectedSeats
+            setSelectedSeats(selectedSeats.filter(s => s.seatNum !== seat.seatNum));
             setPrice(price - seat.price); // Decrease price by seat price
         } else {
-            setSelectedSeats([...selectedSeats, seat.seatNum]); // Add seat
+            // Add seat to selectedSeats
+            setSelectedSeats([...selectedSeats, seat]); // Store full seat object including price
             setPrice(price + seat.price); // Increase price by seat price
         }
     };
@@ -57,9 +81,49 @@ function FilmCard({film, showtimes}) {
             default: return '#1BA0D4';
         }
     };
-    const handlePurchase = () => {
+    const handlePurchase = async () => {
+        setLoading(true);
+        try {
+            const bookingData = {
+                user: { UID: user.UID },
+                totalCost: price,
+                timestamp: new Date().toISOString(),
+                status: 0,
+            };
 
-    }
+            const tickets = selectedSeats.map(seat => ({
+                price: seat.price,
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                showtime: { showtimeId: showtime.showtimeId },
+                seat: { seatId: seat.seatId },
+            }));
+
+            const response = await addBooking(bookingData, tickets);
+
+            if (response.success) {
+                navigate('/payment', {
+                    state: {
+                        bookingId: response.bookingId,
+                        bookingData: {
+                            film,
+                            showtime,
+                            selectedSeats,
+                            price,
+                            cinema: showtime.room.cinema,
+                        },
+                    },
+                });
+            } else {
+                alert('Booking failed');
+                setLoading(false);
+            }
+        } catch (error) {
+            console.error('Error during booking creation:', error);
+            setLoading(false);
+        }
+    };
     return (
         <div className={`wrapper ${isClick ? 'darken' : ''}`}>
             {isClick && <div className="overlay"></div>}
@@ -111,8 +175,7 @@ FilmCard.propTypes = {
     film: PropTypes.shape({
         poster: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
-        ageRestricted: PropTypes.number.isRequired, // Ensure it's a number as you mentioned
-        genre: PropTypes.string.isRequired,
+        ageRestricted: PropTypes.number.isRequired
     }).isRequired,
     showtimes: PropTypes.arrayOf(PropTypes.shape({
         startTime: PropTypes.string.isRequired, // String in HH:mm:ss format

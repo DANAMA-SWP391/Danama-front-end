@@ -16,6 +16,9 @@ import ShowtimeManagement from "./pages/cManager-Pages/showtime-management-page/
 import CinemaDashboard from "./pages/cManager-Pages/dashboard-page/dash-board.jsx";
 import SeatManagement    from "./pages/cManager-Pages/seat-management-page/seat-management.jsx";
 import Profile from "./pages/profile-page/profile-page.jsx";
+import BookingDetailsPage from "./pages/booking-details-page/booking-details-page.jsx";
+import Payment from "./pages/payment-page/payment-page.jsx";
+import FilmListPage from "./pages/film-list-page/film-list-page.jsx";
 
 function App( ) {
     return (
@@ -31,6 +34,9 @@ function App( ) {
 
 
                     <Route path="/" element={<MainPage/>} />
+                    <Route path="/" element={<MainPage/>} />
+                    <Route path="/film-list" element={<FilmListPage/>} />
+                    <Route path="/booking-detail" element={<BookingDetailsPage/>} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/reset-pass" element={<ResetPass />} />
@@ -38,6 +44,7 @@ function App( ) {
                     <Route path="/film-page" element={<FilmPage />} />
 
                     {/*<Route path="/payment" element={<Payment />} />*/}
+                    <Route path="/payment" element={<Payment />} />
                     <Route path="/profile" element={<Profile />} />
                 </Routes>
             </Router>

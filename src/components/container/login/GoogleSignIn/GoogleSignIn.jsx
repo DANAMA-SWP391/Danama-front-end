@@ -12,7 +12,6 @@ function GoogleSignIn() {
     const handleSuccess = async (response) => {
         try {
             const token = response.credential;
-            console.log(token);
             // Call the loginByGoogle function with the token
             const data = await loginByGoogle(token);
             setUser(data.user);

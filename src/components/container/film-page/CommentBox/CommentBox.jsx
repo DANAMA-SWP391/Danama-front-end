@@ -34,10 +34,10 @@ function CommentBox({ setIsCommentBoxVisible, movieId, uid }) {
             const result = await addReview(review);
 
             if (result) {
-                // Clear the input fields and close the comment box
+                alert("Add comment successfully.");
                 commentRef.current.value = "";
                 rateRef.current.value = 1;
-                setIsCommentBoxVisible(false);
+                window.location.reload();
             } else {
                 alert("Failed to add comment.");
             }

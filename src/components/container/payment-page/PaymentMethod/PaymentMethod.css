@@ -1,31 +1,44 @@
-.body__payment-method {
+.payment-methods {
     margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Center align all buttons horizontally */
 }
 
-.body__payment-method h2 {
+.payment-methods h2 {
     font-family: 'Albert Sans semi-bold', sans-serif;
     font-size: 26px;
     color: #000;
     margin: 20px 0 40px;
 }
 
-.body__payment-method ul {
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    list-style: none;
-    justify-content: space-between;
-}
-
-.body__payment-method ul li button {
+/* Style for the payment buttons */
+.payment-methods button {
     height: 75px;
     width: 250px;
     background-color: #fff;
     color: #000;
     border: 1px solid #000;
+    border-radius: 10px; /* Add a slight border-radius */
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth hover transition */
+    margin-bottom: 20px; /* Add spacing between buttons */
 }
 
-.body__payment-method ul li button:hover {
+.payment-methods button:hover {
     background-color: #1E65DE;
     color: #fff;
+}
+
+/* Style for the selected button */
+.payment-methods button.selected {
+    background-color: #1E65DE;
+    color: #fff;
+    border: 1px solid #1E65DE;
+}
+
+.payment-methods button.selected:hover {
+    background-color: #1650b8; /* Darker shade when hovering over selected button */
+    border: 1px solid #1650b8;
 }
