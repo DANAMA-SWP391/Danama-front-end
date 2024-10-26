@@ -10,6 +10,7 @@ import {useState} from "react";
 function Payment() {
     const location = useLocation();
     const { bookingId, bookingData } = location.state || {}; // Destructure the state
+    console.log(bookingData);
     const [method, setMethod] = useState(''); // Manage selected payment method here
 
     return (
