@@ -25,6 +25,18 @@ const getDisplayDate = (dateObj) => {
     const day = dateObj.getDate();
     return [dayOfWeek, day];
 };
+const getNext7Days = () => {
+    const dates = [];
+    const today = new Date();
+
+    for (let i = 0; i < 7; i++) {
+        const nextDate = new Date(today);
+        nextDate.setDate(today.getDate() + i);
+        dates.push(nextDate);
+    }
+
+    return dates;
+};
 // Helper function to calculate price range for a cinema's showtimes
 const getPriceRangeForCinema = (cinemaId, showtimeList) => {
     const cinemaShowtimes = showtimeList.filter(showtime => showtime.room.cinema.cinemaId === cinemaId);
@@ -43,15 +55,7 @@ const getPriceRangeForCinema = (cinemaId, showtimeList) => {
 function Schedule() {
     const {cinemaList, showtimeList, filmList} = useContext(WebContext);
     // Initialize the dates (actual dates stored as "MMM dd, yyyy")
-    const dates = [
-        new Date("2024-10-04"),
-        new Date("2024-10-05"),
-        new Date("2024-10-06"),
-        new Date("2024-10-07"),
-        new Date("2024-10-08"),
-        new Date("2024-10-09"),
-        new Date("2024-10-10")
-    ];
+    const dates = getNext7Days();
     const [sortByPrice, setSortByPrice] = useState(false);
     const [sortOrder, setSortOrder] = useState('desc');
     const [selectedCinema, setSelectedCinema] = useState(null);
