@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
-import Sidebar from "./../../components/common/AdminSideBar/AdminSideBar.jsx";
 import ReactApexChart from 'react-apexcharts';
 import { fetchAdminDashBoardPage } from "../../api/admin-api.js";
 import './admin-dashboard-page.css';
-import Header from "../../components/common/Header/Header.jsx";
 import AdminHeader from "../../components/common/AdminHeader/AdminHeader.jsx";
 import AdminSidebar from "./../../components/common/AdminSideBar/AdminSideBar.jsx";
 
@@ -31,7 +29,9 @@ function AdminDashboardPage() {
     }, []);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="loading-overlay">
+            <div className="spinner"></div>
+        </div>;
     }
 
     if (error) {

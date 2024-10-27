@@ -11,8 +11,10 @@ import {fetchBookingHistory, updateProfile} from "../../../../api/userAPI.js";
 import BookingHistory from "../BookingHistory/Booking History.jsx";
 import ChangePass from "../ChangePass/ChangePass.jsx";
 import {useNavigate} from "react-router-dom";
+import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
 function RightContainer({ selectedOption }) {
+    const showAlert= useCustomAlert();
     const [user, setUser] = useState(null);
     const [bookingHistory, setBookingHistory] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -31,7 +33,7 @@ function RightContainer({ selectedOption }) {
                 const hasPasswordResult = await checkIfHasPassword(response.user.UID);
                 setHasPassword(hasPasswordResult);
             } else {
-                alert("Your session is expired, login again!");
+                showAlert("Your session is expired, login again!");
                 navigate('/login');
             }
         };
@@ -86,7 +88,7 @@ function RightContainer({ selectedOption }) {
             }
 
             if (response.success) {
-                alert("Password updated successfully!");
+                showAlert("Password updated successfully!");
                 window.location.reload();
             } else {
                 setMessage(response.message || "Failed to update password.");
@@ -159,7 +161,9 @@ function RightContainer({ selectedOption }) {
         }
     };
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <div className="loading-overlay">
+        <div className="spinner"></div>
+    </div>;
     if (error) return <p>Error: {error}</p>;
 
     return (

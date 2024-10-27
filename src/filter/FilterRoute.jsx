@@ -4,7 +4,12 @@ import {UserContext} from "../utils/userContext.jsx";
 
 // eslint-disable-next-line react/prop-types
 export const ProtectedRoute = ({ element, requiredRole }) => {
-    const { user } = useContext(UserContext);
+    const { user, isLoading } = useContext(UserContext);
+
+    if (isLoading) {
+        // Optionally show a loading spinner or return null until loading completes
+        return null;
+    }
 
     if (!user) {
         // Redirect to login if the user is not logged in
@@ -12,16 +17,19 @@ export const ProtectedRoute = ({ element, requiredRole }) => {
     }
 
     if (requiredRole && user.roleId !== requiredRole) {
-        // If user does not have the required role, redirect to main page
+        // If user does not have the required role, redirect to the main page
         return <Navigate to="/" />;
     }
 
     return element;
 };
-
 // eslint-disable-next-line react/prop-types
 export const PublicRoute = ({ element, redirectTo }) => {
-    const { user } = useContext(UserContext);
+    const { user, isLoading } = useContext(UserContext);
+
+    if (isLoading) {
+        return null;
+    }
 
     return user ? <Navigate to={redirectTo} /> : element;
 };

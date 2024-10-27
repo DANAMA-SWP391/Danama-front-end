@@ -4,8 +4,10 @@ import Button from "../../../common/Button/Button.jsx";
 import { useRef, useState} from "react";
 import PropTypes from 'prop-types';
 import {addReview} from "../../../../api/userAPI.js";
+import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
 function CommentBox({ setIsCommentBoxVisible, movieId, uid }) {
+    const showAlert= useCustomAlert();
     const commentRef = useRef(null);
     const rateRef = useRef(null);
     const [isSubmitting, setIsSubmitting] = useState(false); // State for loading
@@ -15,7 +17,7 @@ function CommentBox({ setIsCommentBoxVisible, movieId, uid }) {
         const rateValue = rateRef.current.value;
 
         if (!commentValue) {
-            alert("Comment cannot be empty.");
+            showAlert("Comment cannot be empty.");
             return;
         }
 
@@ -34,16 +36,16 @@ function CommentBox({ setIsCommentBoxVisible, movieId, uid }) {
             const result = await addReview(review);
 
             if (result) {
-                alert("Add comment successfully.");
+                showAlert("Add comment successfully.");
                 commentRef.current.value = "";
                 rateRef.current.value = 1;
                 window.location.reload();
             } else {
-                alert("Failed to add comment.");
+                showAlert("Failed to add comment.");
             }
         } catch (error) {
             console.error('Error while submitting the comment:', error);
-            alert("An error occurred. Please try again.");
+            showAlert("An error occurred. Please try again.");
         } finally {
             setIsSubmitting(false); // Remove loading state after submission
         }

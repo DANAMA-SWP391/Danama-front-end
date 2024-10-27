@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes, {object} from 'prop-types';
 import "./FilmCard.css";
 import SeatLayout from "../SeatLayout/SeatLayout.jsx";
 import BookingInfo from "../BookingInfo/BookingInfo.jsx";
@@ -9,6 +9,7 @@ import {fetchJwtToken} from "../../../../api/authAPI.js";
 import {addBooking} from "../../../../api/userAPI.js";
 import {useNavigate} from "react-router-dom";
 import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
+import {formatCurrency} from "../../../../utils/utility.js";
 
 function FilmCard({film, showtimes}) {
     const showAlert = useCustomAlert();
@@ -39,7 +40,7 @@ function FilmCard({film, showtimes}) {
                     }
                     setUser(result.user);
                 } else {
-                    alert('Please log in to select seats.');
+                    showAlert('Please log in to select seats.');
                     navigate('/login');
                     return; // Exit if user not logged in
                 }
@@ -128,7 +129,7 @@ function FilmCard({film, showtimes}) {
                     },
                 });
             } else {
-                alert('Booking failed');
+                showAlert('Booking failed');
                 setLoading(false);
             }
         } catch (error) {
@@ -170,13 +171,15 @@ function FilmCard({film, showtimes}) {
                 <div className="film-info">
                     <p className="film-age">{film.ageRestricted}+</p>
                     <p className="film-name">{film.name}</p>
-                    <p className="film-genre">{film.genre}</p>
+                    <p className="film-genre">
+                        {film.genres.map(genre => genre.name).join(", ")}
+                    </p>
                     <div className="film-schedule">
                         {showtimes.map((showtime, index) => (
                             <div key={index} className="showtime" onClick={() => handleSelectedShowtime(showtime)}>
                                 {/* Display the startTime and endTime exactly as they are without conversion */}
                                 <p>{showtime.startTime} ~ {showtime.endTime}</p>
-                                <p>Price: {showtime.basePrice}đ</p>
+                                <p>Price: {formatCurrency(showtime.basePrice)}</p>
                             </div>
                         ))}
                     </div>
@@ -190,7 +193,8 @@ FilmCard.propTypes = {
     film: PropTypes.shape({
         poster: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
-        ageRestricted: PropTypes.number.isRequired
+        ageRestricted: PropTypes.number.isRequired,
+        genres: PropTypes.arrayOf(object).isRequired
     }).isRequired,
     showtimes: PropTypes.arrayOf(PropTypes.shape({
         startTime: PropTypes.string.isRequired, // String in HH:mm:ss format

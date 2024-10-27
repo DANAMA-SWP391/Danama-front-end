@@ -6,8 +6,10 @@ import CommentBox from "../CommentBox/CommentBox.jsx";
 import PropTypes from 'prop-types';
 import {fetchJwtToken} from "../../../../api/authAPI.js";
 import {deleteReview, updateReview} from "../../../../api/userAPI.js";
+import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
 function CommentSection({ reviews, movieId }) {
+    const showAlert= useCustomAlert();
     const [isCommentBoxVisible, setIsCommentBoxVisible] = useState(false);
     const [commentList, setCommentList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -53,7 +55,7 @@ function CommentSection({ reviews, movieId }) {
         console.log(user);
         if (user) {
             if(user.roleId === 1 || user.roleId ===2) {
-                alert("You can't leave comment!!");
+                showAlert("You can't leave comment!!");
                 window.location.href = "/";
             } else {
                 setIsCommentBoxVisible(true);
@@ -68,14 +70,14 @@ function CommentSection({ reviews, movieId }) {
         try {
             const result = await deleteReview(reviewId); // Call the API to delete the review
             if (result.success) {
-                alert("Delete review successfully.");
+                showAlert("Delete review successfully.");
                 window.location.reload();
             } else {
-                alert("Failed to delete review.");
+                showAlert("Failed to delete review.");
             }
         } catch (error) {
             console.error("Error deleting review:", error);
-            alert("An error occurred. Please try again.");
+            showAlert("An error occurred. Please try again.");
         }
     };
 
@@ -90,15 +92,15 @@ function CommentSection({ reviews, movieId }) {
         try {
             const result = await updateReview(updatedReview); // Call the API to update the review
             if (result.success) {
-                alert("Update review successfully.");
+                showAlert("Update review successfully.");
                 // Update the review in the local state
                 window.location.reload();
             } else {
-                alert("Failed to update review.");
+                showAlert("Failed to update review.");
             }
         } catch (error) {
             console.error("Error updating review:", error);
-            alert("An error occurred. Please try again.");
+            showAlert("An error occurred. Please try again.");
         }
     };
 
@@ -139,7 +141,7 @@ function CommentSection({ reviews, movieId }) {
             {/* Pagination Controls */}
             <div className="pagination">
                 <Button onClick={goToPreviousPage} disabled={currentPage === 1}>
-                    Previous
+                    Prev
                 </Button>
                 <span>
             Page {currentPage} of {totalPages}

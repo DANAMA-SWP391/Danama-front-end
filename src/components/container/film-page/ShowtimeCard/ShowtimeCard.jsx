@@ -9,9 +9,11 @@ import BackSpace from '../../../../assets/Icons/back-space.svg';
 import SeatLayout from "../../main-page/SeatLayout/SeatLayout.jsx";
 import BookingInfo from "../../main-page/BookingInfo/BookingInfo.jsx";
 import {formatCurrency} from "../../../../utils/utility.js";
+import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
 
 function ShowtimeCard({film, showtime}) {
+    const showAlert = useCustomAlert();
     const [isClick, setIsClick] = useState(false);
     const [seats, setSeats] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -45,14 +47,14 @@ function ShowtimeCard({film, showtime}) {
                 const result = await fetchJwtToken(); // Fetch user info by validating token
                 if (result.success) {
                     if (result.user.roleId === 1 || result.user.roleId === 2) {
-                        alert("You do not have permission to select seats.");
+                        showAlert("You do not have permission to select seats.");
                         setLoading(false);
                         setIsClick(false);
                         return;
                     }
                     setUser(result.user);
                 } else {
-                    alert('Please log in to select seats.');
+                    showAlert('Please log in to select seats.');
                     navigate('/login');
                     return; // Exit if user not logged in
                 }
@@ -122,8 +124,9 @@ function ShowtimeCard({film, showtime}) {
                         },
                     },
                 });
+                window.scroll(0,0);
             } else {
-                alert('Booking failed');
+                showAlert('Booking failed');
                 setLoading(false);
             }
         } catch (error) {

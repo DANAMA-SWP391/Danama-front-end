@@ -17,8 +17,10 @@ import {
     getNext7Days,
     getPriceRangeForCinema
 } from "../../../../utils/utility.js";
+import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
 function Schedule({showtimes, film}) {
+    const showAlert = useCustomAlert();
     const {cinemaList} = useContext(WebContext);
 
     const dates = getNext7Days();
@@ -43,21 +45,21 @@ function Schedule({showtimes, film}) {
 
                     // Generate the Google Maps directions URL
                     if (selectedCinema) {
-                        const destination = encodeURIComponent(selectedCinema.address);
+                        const destination = encodeURIComponent(selectedCinema.name);
                         const origin = `${latitude},${longitude}`;
                         const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
                         window.open(url, '_blank'); // Open the URL in a new tab
                     } else {
-                        alert("Select a cinema!!");
+                        showAlert("Select a cinema!!");
                     }
                 },
                 (error) => {
                     console.error("Error fetching location", error);
-                    alert("Unable to retrieve your location.");
+                    showAlert("Unable to retrieve your location.");
                 }
             );
         } else {
-            alert("Geolocation is not supported by this browser.");
+            showAlert("Geolocation is not supported by this browser.");
         }
     };
 

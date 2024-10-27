@@ -25,15 +25,15 @@ function Footer() {
             </div>
 
             <div className="about-danama">
-                <h2>About Danama</h2>
-                <p>Danama is a user-friendly platform that makes movie ticket booking seamless and hassle-free</p>
+                <h2>About DANAMA</h2>
+                <p>DANAMA is a user-friendly platform that makes movie ticket booking seamless and hassle-free</p>
             </div>
 
             <div className="follow">
-                <h2>Follow us on</h2>
+                <h2>Follow DANAMA on</h2>
                 <ul>
                     <li><Link className={"links"} to={"/"}>Facebook</Link></li>
-                    <li><Link className={"links"} to={"/"}>Youtube</Link></li>
+                    <li><Link className={"links"} to={"/"}>danamawebsite@gmail.com</Link></li>
                     <li><Link className={"links"} to={"/"}>Instagram</Link></li>
                 </ul>
             </div>

@@ -33,6 +33,7 @@ CustomAlertProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
 // Custom hook to use the alert
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCustomAlert = () => {
     return useContext(CustomAlertContext);
 };

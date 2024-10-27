@@ -13,6 +13,7 @@ import ScheduleDate from "../../../common/Date/Date.jsx";
 import ArrowUpward from "../../../../assets/Icons/arrow-upward.svg";
 import ArrowDownward from "../../../../assets/Icons/arrow_downward.svg";
 import CinemaListBox from "../CinemaListBox/CinemaListBox.jsx";
+import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 // Helper function to format the date into "MMM dd, yyyy"
 const formatDate = (dateObj) => {
     const options = {month: 'short', day: 'numeric', year: 'numeric'};
@@ -53,6 +54,7 @@ const getPriceRangeForCinema = (cinemaId, showtimeList) => {
 
 
 function Schedule() {
+    const showAlert= useCustomAlert();
     const {cinemaList, showtimeList, filmList} = useContext(WebContext);
     // Initialize the dates (actual dates stored as "MMM dd, yyyy")
     const dates = getNext7Days();
@@ -128,16 +130,16 @@ function Schedule() {
                         window.open(url, '_blank'); // Open the URL in a new tab
                     }
                     else {
-                        alert("Select a cinema!!");
+                        showAlert("Select a cinema!!");
                     }
                 },
                 (error) => {
                     console.error("Error fetching location", error);
-                    alert("Unable to retrieve your location.");
+                    showAlert("Unable to retrieve your location.");
                 }
             );
         } else {
-            alert("Geolocation is not supported by this browser.");
+            showAlert("Geolocation is not supported by this browser.");
         }
     };
     return (

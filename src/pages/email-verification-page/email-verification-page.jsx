@@ -2,8 +2,11 @@ import "./email-verification-page.css";
 import {useLocation, useNavigate} from "react-router-dom";
 import {register, sendVerificationCode} from "../../api/authAPI.js";
 import {useEffect, useRef, useState} from "react";
+import Logo from "../../components/common/Logo/Logo.jsx";
+import {useCustomAlert} from "../../utils/CustomAlertContext.jsx";
 
 function EmailVerification() {
+    const showAlert = useCustomAlert();
     const location = useLocation();
     const [verifyCode, setVerifyCode]= useState('');
     const { user } = location.state || {};
@@ -22,10 +25,10 @@ function EmailVerification() {
         try {
             const data = await sendVerificationCode(email);
             setVerifyCode(data.code); // Assuming the response contains a code
-            alert('Verification code sent to your email.');
+            showAlert('Verification code sent to your email.');
         } catch (error) {
             console.error('Error sending verification code:', error);
-            alert('Failed to send verification code.');
+            showAlert('Failed to send verification code.');
         }
     };
 
@@ -33,15 +36,15 @@ function EmailVerification() {
         if (code === verifyCode) {
             register(user)
                 .then(() => {
-                    alert("Registration successful!");
+                    showAlert("Registration successful!");
                     navigate('/login');
                 })
                 .catch((error) => {
                     console.error("Registration failed:", error);
-                    alert("Registration failed. Please try again.");
+                    showAlert("Registration failed. Please try again.");
                 });
         } else {
-            alert('Verification failed. Please check the code and try again.');
+            showAlert('Verification failed. Please check the code and try again.');
         }
     };
 
@@ -52,6 +55,7 @@ function EmailVerification() {
     return (
         <div className="email-verification-page">
             <div className="email-verification-box">
+                <div className='logo-in-email'><Logo/></div>
                 <h1>Email Verification</h1>
                 <p>
                     Please check your email for the verification code. Enter the code
@@ -64,8 +68,10 @@ function EmailVerification() {
                     onChange={(e) => setCode(e.target.value)}
                     // Update code state on input change
                 />
-                <button onClick={handleClick}>Verify</button>
-                <button onClick={handleResendCode}>Resend Code</button> {/* Resend Code Button */}
+                <div>
+                    <button onClick={handleClick}>Verify</button>
+                    <button onClick={handleResendCode}>Resend Code</button>
+                </div>
             </div>
         </div>
     );

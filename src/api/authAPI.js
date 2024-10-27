@@ -1,4 +1,4 @@
-
+import {useCustomAlert} from "../utils/CustomAlertContext.jsx";
 
 
 export async function login(email, password) {
@@ -207,7 +207,8 @@ export async function fetchJwtToken() {
                     localStorage.setItem('jwtToken', refreshResponse.refreshedToken);
                     return fetchJwtToken(); // Retry validation with the new token
                 } else {
-                    alert("Could not extend session. Please log in again.");
+                    // eslint-disable-next-line react-hooks/rules-of-hooks
+                    useCustomAlert("Could not extend session. Please log in again.");
                     logoutUser(); // Log out if refresh failed
                     return { success: false, message: "Session expired. Please log in again." };
                 }

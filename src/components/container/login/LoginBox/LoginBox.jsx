@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import './LoginBox.css';
 
 import ResetPassLink from "../ResetPassLink/ResetPassLink.jsx";
-import RememberMe from "../RememberMe/RememberMe.jsx";
 import LoginBtn from "../LoginBtn/LoginBtn.jsx";
 import InputBox from "../../../common/InputBox/InputBox.jsx";
 
@@ -31,7 +30,7 @@ function LoginBox({ handleButtonClick, isSuccess, setEmail, setPassword }) {
                     <InputBox ref={emailRef} className={`email-input ${isSuccess ? `` : `err`} active`} type="email" placeholder="Email" onChange={onEmailChange} />
                     <ResetPassLink />
                     <InputBox ref={passwordRef} className={`password-input ${isSuccess ? `` : `err`} active`} type="password" placeholder="Password" onChange={onPasswordChange} />
-                    <RememberMe />
+                    {/*<RememberMe />*/}
                     <LoginBtn onClick={onClick} />
                 </>
         </form>

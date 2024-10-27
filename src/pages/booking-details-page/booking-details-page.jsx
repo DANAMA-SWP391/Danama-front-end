@@ -7,6 +7,7 @@ import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../utils/userContext.jsx";
 import {fetchJwtToken} from "../../api/authAPI.js";
 import {formatCurrency} from "../../utils/utility.js";
+import {useCustomAlert} from "../../utils/CustomAlertContext.jsx";
 
 function formatDateTime(dateString) {
     const date = new Date(dateString);
@@ -33,8 +34,8 @@ function formatTime(timeString) {
 
 
 function BookingDetailsPage() {
+    const showAlert = useCustomAlert();
     const {user} = useContext(UserContext);
-    console.log(user);
     const location = useLocation();
     const navigate = useNavigate(); // For navigation in case of error
     const [bookingDetail, setBookingDetail] = useState(null);
@@ -45,12 +46,12 @@ function BookingDetailsPage() {
         const bookingId = params.get("bookingId");
 
         if (!bookingId) {
-            alert("Booking ID is missing in the URL.");
+            showAlert("Booking ID is missing in the URL.");
             navigate('/'); // Redirect to home or a relevant page
             return;
         }
         if (!user) {
-            alert("You need to be logged in to view booking details.");
+            showAlert("You need to be logged in to view booking details.");
             navigate('/login');
         }
 
@@ -67,15 +68,17 @@ function BookingDetailsPage() {
 
                 if (user.roleId === 2) {
                     // Check if user is a cinema manager with matching cinema name
-                    const cinema = localStorage.getItem('cinema');
+                    const cinema = JSON.parse(localStorage.getItem('cinema'));
+                    console.log(data.cinemaName);
+                    console.log(cinema.name);
                     if (data.cinemaName !== cinema.name) {
-                        alert("You do not have access to this booking.");
+                        showAlert("You do not have access to this booking.");
                         navigate('/Cmanager');
 
                     }
                 } else if (userData.user.email !== data.userEmail) {
                     // Check if the booking belongs to the current user
-                    alert("You are not authorized to view this booking.");
+                    showAlert("You are not authorized to view this booking.");
                     navigate('/');
 
                 }
