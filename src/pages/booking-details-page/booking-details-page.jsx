@@ -6,6 +6,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../utils/userContext.jsx";
 import {fetchJwtToken} from "../../api/authAPI.js";
+import {formatCurrency} from "../../utils/utility.js";
 
 function formatDateTime(dateString) {
     const date = new Date(dateString);
@@ -27,12 +28,6 @@ function formatTime(timeString) {
         minute: '2-digit',
         hour12: false
     }).format(date);
-}
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-    }).format(amount) + 'VND';
 }
 
 

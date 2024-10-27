@@ -6,6 +6,7 @@ import {WebContext} from "../../../../utils/webContext.jsx";
 import {cancelBooking} from "../../../../api/userAPI.js";
 import {useNavigate} from "react-router-dom";
 import {checkPaymentStatus, doVNPayPayment} from "../../../../api/paymentAPI.js";
+import {formatCurrency} from "../../../../utils/utility.js";
 
 function formatDateTime(dateString) {
     const date = new Date(dateString);
@@ -24,13 +25,6 @@ function formatTime(timeString) {
         minute: '2-digit',
         hour12: false
     }).format(date);
-}
-
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-    }).format(amount) + 'VND';
 }
 
 function BookingDetails({bookingData, paymentMethod, bookingId}) {
@@ -90,7 +84,7 @@ function BookingDetails({bookingData, paymentMethod, bookingId}) {
     };
 
     const pollForPaymentCompletion = async (bookingId) => {
-        const maxRetries = 20;
+        const maxRetries = 60;
         let retries = 0;
         let paymentCompleted = false;
 

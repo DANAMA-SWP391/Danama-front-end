@@ -8,6 +8,9 @@ import {addBooking} from "../../../../api/userAPI.js";
 import BackSpace from '../../../../assets/Icons/back-space.svg';
 import SeatLayout from "../../main-page/SeatLayout/SeatLayout.jsx";
 import BookingInfo from "../../main-page/BookingInfo/BookingInfo.jsx";
+import {formatCurrency} from "../../../../utils/utility.js";
+
+
 
 function ShowtimeCard({film,showtime}) {
     const [isClick, setIsClick] = useState(false);
@@ -121,7 +124,7 @@ function ShowtimeCard({film,showtime}) {
             {isClick && <div className="overlay"></div>}
             <div className="showtime" onClick={handleSelectedShowtime}>
                 <p>{showtime.startTime} ~ {showtime.endTime}</p>
-                <p>Price: {showtime.basePrice}đ</p>
+                <p>Price: {formatCurrency(showtime.basePrice)}</p>
             </div>
 
             {isClick && (
@@ -141,7 +144,14 @@ function ShowtimeCard({film,showtime}) {
                         basePrice={showtime.basePrice}
                         getSeatColor={getSeatColor}
                     />
-
+                    <div className="seats-info">
+                        {seatsInfo.map((info, index) => (
+                            <div className="info" key={index}>
+                                <div className="color" style={{backgroundColor: info[1]}}></div>
+                                <p>{info[0]}</p>
+                            </div>
+                        ))}
+                    </div>
                     <BookingInfo
                         price={price}
                         selectedSeats={selectedSeats}
