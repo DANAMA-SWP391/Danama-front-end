@@ -8,8 +8,10 @@ import {fetchDetailShowtime} from "../../../../api/webAPI.jsx";
 import {fetchJwtToken} from "../../../../api/authAPI.js";
 import {addBooking} from "../../../../api/userAPI.js";
 import {useNavigate} from "react-router-dom";
+import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
 function FilmCard({film, showtimes}) {
+    const showAlert = useCustomAlert();
     const [isClick, setIsClick] = useState(false);
     const [seats, setSeats] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -30,7 +32,7 @@ function FilmCard({film, showtimes}) {
                 const result = await fetchJwtToken(); // Fetch user info by validating token
                 if (result.success) {
                     if (result.user.roleId === 1 || result.user.roleId === 2) {
-                        alert("You do not have permission to select seats.");
+                        showAlert("You do not have permission to select seats.");
                         setLoading(false);
                         setIsClick(false);
                         return;

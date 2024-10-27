@@ -1,7 +1,7 @@
 import './App.css'
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { UserProvider } from './utils/userContext.jsx';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import {UserProvider} from './utils/userContext.jsx';
 
 import Login from './pages/login/login.jsx'
 import SignUp from "./pages/sign-up/sign-up.jsx";
@@ -18,50 +18,54 @@ import MovieManagement from "./pages/admin-pages/movie-management/movie-manageme
 import AccountManagement from "./pages/admin-pages/account-management/account-management.jsx";
 import AdminDashboardPage from "./pages/admin-page/admin-dashboard-page.jsx";
 import {ProtectedRoute, PublicRoute} from "./filter/FilterRoute.jsx";
+import {CustomAlertProvider} from "./utils/CustomAlertContext.jsx";
 
 // import Payment from "./pages/payment-page/payment-page.jsx";
 
-function App( ) {
+function App() {
     return (
         <UserProvider>
-            <Router>
-                <Routes>
-                    {/* Admin and Management Routes */}
-                    <Route
-                        path="/admin-dashboard"
-                        element={<ProtectedRoute element={<AdminDashboardPage />} requiredRole={1} />}
-                    />
-                    <Route
-                        path="/movie-management"
-                        element={<ProtectedRoute element={<MovieManagement />} requiredRole={1} />}
-                    />
-                    <Route
-                        path="/account-management"
-                        element={<ProtectedRoute element={<AccountManagement />} requiredRole={1} />}
-                    />
-                    <Route
-                        path="/cinema-management"
-                        element={<ProtectedRoute element={<CinemaManagement />} requiredRole={1} />}
-                    />
+            <CustomAlertProvider>
+                <Router>
+                    <Routes>
+                        {/* Admin and Management Routes */}
+                        <Route
+                            path="/admin-dashboard"
+                            element={<ProtectedRoute element={<AdminDashboardPage/>} requiredRole={1}/>}
+                        />
+                        <Route
+                            path="/movie-management"
+                            element={<ProtectedRoute element={<MovieManagement/>} requiredRole={1}/>}
+                        />
+                        <Route
+                            path="/account-management"
+                            element={<ProtectedRoute element={<AccountManagement/>} requiredRole={1}/>}
+                        />
+                        <Route
+                            path="/cinema-management"
+                            element={<ProtectedRoute element={<CinemaManagement/>} requiredRole={1}/>}
+                        />
 
-                    {/* Protected Routes for logged-in users */}
-                    <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
-                    <Route path="/booking-detail" element={<ProtectedRoute element={<BookingDetailsPage />} />} />
+                        {/* Protected Routes for logged-in users */}
+                        <Route path="/profile" element={<ProtectedRoute element={<Profile/>}/>}/>
+                        <Route path="/booking-detail" element={<ProtectedRoute element={<BookingDetailsPage/>}/>}/>
 
-                    {/* Public Routes */}
-                    <Route path="/login" element={<PublicRoute element={<Login />} redirectTo="/profile" />} />
-                    <Route path="/signup" element={<PublicRoute element={<SignUp />} redirectTo="/profile" />} />
-                    <Route path="/reset-pass" element={<PublicRoute element={<ResetPass />} redirectTo="/profile" />} />
-                    <Route path="/email-verification" element={<PublicRoute element={<EmailVerification />} redirectTo="/profile" />} />
+                        {/* Public Routes */}
+                        <Route path="/login" element={<PublicRoute element={<Login/>} redirectTo="/profile"/>}/>
+                        <Route path="/signup" element={<PublicRoute element={<SignUp/>} redirectTo="/profile"/>}/>
+                        <Route path="/reset-pass"
+                               element={<PublicRoute element={<ResetPass/>} redirectTo="/profile"/>}/>
+                        <Route path="/email-verification"
+                               element={<PublicRoute element={<EmailVerification/>} redirectTo="/profile"/>}/>
 
-                    {/* Open Routes */}
-                    <Route path="/" element={<MainPage />} />
-                    <Route path="/film-list" element={<FilmListPage />} />
-                    <Route path="/film-page" element={<FilmPage />} />
-                    <Route path="/payment" element={<Payment />} />
-                </Routes>
-            </Router>
-
+                        {/* Open Routes */}
+                        <Route path="/" element={<MainPage/>}/>
+                        <Route path="/film-list" element={<FilmListPage/>}/>
+                        <Route path="/film-page" element={<FilmPage/>}/>
+                        <Route path="/payment" element={<Payment/>}/>
+                    </Routes>
+                </Router>
+            </CustomAlertProvider>
         </UserProvider>
     )
 }
