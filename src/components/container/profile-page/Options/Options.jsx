@@ -1,18 +1,14 @@
 import "./Options.css";
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {logoutUser} from "../../../../api/authAPI.js";
 
 function Options({ onOptionSelect }) {
-    const [activeOption, setActiveOption] = useState(null); // To track active option
-    const navigate = useNavigate();
+    const [activeOption, setActiveOption] = useState(null);
 
     // Handle logout and navigate to the home page
     const handleLogOut = () => {
-        localStorage.removeItem('user'); // Remove user data from localStorage
-        localStorage.removeItem('jwtToken'); // Remove JWT token if applicable
-        navigate('/');
-        window.location.reload();// Redirect to home page
+        logoutUser();
     };
 
     const handleOptionClick = (option) => {

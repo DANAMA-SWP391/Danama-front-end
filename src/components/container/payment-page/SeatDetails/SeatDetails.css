@@ -1,7 +1,0 @@
-.booking-details__seats > div {
-    display: flex;
-}
-
-.booking-details__seats > div:first-child {
-    margin-right: 50%;
-}

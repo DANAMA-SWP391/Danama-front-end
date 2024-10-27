@@ -16,7 +16,7 @@ const SeatLayout = ({ seats, selectedSeats, getSeatColor, handleClick, basePrice
     };
     const getSeatPrice = (seatType) => {
         switch (seatType) {
-            case 'VIP': return basePrice * 1.5; // VIP seats are 50% more expensive
+            case 'VIP': return basePrice+20000; // VIP seats are 50% more expensive
             case 'Standard': return basePrice; // Standard seats use base price
             default: return basePrice; // Default to base price for other seat types
         }
@@ -31,7 +31,6 @@ const SeatLayout = ({ seats, selectedSeats, getSeatColor, handleClick, basePrice
             type: isSelected(seat.seatNum) ? "Selected" : seat.type // Mark seat as selected
         };
     });
-    console.log(seatFormat);
     return (
         <div className="seat-layout">
             <div className="screen">

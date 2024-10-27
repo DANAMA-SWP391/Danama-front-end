@@ -12,6 +12,52 @@
     color: #000;
     font-size: 14px;
 }
+.comment-section__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.comment-section__header h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.comment-section__header .average-rating {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ff9800; /* Orange color for emphasis */
+    background-color: #fff8e1; /* Light background to highlight the rating */
+    padding: 5px 12px;
+    border-radius: 15px; /* More rounded look */
+    display: inline-block;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
+}
+
+.comment-item {
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.comment-item .rating {
+    color: #ff9800; /* Same color as average rating for consistency */
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 
 .overlay {
     position: fixed;

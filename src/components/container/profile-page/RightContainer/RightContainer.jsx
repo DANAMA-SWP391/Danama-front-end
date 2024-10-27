@@ -10,6 +10,7 @@ import {changePassword, fetchJwtToken} from "../../../../api/authAPI.js";
 import {fetchBookingHistory, updateProfile} from "../../../../api/userAPI.js";
 import BookingHistory from "../BookingHistory/Booking History.jsx";
 import ChangePass from "../ChangePass/ChangePass.jsx";
+import {useNavigate} from "react-router-dom";
 
 function RightContainer({ selectedOption }) {
     const [user, setUser] = useState(null);
@@ -18,6 +19,7 @@ function RightContainer({ selectedOption }) {
     const [error, setError] = useState(null);
     const fetchCalled = useRef(false);
     const [message, setMessage] = useState('');
+    const navigate= useNavigate();
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -25,7 +27,8 @@ function RightContainer({ selectedOption }) {
             if (response.success) {
                 setUser(response.user);
             } else {
-                setError(response.message);
+                alert("Your session is expired, login again!");
+                navigate('login');
             }
             setLoading(false);
         };
