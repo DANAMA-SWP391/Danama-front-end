@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { fetchAddCinema, fetchCinemaList, fetchDeleteCinema, fetchUpdateCinema } from "../../../api/admin-api.js";
-import Sidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
 import CustomModal from "../../../components/common/CustomModal/CustomModal.jsx";
 import { upFileToAzure } from "../../../api/webAPI.jsx";
 import "./cinema-management.css";

@@ -103,7 +103,7 @@ function CinemaDashboard() {
             <div className="layout">
                 <Sidebar />
                 <div className="main-content">
-                    <div className="dashboard-content">
+                    <div className="cinema-dashboard-content">
                         <div className="revenue-cards">
                             <div className="card">
                                 <span className="revenue-icon">💰</span>
