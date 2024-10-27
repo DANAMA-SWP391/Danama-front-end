@@ -197,3 +197,30 @@ export async function cancelBooking(bookingId) {
         throw error; // Re-throw the error to be handled by the caller
     }
 }
+
+export async function getBookingDetail(bookingId) {
+    try {
+        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/booking?bookingId=${bookingId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            // If the response is not ok, handle the error based on status
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Failed to fetch booking details");
+        }
+
+        // Parse the JSON response if successful
+        const data = await response.json();
+        return data.bookingDetail; // Access the booking detail object directly
+
+    } catch (error) {
+        console.error("Error fetching booking detail:", error.message);
+        throw error; // Re-throw the error so the caller can handle it
+    }
+}
+

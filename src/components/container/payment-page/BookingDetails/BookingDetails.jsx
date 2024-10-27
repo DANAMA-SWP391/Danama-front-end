@@ -1,16 +1,37 @@
 import "./BookingDetails.css";
 import Button from "../../../common/Button/Button.jsx";
-import FilmDetails from "../FilmDetails/FilmDetails.jsx";
-import TimeDetails from "../TimeDetails/TimeDetails.jsx"
-import CinemaDetails from "../CinemaDetails/CinemaDetails.jsx";
-import SeatDetails from "../SeatDetails/SeatDetails.jsx";
-import TotalDetails from "../TotalDetails/TotalsDetails.jsx";
 import PropTypes from "prop-types";
 import {useContext, useState} from "react";
 import {WebContext} from "../../../../utils/webContext.jsx";
 import {cancelBooking} from "../../../../api/userAPI.js";
 import {useNavigate} from "react-router-dom";
 import {checkPaymentStatus, doVNPayPayment} from "../../../../api/paymentAPI.js";
+
+function formatDateTime(dateString) {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-GB', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour12: false
+    }).format(date);
+}
+
+function formatTime(timeString) {
+    const date = new Date(`1970-01-01T${timeString}`);
+    return new Intl.DateTimeFormat('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    }).format(date);
+}
+
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    }).format(amount) + 'VND';
+}
 
 function BookingDetails({bookingData, paymentMethod, bookingId}) {
     const {cinemaList} = useContext(WebContext);
@@ -37,10 +58,8 @@ function BookingDetails({bookingData, paymentMethod, bookingId}) {
             if (paymentCompleted) {
                 alert("Payment confirmed successfully!");
                 setIsPaymentInProgress(false); // Disable overlay
-                navigate("/");
-            }
-            else
-            {
+                navigate(`/booking-detail?bookingId=${bookingId}`);
+            } else {
                 alert("Payment did not complete. Please try again.");
                 setIsPaymentInProgress(false); // Disable overlay
             }
@@ -95,20 +114,58 @@ function BookingDetails({bookingData, paymentMethod, bookingId}) {
 
 
     return (
-        <div className={`body__booking-details ${isPaymentInProgress ? 'overlay-active' : ''}`}>
-            <h2>Booking details</h2>
-            <FilmDetails film={film}/>
-            <TimeDetails showtime={showtime}/>
-            <CinemaDetails cinema={cinemaInfos}/>
-            <SeatDetails seats={selectedSeats}/>
-            <TotalDetails totalPrice={price}/>
+        <div className={`booking-details-page ${isPaymentInProgress ? 'overlay-active' : ''}`}>
+            <div className='booking-details-page__content'>
+                <h2>Booking Details</h2>
+                <div className="booking-details">
+                    <div className="film-name">
+                        <p>Film Name:</p>
+                        <p>{film.name}</p>
+                    </div>
+                    <div className="cinema">
+                        <div>
+                            <div className="showtime">
+                                <p>Showtime:</p>
+                                <p>{formatTime(showtime.startTime)} ~ {formatTime(showtime.endTime)}</p>
+                            </div>
+                            <div className="date">
+                                <p>Date:</p>
+                                <p>{formatDateTime(showtime.showDate)}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <div className="cinema-info">
+                                <div className="cinema-name">
+                                    <p>Cinema:</p>
+                                    <p>{cinemaInfos.name}</p>
+                                </div>
+                                <div className="cinema-address">
+                                    <p>{cinemaInfos.address}</p>
+                                </div>
+                            </div>
+                            <div className="room">
+                                <p>Room:</p>
+                                <p>{showtime.room.name}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="seats">
+                        <p>Seat(s):</p>
+                        <p>{selectedSeats.map(seat => seat.seatNum).join(', ')}</p>
+                    </div>
+                    <div className="total-cost">
+                        <p>Total Cost:</p>
+                        <p>{formatCurrency(price)}</p>
+                    </div>
+                </div>
+            </div>
             <Button onClick={handlePurchase} disabled={isPaymentInProgress}>Purchase</Button>
             <Button onClick={handleCancel} className="cancel-button" disabled={isPaymentInProgress}>Cancel
                 Booking</Button>
 
             {isPaymentInProgress && (
                 <div className="overlay">
-                    <p>Payment in progress... Please wait.</p>
+                    <p>Please complete payment....</p>
                 </div>
             )}
         </div>

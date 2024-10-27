@@ -1,5 +1,6 @@
 
 
+
 export async function login(email, password) {
 
     try {
@@ -22,7 +23,7 @@ export async function login(email, password) {
             localStorage.setItem('user', JSON.stringify(data.user));
             // console.log(data);
             if (data.user && data.user.roleId === 2) {
-                localStorage.setItem('cinema', data.cinema);
+                localStorage.setItem('cinema', JSON.stringify(data.cinema));
             }
         }
         return data;
@@ -159,7 +160,7 @@ export async function fetchJwtToken() {
     const token = localStorage.getItem('jwtToken');
     if (!token) {
         console.error('No token found');
-        return { success: false, message: 'No token available' }; // Return an error if no token is found
+        return { success: false, message: 'No token available' };
     }
 
     try {
@@ -168,26 +169,59 @@ export async function fetchJwtToken() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ token: token }), // Send the token in the request body
+            body: JSON.stringify({ token: token }),
         });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
 
         const data = await response.json();
         if (data.success) {
-            // Token is valid, return the account data
-            const user = data.user;
-            console.log('Token is valid');
-            return { success: true, user: user };
+            // Token is valid
+            return { success: true, user: data.user };
+        } else if (data.expired) {
+            // Token expired, prompt the user to refresh
+            const extendSession = confirm("Your session has expired. Do you want to extend it?");
+            if (extendSession) {
+                const refreshResponse = await refreshJwtToken(token);
+                if (refreshResponse.success) {
+                    localStorage.setItem('jwtToken', refreshResponse.refreshedToken);
+                    return fetchJwtToken(); // Retry validation with the new token
+                } else {
+                    alert("Could not extend session. Please log in again.");
+                    logoutUser(); // Log out if refresh failed
+                    return { success: false, message: "Session expired. Please log in again." };
+                }
+            } else {
+                logoutUser(); // Log out if user declines to extend
+                return { success: false, message: "Session expired. Please log in again." };
+            }
         } else {
-            // Token is invalid or expired
             console.error('Token validation failed:', data.message);
             return { success: false, message: data.message || 'Token validation failed' };
         }
     } catch (error) {
         console.error('Error during token validation:', error);
-        return { success: false, message: 'An error occurred during token validation.' }; // Handle errors gracefully
+        return { success: false, message: 'An error occurred during token validation.' };
     }
+}
+
+async function refreshJwtToken(token) {
+    try {
+        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/validateJwtToken', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token: token }),
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error during token refresh:', error);
+        return { success: false, message: 'An error occurred during token refresh.' };
+    }
+}
+
+export function logoutUser() {
+    localStorage.clear();
+    window.location.href = "/";
 }

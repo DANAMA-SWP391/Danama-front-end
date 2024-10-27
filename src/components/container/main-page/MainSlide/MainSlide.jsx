@@ -7,22 +7,39 @@ import FilmPoster from "../../../common/FilmPoster/FilmPoster.jsx";
 import Button from "../../../common/Button/Button.jsx";
 import PropTypes from "prop-types";
 
-function MainSlide({ isLogged, filmLists }) {
+function MainSlide({filmLists = [] }) {
     const [canPlay, setCanPlay] = useState(false);
     const [activeDot, setActiveDot] = useState(null);
+    const [currentFilm, setCurrentFilm] = useState(filmLists[0] || {});
+    const handleScroll = (primarySelector, fallbackSelector) => {
+        const targetElement = document.querySelector(primarySelector) || document.querySelector(fallbackSelector);
+
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: "smooth" });
+        } else {
+            console.warn(`Neither "${primarySelector}" nor "${fallbackSelector}" were found.`);
+        }
+    };
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setCanPlay(true);
-        }, 3000);
+        }, 5000);
 
         return () => {
             clearTimeout(timer);
         };
     }, []);
 
+    useEffect(() => {
+        if (filmLists.length > 0) {
+            setCurrentFilm(filmLists[0]);
+        }
+    }, [filmLists]);
+
     const handleDotClick = (index) => {
         setActiveDot(index);
+        setCurrentFilm(filmLists[index]);
     };
 
     return (
@@ -42,55 +59,64 @@ function MainSlide({ isLogged, filmLists }) {
                     </div>
                 </div>
             )}
-            {canPlay ? <Trailer /> : <FilmPoster />}
+            {canPlay ? <Trailer url={currentFilm.trailer || "" } onReady={() => setCanPlay(true)} /> : <FilmPoster img={currentFilm.poster || ""} />}
             <div className="cont-1">
-                <h2>DUNE PART TWO</h2>
-                <p className="genre">Thriller</p>
-                <p className="age">16+</p>
+                <h2>{currentFilm.name || "DUNE PART TWO"}</h2>
+                <p className="genre">{currentFilm.genres && currentFilm.genres.length > 0
+                    ? currentFilm.genres.map(genre => genre.name).join(', ')
+                    : "Thriller"}</p>
+                <p className="age">{currentFilm.ageRestricted || "16"}+</p>
             </div>
-            {isLogged ? (
-                <div className="cont-2">
+            <div className="cont-2">
+                <div>
+                    <Button to={currentFilm.trailer}>Watch full trailer</Button>
+                    <Button onClick={() => handleScroll(".schedule-section", ".film-schedules")}>Book Ticket</Button>
+
+                </div>
+                <div>
                     <div>
-                        <Button>See more details</Button>
-                        <Button>Book Ticket</Button>
+                        <p className="description">
+                            <span>Description: </span>{currentFilm.description || "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family."}
+                        </p>
                     </div>
                     <div>
-                        <div>
-                            <p className="description">
-                                Paul Atreides unites with Chani and the Fremen while seeking revenge against the
-                                conspirators who destroyed his family.
-                            </p>
-                        </div>
-                        <div>
-                            <p className="rating">10/10</p>
-                            <p className="nation">United States</p>
-                            <p className="duration">2h15p</p>
-                            <p className="released-date">20-09-2024</p>
-                            <p className="formatted">2D</p>
-                        </div>
-                    </div>
-                    <div>
-                        <p className="director"><span>Director:</span> Denis Villeneuve</p>
-                        <p className="stars"><span>Starring</span> Timothée Chalamet, Rebecca Ferguson, Zendaya</p>
+                        {/*<p className="rating">{currentFilm.rating || "10/10"}</p>*/}
+                        <p className="nation"><span>Country: </span>{currentFilm.country || "United States"}</p>
+                        <p className="duration"><span>Duration: </span>{currentFilm.duration || "135"} minutes</p>
+                        <p className="released-date"><span>Release Date: </span>{currentFilm.releaseDate || "20-09-2024"}</p>
                     </div>
                 </div>
-            ) : (
-                <div className="option">
-                    <Slogan />
-                    <div className="sign-up">
-                        <span>New Guest? <SignUpBtn>Sign Up</SignUpBtn></span>
-                    </div>
+                <div>
+                    <p className="director"><span>Director: </span> {currentFilm.director || "Denis Villeneuve"}</p>
+                    <p className="stars"><span>Actors: </span> {currentFilm.actors || "Timothée Chalamet, Rebecca Ferguson, Zendaya"}</p>
                 </div>
-            )}
+            </div>
         </div>
     );
 }
+
+{/*// <div className="option">*/}
+{/*//     <Slogan />*/}
+{/*//     <div className="sign-up">*/}
+{/*//         <span>New Guest? <SignUpBtn>Sign Up</SignUpBtn></span>*/}
+{/*//     </div>*/}
+{/*// </div>*/}
 
 MainSlide.propTypes = {
     isLogged: PropTypes.bool.isRequired,
     filmLists: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
-        // Add other properties of film if needed
+        name: PropTypes.string,
+        genre: PropTypes.string,
+        age: PropTypes.string,
+        description: PropTypes.string,
+        rating: PropTypes.string,
+        nation: PropTypes.string,
+        duration: PropTypes.string,
+        releaseDate: PropTypes.string,
+        formatted: PropTypes.string,
+        director: PropTypes.string,
+        stars: PropTypes.string,
     })).isRequired,
 };
 

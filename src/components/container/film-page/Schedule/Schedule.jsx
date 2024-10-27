@@ -37,20 +37,23 @@ const getPriceRangeForCinema = (cinemaId, showtimeList) => {
 
     return { minPrice, maxPrice };
 };
+const getNext7Days = () => {
+    const dates = [];
+    const today = new Date();
 
+    for (let i = 0; i < 7; i++) {
+        const nextDate = new Date(today);
+        nextDate.setDate(today.getDate() + i);
+        dates.push(nextDate);
+    }
+
+    return dates;
+};
 function Schedule({ showtimes, film }) {
     const { cinemaList } = useContext(WebContext);
     const [userLocation, setUserLocation] = useState(null);
 
-    const dates = [
-        new Date("2024-10-04"),
-        new Date("2024-10-05"),
-        new Date("2024-10-06"),
-        new Date("2024-10-07"),
-        new Date("2024-10-08"),
-        new Date("2024-10-09"),
-        new Date("2024-10-10")
-    ];
+    const dates = getNext7Days();
 
     const [selectedCinema, setSelectedCinema] = useState(null);
     const [selectedDate, setSelectedDate] = useState(formatDate(dates[0]));
