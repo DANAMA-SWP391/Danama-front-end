@@ -27,6 +27,7 @@ const MovieManagement = () => {
 
     const [itemsPerPage] = useState(10); // Số mục hiển thị trên mỗi trang
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
+    const [errors, setErrors] = useState({});
 
     const paginatedMovies = movies.slice(
         (currentPage - 1) * itemsPerPage,
@@ -107,6 +108,8 @@ const MovieManagement = () => {
     const handleSaveNewMovie = async (e) => {
         e.preventDefault();
 
+        if (!validateForm()) return;
+
         // Kiểm tra genre hợp lệ
         const hasInvalidGenres = selectedMovie.genres.some(genre => !genre.genreId || genre.genreId === "");
         if (hasInvalidGenres) {
@@ -167,6 +170,7 @@ const MovieManagement = () => {
 
     const handleUpdateMovie = async (e) => {
         e.preventDefault();
+        if (!validateForm()) return;
 
         // Kiểm tra genre hợp lệ
         const hasInvalidGenres = selectedMovie.genres.some(genre => !genre.genreId || genre.genreId === "");
@@ -230,13 +234,19 @@ const MovieManagement = () => {
     };
     // Thay đổi nội dung của một thể loại (genre)
     const handleGenreChange = (e, index) => {
+        const selectedGenreId = parseInt(e.target.value);
+        const selectedGenre = availableGenres.find(genre => genre.genreId === selectedGenreId);
+
         const updatedGenres = [...selectedMovie.genres];
-        updatedGenres[index].genreId = parseInt(e.target.value); // Update genreId based on selected value
+        updatedGenres[index] = selectedGenre ? { genreId: selectedGenre.genreId, name: selectedGenre.name } : { genreId: '', name: '' };
+
         setSelectedMovie({ ...selectedMovie, genres: updatedGenres });
     };
 // Thêm một thể loại mới
     const handleAddGenre = () => {
-        const newGenre = { genreId: '', name: '' }; // New empty genre to add
+        // Kiểm tra nếu đã có thể loại rỗng, tránh thêm mục rỗng trùng lặp
+        if (selectedMovie.genres.some((genre) => !genre.genreId)) return;
+        const newGenre = { genreId: '', name: '' };
         setSelectedMovie({ ...selectedMovie, genres: [...selectedMovie.genres, newGenre] });
     };
     // Hàm format lại ngày để hiển thị trong input type="date"
@@ -251,6 +261,51 @@ const MovieManagement = () => {
         const updatedGenres = selectedMovie.genres.filter((_, i) => i !== index);
         setSelectedMovie({ ...selectedMovie, genres: updatedGenres });
     };
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!selectedMovie.name || selectedMovie.name.length < 2 || selectedMovie.name.length > 100) {
+            newErrors.name = "Title is required and must be between 2 and 100 characters.";
+        }
+
+        if (!selectedMovie.releaseDate) {
+            newErrors.releaseDate = "Release Date is required.";
+        }
+
+        if (!selectedMovie.country || !/^[a-zA-Z\s]+$/.test(selectedMovie.country)) {
+            newErrors.country = "Country is required and must contain only letters and spaces.";
+        }
+
+        if (!selectedMovie.director || selectedMovie.director.length < 2) {
+            newErrors.director = "Director is required and must be at least 2 characters long.";
+        }
+
+        if (!selectedMovie.actors || selectedMovie.actors.length < 5) {
+            newErrors.actors = "Actors is required and must contain at least 5 characters.";
+        }
+
+        if (selectedMovie.duration <= 0) {
+            newErrors.duration = "Duration must be a positive number.";
+        }
+
+        if (![0, 1, 2].includes(selectedMovie.status)) {
+            newErrors.status = "Status is required.";
+        }
+
+        if (!selectedMovie.genres || selectedMovie.genres.length === 0) {
+            newErrors.genres = "At least one genre must be selected.";
+        }
+
+        const genreIds = selectedMovie.genres.map(genre => genre.genreId);
+        if (new Set(genreIds).size !== genreIds.length) {
+            newErrors.genres = "Genres must be unique.";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     if (loading) {
         return <p>Loading movies...</p>;
     }
@@ -356,7 +411,7 @@ const MovieManagement = () => {
                                 <form onSubmit={handleSaveNewMovie} className="edit-form-grid">
                                     <div>
                                         <label>
-                                            <strong>Title:</strong>
+                                            <strong>Title: *</strong>
                                             <input
                                                 type="text"
                                                 value={selectedMovie.name}
@@ -365,6 +420,7 @@ const MovieManagement = () => {
                                                     name: e.target.value
                                                 })}
                                             />
+                                            {errors.name && <p className="error-message">{errors.name}</p>}
                                         </label>
                                         <label>
                                             <strong>Description:</strong>
@@ -377,7 +433,7 @@ const MovieManagement = () => {
                                             />
                                         </label>
                                         <label>
-                                            <strong>Release Date:</strong>
+                                            <strong>Release Date: *</strong>
                                             <input
                                                 type="date"
                                                 value={selectedMovie.releaseDate}
@@ -386,6 +442,7 @@ const MovieManagement = () => {
                                                     releaseDate: e.target.value
                                                 })}
                                             />
+                                            {errors.releaseDate && <p className="error-message">{errors.releaseDate}</p>}
                                         </label>
                                         <div>
                                             <label>
@@ -422,7 +479,7 @@ const MovieManagement = () => {
 
                                     <div>
                                         <label>
-                                            <strong>Country:</strong>
+                                            <strong>Country: *</strong>
                                             <input
                                                 type="text"
                                                 value={selectedMovie.country}
@@ -431,9 +488,10 @@ const MovieManagement = () => {
                                                     country: e.target.value
                                                 })}
                                             />
+                                            {errors.country && <p className="error-message">{errors.country}</p>}
                                         </label>
                                         <label>
-                                            <strong>Director:</strong>
+                                            <strong>Director: *</strong>
                                             <input
                                                 type="text"
                                                 value={selectedMovie.director}
@@ -442,6 +500,7 @@ const MovieManagement = () => {
                                                     director: e.target.value
                                                 })}
                                             />
+                                            {errors.director && <p className="error-message">{errors.director}</p>}
                                         </label>
                                         <label>
                                             <strong>Age Restricted:</strong>
@@ -455,7 +514,7 @@ const MovieManagement = () => {
                                             />
                                         </label>
                                         <label>
-                                            <strong>Actors:</strong>
+                                            <strong>Actors: *</strong>
                                             <textarea
                                                 value={selectedMovie.actors}
                                                 onChange={(e) => setSelectedMovie({
@@ -463,9 +522,10 @@ const MovieManagement = () => {
                                                     actors: e.target.value
                                                 })}
                                             />
+                                            {errors.actors && <p className="error-message">{errors.actors}</p>}
                                         </label>
                                         <label>
-                                            <strong>Duration (minutes):</strong>
+                                            <strong>Duration (minutes): *</strong>
                                             <input
                                                 type="number"
                                                 value={selectedMovie.duration}
@@ -474,9 +534,10 @@ const MovieManagement = () => {
                                                     duration: e.target.value
                                                 })}
                                             />
+                                            {errors.duration && <p className="error-message">{errors.duration}</p>}
                                         </label>
                                         <label>
-                                            <strong>Status:</strong>
+                                            <strong>Status: *</strong>
                                             <select
                                                 value={selectedMovie.status}
                                                 onChange={(e) => setSelectedMovie({
@@ -488,23 +549,27 @@ const MovieManagement = () => {
                                                 <option value="2">Incomming Soon</option>
                                                 <option value="0">Inactive</option>
                                             </select>
+                                            {errors.status && <p className="error-message">{errors.status}</p>}
                                         </label>
+
                                         <label>
                                             <strong>Genres:</strong>
                                             <div className="genres-container">
                                                 {selectedMovie.genres.map((genre, index) => (
                                                     <div key={index} className="genre-input">
                                                         <select
-                                                            value={genre.genreId} // Bind the selected genre by its ID
-                                                            onChange={(e) => handleGenreChange(e, index)} // Handle change
+                                                            value={genre.genreId || ""}
+                                                            onChange={(e) => handleGenreChange(e, index)}
                                                         >
-                                                            {/* Populate the dropdown with available genres */}
-                                                            {availableGenres.map((availableGenre) => (
-                                                                <option key={availableGenre.genreId}
-                                                                        value={availableGenre.genreId}>
-                                                                    {availableGenre.name}
-                                                                </option>
-                                                            ))}
+                                                            <option value="">Select Genre</option>
+                                                            {availableGenres
+                                                                .filter(availGenre => !selectedMovie.genres.some(g => g.genreId === availGenre.genreId && g.genreId !== genre.genreId))
+                                                                .map((availableGenre) => (
+                                                                    <option key={availableGenre.genreId}
+                                                                            value={availableGenre.genreId}>
+                                                                        {availableGenre.name}
+                                                                    </option>
+                                                                ))}
                                                         </select>
                                                         <button type="button"
                                                                 onClick={() => handleRemoveGenre(index)}>X
@@ -513,6 +578,7 @@ const MovieManagement = () => {
                                                 ))}
                                                 <button type="button" onClick={handleAddGenre}>+ Add Genre</button>
                                             </div>
+                                            {errors.genres && <p className="error-message">{errors.genres}</p>}
                                         </label>
                                     </div>
 

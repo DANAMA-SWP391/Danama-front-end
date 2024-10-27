@@ -377,3 +377,12 @@ button.add-genre-btn:hover {
 .view-btn {
     background-color: #1f70c8;
 }
+.input-error {
+    border: 1px solid red;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+}

@@ -105,7 +105,7 @@ function AdminDashboardPage() {
                                 <th>Movie</th>
                                 <th>Name</th>
                                 <th>Ticket (Total)</th>
-                                <th>Revenue ($)</th>
+                                <th>Revenue (VND)</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -142,15 +142,15 @@ function AdminDashboardPage() {
 
                     {cinemaRevenues.length > 0 && (
                         <div className="dashboard-revenue-summary">
-                            <h2>This Month</h2>
+                            <h2>Total</h2>
                             <div className='total-revenue'>
-                            <p>Total revenue: ${totalRevenueAmount.toFixed(2)}</p>
+                            <p>Total revenue: {totalRevenueAmount.toFixed(2)} VND</p>
                             </div>
                             <div className="dashboard-cinema-revenue-list">
                                 {cinemaRevenues.map((cinema, index) => (
                                     <div key={index} className="dashboard-cinema-revenue">
                                         <span>{cinema.cinemaName}</span>
-                                        <span>${cinema.totalRevenue}</span>
+                                        <span>{cinema.totalRevenue} VND</span>
                                         <div className="dashboard-revenue-bar">
                                             <div className="dashboard-revenue-fill"
                                                  style={{width: `${(cinema.totalRevenue / totalRevenueAmount) * 100}%`}}></div>
