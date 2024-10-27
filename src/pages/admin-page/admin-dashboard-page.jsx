@@ -5,6 +5,7 @@ import { fetchAdminDashBoardPage } from "../../api/admin-api.js";
 import './admin-dashboard-page.css';
 import Header from "../../components/common/Header/Header.jsx";
 import AdminHeader from "../../components/common/AdminHeader/AdminHeader.jsx";
+import AdminSidebar from "./../../components/common/AdminSideBar/AdminSideBar.jsx";
 
 function AdminDashboardPage() {
     const [dashboardData, setDashboardData] = useState(null);
@@ -93,7 +94,7 @@ function AdminDashboardPage() {
             <AdminHeader/>
             <div className="dashboard-container">
 
-                <Sidebar/>
+                <AdminSidebar/>
                 <div className="dashboard-content">
                     <h1 className="dashboard-title">Admin Dashboard</h1>
 

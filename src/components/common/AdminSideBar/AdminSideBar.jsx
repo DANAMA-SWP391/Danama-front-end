@@ -7,35 +7,35 @@ import {useLocation} from "react-router-dom";
 
 
 
-function Sidebar() {
+function AdminSidebar() {
     const location = useLocation(); // Get current path
 
     return (
-        <div className="sidebar">
+        <div className="admin-sidebar">
             <div className="menu">
                 <Button
-                    className={`menu-item ${location.pathname === "/admin-dashboard" ? "active" : ""}`}
+                    className={`admin-menu-item ${location.pathname === "/admin-dashboard" ? "active" : ""}`}
                     to="/admin-dashboard"
                 >
                     <span className="icon"><MdDashboard /></span>
                     Admin Dashboard
                 </Button>
                 <Button
-                    className={`menu-item ${location.pathname === "/cinema-management" ? "active" : ""}`}
+                    className={`admin-menu-item ${location.pathname === "/cinema-management" ? "active" : ""}`}
                     to="/cinema-management"
                 >
                     <span className="icon"><FaClipboardList /></span>
                     Cinema Management
                 </Button>
                 <Button
-                    className={`menu-item ${location.pathname === "/movie-management" ? "active" : ""}`}
+                    className={`admin-menu-item ${location.pathname === "/movie-management" ? "active" : ""}`}
                     to="/movie-management"
                 >
                     <span className="icon"><BsDoorOpenFill /></span>
                     Movie Management
                 </Button>
                 <Button
-                    className={`menu-item ${location.pathname === "/account-management" ? "active" : ""}`}
+                    className={`admin-menu-item ${location.pathname === "/account-management" ? "active" : ""}`}
                     to="/account-management"
                 >
                     <span className="icon"><FaCalendarAlt /></span>
@@ -46,4 +46,4 @@ function Sidebar() {
     );
 }
 
-export default Sidebar;
+export default AdminSidebar;
