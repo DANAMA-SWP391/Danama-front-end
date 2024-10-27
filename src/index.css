@@ -1,47 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:ital@0;1&display=swap');
+
 @font-face {
-  font-family: 'Mogra';
-  src: url('./assets/fonts/Mogra-Regular.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Albert Sans regular';
-  src: url("./assets/fonts/static/AlbertSans-Regular.ttf") format('truetype');
+    font-family: 'Mogra';
+    src: url("src/assets/fonts/fonts/Mogra-Regular.ttf") format('truetype');
 }
 
 @font-face {
-  font-family: 'Albert Sans bold';
-    src: url("./assets/fonts/static/AlbertSans-Bold.ttf") format('truetype');
+    font-family: 'Albert Sans regular';
+    src: url('src/assets/fonts/fonts/static/AlbertSans-Regular.ttf') format('truetype');
+}
+
+.albert-sans-regular {
+    font-family: "Albert Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'Albert Sans light';
-    src: url("./assets/fonts/static/AlbertSans-Light.ttf") format('truetype');
+    font-family: 'Albert Sans bold';
+    src: url('src/assets/fonts/fonts/static/AlbertSans-Bold.ttf') format('truetype');
 }
-
 @font-face {
-  font-family: 'Albert Sans semi-bold';
-  src: url("./assets/fonts/static/AlbertSans-SemiBold.ttf") format('truetype');
+    font-family: 'Albert Sans light';
+    src: url('src/assets/fonts/fonts/static/AlbertSans-Light.ttf') format('truetype');
 }
-
 @font-face {
-  font-family: 'Albert Sans extra-bold';
-    src: url("./assets/fonts/static/AlbertSans-ExtraBold.ttf") format('truetype');
+    font-family: 'Albert Sans semi-bold';
+    src: url('src/assets/fonts/fonts/static/AlbertSans-Bold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Albert Sans extra-bold';
+    src: url('src/assets/fonts/fonts/static/AlbertSans-ExtraBold.ttf') format('truetype');
 }
 
-html, body, :root  , #root {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html, body, :root, #root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Albert Sans regular', sans-serif;
-  font-size: 12px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Albert Sans regular', sans-serif;
+    font-size: 12px;
 }

@@ -9,7 +9,7 @@ import ResetPass from "./pages/reset-pass/reset-pass.jsx";
 import MainPage from "./pages/main-page/main-page.jsx";
 import EmailVerification from "./pages/email-verification-page/email-verification-page.jsx";
 import FilmPage from "./pages/film-page/film-page.jsx";
-import TestComponent from "./test/file.jsx";
+// import TestComponent from "./test/file.jsx";
 import BookingList from "./pages/cManager-Pages/listbooking-page/list-booking.jsx";
 import RoomManagement from "./pages/cManager-Pages/room-management-page/room-management.jsx";
 import ShowtimeManagement from "./pages/cManager-Pages/showtime-management-page/showtime-management.jsx";
@@ -31,7 +31,7 @@ function App( ) {
         <UserProvider>
             <Router>
                 <Routes>
-                    <Route path="test" element={<TestComponent/>} />
+                    {/*<Route path="test" element={<TestComponent/>} />*/}
                     <Route path="/list-booking" element={<BookingList/>} />
                     <Route path="/room-management" element={<RoomManagement/>} />
                     <Route path="/showtime-management" element={<ShowtimeManagement/>} />
