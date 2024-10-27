@@ -118,6 +118,28 @@ export async function fetchListEmails() {
         throw error;  // Optionally rethrow the error for further handling
     }
 }
+// authAPI.js
+export async function checkIfHasPassword(UID) {
+    try {
+        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/changePassword?UID=${UID}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+
+        const data = await response.json();
+        return data.hasPassword; // Return true or false based on the response
+    } catch (error) {
+        console.error("Failed to check password existence:", error);
+        throw error;
+    }
+}
+
 export async function changePassword(email,oldPassword,newPassword) {
     try {
         const response = await fetch('http://localhost:8080/DANAMA_war_exploded/changePassword',{

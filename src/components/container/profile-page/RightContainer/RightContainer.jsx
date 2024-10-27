@@ -6,7 +6,7 @@ import phone from '../../../../assets/Icons/phone.svg';
 import avatar from '../../../../assets/Icons/avatar.svg';
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
-import {changePassword, fetchJwtToken} from "../../../../api/authAPI.js";
+import {changePassword, checkIfHasPassword, fetchJwtToken, resetPassword} from "../../../../api/authAPI.js";
 import {fetchBookingHistory, updateProfile} from "../../../../api/userAPI.js";
 import BookingHistory from "../BookingHistory/Booking History.jsx";
 import ChangePass from "../ChangePass/ChangePass.jsx";
@@ -20,17 +20,20 @@ function RightContainer({ selectedOption }) {
     const fetchCalled = useRef(false);
     const [message, setMessage] = useState('');
     const navigate= useNavigate();
-
+    const [hasPassword, setHasPassword] = useState(false);
     useEffect(() => {
         const fetchUserData = async () => {
             const response = await fetchJwtToken();
             if (response.success) {
                 setUser(response.user);
+
+                // Check if the user has a password
+                const hasPasswordResult = await checkIfHasPassword(response.user.UID);
+                setHasPassword(hasPasswordResult);
             } else {
                 alert("Your session is expired, login again!");
-                navigate('login');
+                navigate('/login');
             }
-            setLoading(false);
         };
 
         if (!fetchCalled.current) {
@@ -38,6 +41,7 @@ function RightContainer({ selectedOption }) {
             fetchCalled.current = true;
         }
         setMessage('');
+        setLoading(false);
     }, []);
 
     // Fetch booking history if user and selected option is "Booking History"
@@ -69,23 +73,26 @@ function RightContainer({ selectedOption }) {
         ];
     };
     const handleChangePassword = async (oldPassword, newPassword, confirmPassword) => {
-        // Basic validation
         if (newPassword !== confirmPassword) {
             setMessage("New password and confirm password do not match.");
             return;
         }
-
         try {
-            // Call the changePassword API
-            const response = await changePassword(user.email, oldPassword, newPassword);
+            let response;
+            if (hasPassword) {
+                response = await changePassword(user.email, oldPassword, newPassword);
+            } else {
+                response = await resetPassword(user.email, newPassword);
+            }
+
             if (response.success) {
-                alert("Change password successfully!!");
+                alert("Password updated successfully!");
                 window.location.reload();
             } else {
-                setMessage(response.message || "Failed to change password.");
+                setMessage(response.message || "Failed to update password.");
             }
         } catch (error) {
-            setMessage("An error occurred while changing the password.");
+            setMessage("An error occurred while updating the password.");
         }
     };
     const handleProfileUpdate = async (updatedInfo) => {
@@ -142,7 +149,7 @@ function RightContainer({ selectedOption }) {
                         <h2>Change Password</h2>
                         {message && <p className="message">{message}</p>} {/* Display success or error message */}
                         {/* Pass the handleChangePassword function to the ChangePass component */}
-                        <ChangePass onChangePassword={handleChangePassword} />
+                        <ChangePass onChangePassword={handleChangePassword} hasPassword={hasPassword} />
                     </div>
                 );
             case 'Log out':
