@@ -6,7 +6,7 @@
 
 }
 
-.sidebar {
+.admin-sidebar {
     width: 250px;
     background-color: #6A2222;
     height: 100vh;
@@ -31,12 +31,12 @@
 }
 
 
-.sidebar ul {
+.admin-sidebar ul {
     list-style: none;
     padding: 0;
 }
 
-.sidebar li {
+.admin-sidebar li {
     padding: 10px 0;
     cursor: pointer;
 }

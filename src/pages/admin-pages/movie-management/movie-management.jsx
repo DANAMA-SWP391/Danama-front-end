@@ -12,6 +12,7 @@ import Modal from "../../../components/common/Modal/Modal.jsx";
 import {upFileToAzure} from "../../../api/webAPI.jsx";
 import Header from "../../../components/common/Header/Header.jsx";
 import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx";
+import AdminSidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
 
 const MovieManagement = () => {
     const [movies, setMovies] = useState([]);
@@ -319,7 +320,7 @@ const MovieManagement = () => {
         <>
             <AdminHeader />
             <div className="movie-management-container">
-                <Sidebar/> {/* Hiển thị Sidebar */}
+                <AdminSidebar/> {/* Hiển thị Sidebar */}
                 <div className="movie-management-content">
                     <div className="movie-management-header">
                         <h2>MOVIE LIST</h2>

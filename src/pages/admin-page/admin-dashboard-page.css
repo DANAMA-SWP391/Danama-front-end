@@ -7,7 +7,7 @@
     color: #fff;
 }
 
-.sidebar {
+.admin-sidebar {
     width: 18%;
     background-color: #800000;
     padding: 20px;
@@ -177,7 +177,7 @@
         height: auto;
     }
 
-    .sidebar {
+    .admin-sidebar {
         width: 100%;
         padding: 10px;
         text-align: center;

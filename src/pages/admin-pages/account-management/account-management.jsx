@@ -12,6 +12,7 @@ import './account-management.css';
 import { upFileToAzure } from '../../../api/webAPI.jsx';
 import CustomModal from '../../../components/common/CustomModal/CustomModal.jsx';
 import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx";
+import AdminSidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
 
 const AccountManagement = () => {
     const [accounts, setAccounts] = useState([]);
@@ -253,7 +254,7 @@ const AccountManagement = () => {
             <AdminHeader />
             <div className="account-management-container">
 
-                <Sidebar />
+                <AdminSidebar />
                 <div className="account-management-content">
                     <div className="account-management-header">
                         <h2>ACCOUNT MANAGEMENT</h2>
@@ -280,8 +281,8 @@ const AccountManagement = () => {
                         </thead>
                         <tbody>
                         {paginatedAccounts.map((account) => (
-                            <tr key={account.id}>
-                                <td>{account.id}</td>
+                            <tr key={account.UID}>
+                                <td>{account.UID}</td>
                                 <td>{account.email}</td>
                                 <td>{account.name}</td>
                                 <td>{account.phone}</td>

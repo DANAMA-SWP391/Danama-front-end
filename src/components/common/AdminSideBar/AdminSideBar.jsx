@@ -7,11 +7,11 @@ import {useLocation} from "react-router-dom";
 
 
 
-function Sidebar() {
+function AdminSidebar() {
     const location = useLocation(); // Get current path
 
     return (
-        <div className="sidebar">
+        <div className="admin-sidebar">
             <div className="menu">
                 <Button
                     className={`menu-item ${location.pathname === "/admin-dashboard" ? "active" : ""}`}
@@ -46,4 +46,4 @@ function Sidebar() {
     );
 }
 
-export default Sidebar;
+export default AdminSidebar;
