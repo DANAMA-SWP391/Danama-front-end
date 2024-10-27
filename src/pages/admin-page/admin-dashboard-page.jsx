@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react';
 import Sidebar from "./../../components/common/AdminSideBar/AdminSideBar.jsx";
-import ReactApexChart from 'react-apexcharts';
 import { fetchAdminDashBoardPage } from "../../api/admin-api.js";
 import './admin-dashboard-page.css';
+import { Pie } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    ArcElement,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 function AdminDashboardPage() {
     const [dashboardData, setDashboardData] = useState(null);
@@ -13,7 +21,6 @@ function AdminDashboardPage() {
         const fetchData = async () => {
             try {
                 const data = await fetchAdminDashBoardPage();
-                console.log('Fetched data:', data); // Log dữ liệu để kiểm tra
                 setDashboardData(data);
                 setError(null);
             } catch (err) {
@@ -36,55 +43,57 @@ function AdminDashboardPage() {
     }
 
     const { cinemaRevenues = [], movies = [], popularShowtimes = [] } = dashboardData || {};
+    const totalRevenueAmount = cinemaRevenues.reduce((acc, cinema) => acc + (cinema.totalRevenue || 0), 0);
 
-    // Tính tổng doanh thu
-    const totalRevenueAmount = cinemaRevenues.length > 0
-        ? cinemaRevenues.reduce((acc, cinema) => acc + (cinema.totalRevenue || 0), 0)
-        : 0;
-
-    // Cấu hình pie chart
     const pieChartData = {
-        series: cinemaRevenues.map(cinema => cinema.totalRevenue),
-        options: {
-            chart: {
-                type: 'pie',
-            },
-            labels: cinemaRevenues.map(cinema => cinema.cinemaName),
+        labels: cinemaRevenues.map(cinema => cinema.cinemaName),
+        datasets: [
+            {
+                data: cinemaRevenues.map(cinema => cinema.totalRevenue),
+                backgroundColor: ['#1CBB8C', '#0F9CF3', '#FCB92C', '#4AA3FF', '#F32F53'],
+                hoverBackgroundColor: ['#17A679', '#0D8CD1', '#E5A623', '#3A92E4', '#D42B4D'],
+                borderColor: '#fff',
+                borderWidth: 2,
+                hoverBorderColor: '#000',
+                hoverBorderWidth: 3,
+            }
+        ]
+    };
+
+    const pieChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
             legend: {
                 position: 'bottom',
-                horizontalAlign: 'center',
-                floating: false,
-                itemMargin: {
-                    horizontal: 5,
-                    vertical: 2
-                },
                 labels: {
-                    colors: ['#ff0000'],
-                    fontSize: '16px',
-                    fontWeight: 'bold'
+                    color: '#ffffff',
+                    font: {
+                        size: 14
+                    },
+                    padding: 20
                 }
             },
-            markers: {
-                width: 12,
-                height: 12,
-                strokeWidth: 0,
-                strokeColor: '#fff',
-                fillOpacity: 1,
-                radius: 12,
-                shape: "circle",
-            },
-            colors: ['#1CBB8C', '#0F9CF3', '#FCB92C', '#4AA3FF', '#F32F53'],
-            dataLabels: {
-                enabled: true,
-                formatter: (val, opts) => {
-                    return `${opts.w.config.labels[opts.seriesIndex]}: ${val.toFixed(2)}%`;
+            tooltip: {
+                callbacks: {
+                    label: (tooltipItem) => {
+                        const dataset = tooltipItem.dataset;
+                        const currentValue = dataset.data[tooltipItem.dataIndex];
+                        const percentage = ((currentValue / totalRevenueAmount) * 100).toFixed(2);
+                        return `${tooltipItem.label}: $${currentValue} (${percentage}%)`;
+                    }
                 },
-            },
-            stroke: {
-                show: false,
-            },
-        },
+                backgroundColor: '#333',
+                titleColor: '#fff',
+                bodyColor: '#fff',
+                borderColor: '#444',
+                borderWidth: 1,
+            }
+        }
     };
+
+
+
 
     return (
         <div className="dashboard-container">
@@ -152,13 +161,15 @@ function AdminDashboardPage() {
                 )}
 
                 {cinemaRevenues.length > 0 && (
-                    <div className="dashboard-summary-pie-chart">
+                    <div className="dashboard-summary-pie-chart" style={{ width: '100%', height: '500px', margin: '0 auto' }}>
                         <h2>Revenue Distribution by Cinema</h2>
-                        <div id="pie_chart" className="apex-charts">
-                            <ReactApexChart options={pieChartData.options} series={pieChartData.series} type="pie" height={350} />
+                        <div className="pie-chart-container">
+                            <Pie data={pieChartData} options={pieChartOptions} />
                         </div>
                     </div>
                 )}
+
+
             </div>
         </div>
     );
