@@ -1,13 +1,4 @@
 
-
-
-
-
-
-
-
-
-
 .cmanagerseats {
     display: grid;
     grid-template-columns: repeat(17, 50px); /* 17 cột với kích thước ghế là 50px */
@@ -52,9 +43,7 @@
     background-color: #e74c3c; /* Màu đỏ cho ghế VIP */
 }
 
-.cmanager-seat.booked {
-    background-color: #2c3e50; /* Màu đen cho ghế đã đặt (Booked) */
-}
+
 
 .cmanager-seat:hover {
     opacity: 0.8; /* Hiệu ứng hover làm mờ ghế một chút */
@@ -92,5 +81,12 @@
     padding-top:20px;
 }
 
-
+.empty-seat.selected-seat {
+    background-color: #FFD700; /* Màu vàng cho ghế trống được chọn */
+    border: 2px solid #FFA500; /* Đường viền màu cam để nổi bật hơn */
+    color: white;
+    font-weight: bold;
+    transform: scale(1.1); /* Phóng to nhẹ để nổi bật */
+    transition: background-color 0.3s, border 0.3s, transform 0.3s; /* Hiệu ứng chuyển mượt mà */
+}
 

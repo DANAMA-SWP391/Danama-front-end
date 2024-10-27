@@ -12,7 +12,10 @@ function BookingList() {
     const [searchDate, setSearchDate] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const bookingsPerPage = 20;
-    const cinemaId = 1;
+    const storagecinema = localStorage.getItem('cinema');
+    const cinema = JSON.parse(storagecinema);
+    const cinemaId = cinema.cinemaId;
+
 
     const handleFetchBookings = async (cinemaId) => {
         setLoading(true);
@@ -34,7 +37,6 @@ function BookingList() {
     const handleDateChange = (e) => {
         const selectedDate = e.target.value;
         setSearchDate(selectedDate);
-        console.log("Search Date:", selectedDate);
 
         if(selectedDate == '') {
             setFilteredBookings(bookings);
@@ -59,6 +61,11 @@ function BookingList() {
 
     return (
         <div className="booking-list-page">
+            {loading && (
+                <div className="booking-management-loading-overlay">
+                    <div className="booking-management-spinner"></div>
+                </div>
+            )}
             <CManagerHeader />
             <div className="layout">
                 <Sidebar />

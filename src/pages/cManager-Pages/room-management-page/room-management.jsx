@@ -21,12 +21,14 @@ function RoomManagement() {
     const [currentPage, setCurrentPage] = useState(1);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [roomToDelete, setRoomToDelete] = useState(null);
-    const navigate = useNavigate(); // Hook để điều hướng
-    const [error, setError] = useState('');  // State để lưu thông báo lỗi
+    const navigate = useNavigate();
+    const [error, setError] = useState('');
 
 
     const roomsPerPage = 10;
-    const cinemaId = 1;
+    const storagecinema = localStorage.getItem('cinema');
+    const cinema = JSON.parse(storagecinema);
+    const cinemaId = cinema.cinemaId;
 
     // Fetch room list on component mount
     const getRooms = async () => {
@@ -79,7 +81,7 @@ function RoomManagement() {
     };
 
     const handleSubmit = async () => {
-        if (!formData.name.trim()) { // Kiểm tra nếu "Room Name" bị để trống
+        if (!formData.name.trim()) {
             setError('Room Name is required.');
             return;
         }
@@ -98,7 +100,7 @@ function RoomManagement() {
             await getRooms();
         }
         setIsModalOpen(false);
-        setError('');  // Reset lỗi sau khi form được gửi thành công
+        setError('');
 
     };
 
@@ -120,6 +122,11 @@ function RoomManagement() {
 
     return (
         <div className="room-management-page">
+            {loading && (
+                <div className="room-management-loading-overlay">
+                    <div className="room-management-spinner"></div>
+                </div>
+            )}
             <CManagerHeader />
             <div className="layout">
                 <Sidebar />
@@ -209,7 +216,7 @@ function RoomManagement() {
                                 <div>
                                     <div className="label-group" >
                                         <label>Room Name:</label>
-                                        {error && <p className="error-message">{error}</p>}  {/* Hiển thị lỗi nếu có */}
+                                        {error && <p className="error-message">{error}</p>}
                                     </div>
                                     <input
                                         type="text"

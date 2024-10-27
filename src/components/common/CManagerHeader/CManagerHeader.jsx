@@ -14,24 +14,26 @@ import CinemaLogo from "../CinemaLogo/CinemaLogo.jsx";
 
 function CManagerHeader() {
     const {user} = useContext(UserContext);
-    console.log(user);
 
-    const logo = "/src/assets/cinemaLogos/cgv.jpg";
-    // const cinemalogo = "CGV"
+    const storagecinema = localStorage.getItem('cinema');
+    const cinema = JSON.parse(storagecinema);
 
     return (
-        <div className="header">
+        <div className="cmanager-header">
             <div className="container">
-                <MainPageLogo />
-                {/*<OptionList />*/}
+                <MainPageLogo/>
 
 
-                {/*<CinemaLogo logo ={logo} name={cinemalogo} />*/}
-                <CinemaLogo logo ={logo}  />
+                {/*<CinemaLogo logo ={cinema.logo}  />*/}
+                <div className="cmanager-cinema-info">
+                    <CinemaLogo logo={cinema.logo}/>
+                    <span className="cmanager-cinema-name">{cinema.name}</span>
+                </div>
+
 
                 {
                     user ?
-                        <HeaderUser user={user} /> : <LoginBtn to={"/login"} />
+                        <HeaderUser user={user}/> : <LoginBtn to={"/login"}/>
                 }
             </div>
         </div>

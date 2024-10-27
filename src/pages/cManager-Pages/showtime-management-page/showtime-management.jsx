@@ -6,7 +6,7 @@ import {
     fetchAddShowtime,
     fetchShowtimeList,
     fetchUpdateShowtime,
-    fetchDeleteShowtime,
+    fetchDeleteShowtime, fetchRoomList,
 } from "../../../api/cManagerAPI.js";
 import Button from "../../../components/common/Button/Button.jsx";
 import {MdDeleteOutline} from "react-icons/md";
@@ -19,6 +19,7 @@ import {WebContext} from "../../../utils/webContext.jsx";
 function ShowtimeManagement() {
     const [showtimes, setShowtimes] = useState([]);
     const {filmList} = useContext(WebContext);
+    const [roomlist, setRoomlist] = useState([]);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -33,8 +34,9 @@ function ShowtimeManagement() {
         roomId: '',
         roomName: '',
         seatAvailable:'',
-        status: ''
-    }); // Trạng thái dữ liệu form
+        status: '',
+        duration: 0
+    });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -50,15 +52,15 @@ function ShowtimeManagement() {
         status: ''
     });
     const showtimesPerPage = 10;
-    const cinemaId = 1;
+    const storagecinema = localStorage.getItem('cinema');
+    const cinema = JSON.parse(storagecinema);
+    const cinemaId = cinema.cinemaId;
 
 
     const getShowtimes = async () => {
         setLoading(true);
         try {
             const data = await fetchShowtimeList(cinemaId);
-            console.log(data); //Check data
-            console.log("filmlist:", filmList);
             setShowtimes(data.showtimes || []);
         } catch (error) {
             console.error('Error fetching showtime list:', error);
@@ -67,15 +69,29 @@ function ShowtimeManagement() {
         setLoading(false);
     };
 
+    const getRooms = async () => {
+        setLoading(true);
+        try {
+            const data = await fetchRoomList(cinemaId);
+            setRoomlist(data.rooms || []);
+        } catch (error) {
+            console.error('Error fetching booking list:', error);
+        }
+        // setLoading(false);
+    };
+
+
+
+
     useEffect(() => {
         getShowtimes();
+        getRooms();
     }, [cinemaId]);
 
     // Handle room deletion
     const handleConfirmDelete = async () => {
 
         const result = await fetchDeleteShowtime(showtimeToDelete);
-        console.log(`Delete result: ${result}`);
 
         if (result) {
             setShowtimes(showtimes.filter(showtime => showtime.showtimeId !== showtimeToDelete));
@@ -93,18 +109,18 @@ function ShowtimeManagement() {
     };
 
     const openAddShowtimeModal = () => {
-        console.log('Opening add showtime modal');
 
         setIsEdit(false);
         setFormData({
             movieId: '',
-            showDate: new Date().toISOString().split('T')[0],
+            // showDate: new Date().toISOString().split('T')[0],
+            showDate: new Date().toLocaleDateString('en-CA'),
             startTime: '00:00:00',
             endTime: '00:00:00',
             basePrice: '',
             roomId: '',
             status: ''
-        }); // Reset dữ liệu
+        }); // Reset data
         setFormError({ // Reset error when open form
             movieId: '',
             showDate: '',
@@ -119,19 +135,20 @@ function ShowtimeManagement() {
 
     const openUpdateShowtimeModal = (showtime) => {
         setIsEdit(true);
+
         setFormData({
             showtimeId: showtime.showtimeId,
             movieId: showtime.movie.movieId,
-            showDate: new Date(showtime.showDate).toISOString().split('T')[0],
-            // startTime: convertTo12HourFormat(showtime.startTime),
-            // endTime: convertTo12HourFormat(showtime.endTime),
-            startTime: convertTo24HourFormat(showtime.startTime), // Chuyển sang 24h
-            endTime: convertTo24HourFormat(showtime.endTime) ,// Chuyển sang 24h
+            showDate: new Date(showtime.showDate).toLocaleDateString('en-CA'),
+
+            startTime:  showtime.startTime.slice(0, 5),  // Just select HH:mm for time picker
+            endTime: showtime.endTime.slice(0, 5),
+            // startTime:  convertTo24HourFormat(showtime.startTime),  // Just select HH:mm for time picker
+            // endTime: convertTo24HourFormat(showtime.endTime),
             basePrice: showtime.basePrice,
             roomId: showtime.room.roomId,
             status: showtime.status
         });
-        console.log('FormData like:', formData);
 
         setFormError({ // Reset error when open form
             movieId: '',
@@ -145,9 +162,75 @@ function ShowtimeManagement() {
         setIsModalOpen(true);
     };
 
+    function convertTo24HourFormat(timeString) {
+        const [time, modifier] = timeString.split(' ');
+        let [hours, minutes, seconds = "00"] = time.split(':');
+
+        if (modifier === 'AM' && hours === '12') {
+            hours = '00';
+        } else if (modifier === 'PM' && hours !== '12') {
+            hours = String(parseInt(hours, 10) + 12);
+        }
+
+        return `${hours.padStart(2, '0')}:${minutes}:${seconds}`;
+    }
+
+    // Update endTime when chosing new film
+    const handleMovieChange = (e) => {
+        const selectedMovieId = Number(e.target.value); // Chuyển đổi selectedMovieId thành số
+        const selectedMovie = filmList.find(film => film.movieId === selectedMovieId);
+        const duration = selectedMovie ? selectedMovie.duration : 0;
+
+        setFormData(prev => ({
+            ...prev,
+            movieId: selectedMovieId,
+            duration: duration,
+            endTime: calculateEndTime(prev.startTime, duration) // Tính endTime ngay khi movie được chọn
+        }));
+
+        setFormError(prev => ({ ...prev, movieId: '' }));
+    };
+
+    // Cập nhật endTime khi startTime thay đổi
+    const handleStartTimeChange = (e) => {
+        const startTime = e.target.value;
+
+        // Lấy `duration` từ phim hiện tại
+        const selectedMovie = filmList.find(film => film.movieId === formData.movieId);
+        const duration = selectedMovie ? selectedMovie.duration : formData.duration;
+
+        setFormData(prev => ({
+            ...prev,
+            startTime: startTime,
+            duration: duration,
+            endTime: calculateEndTime(startTime, duration)
+
+        }));
+
+        setFormError(prev => ({ ...prev, startTime: '' }));
+    };
+
+    // Method endTime base on startTime and duration
+
+    const calculateEndTime = (startTime, duration) => {
+        const [hours, minutes] = startTime.split(':').map(Number);
+
+        // Create new  Date for startTime
+        const endDate = new Date();
+        endDate.setHours(hours);
+        endDate.setMinutes(minutes + duration); // Add duration to minute
+
+        // Select hour and minute from endDate after adding duration
+        const endHours = String(endDate.getHours()).padStart(2, '0');
+        const endMinutes = String(endDate.getMinutes()).padStart(2, '0');
+
+        return `${endHours}:${endMinutes}:00`;
+    };
+
 
     const handleSubmit = async () => {
-        // e.preventDefault();
+        logShowtimeDetails(); // In startTime và endTime
+
         let hasError = false;
         let errors = {
             movieId: '',
@@ -184,15 +267,75 @@ function ShowtimeManagement() {
             hasError = true;
         }
 
-        // if (!formData.status) {
-        //     errors.status = 'Status is required';
-        //     hasError = true;
-        // }
+
 
         if (formData.status === null || formData.status === undefined || formData.status === '') {
             errors.status = 'Status is required';
             hasError = true;
         }
+
+
+        // Create object  Date for startTime and endTime of new showtime
+        // const newStartTime = new Date(`${formData.showDate}T${formData.startTime}`);
+        // const newEndTime = new Date(`${formData.showDate}T${formData.endTime}`);
+
+        const newStartTime = formData.startTime;
+        const newEndTime = formData.endTime;
+
+        console.log("New showtime startTime:", formData.startTime);
+        console.log("New showtime endTime:", formData.endTime);
+        console.log("New showtime startTime (Date object):", newStartTime);
+        console.log("New showtime endTime (Date object):", newEndTime);
+
+        // Check duplicate showtime
+        const isConflict = showtimes.some((showtime) => {
+            const existingShowDate = new Date(showtime.showDate).toLocaleDateString('en-CA'); // Định dạng yyyy-mm-dd
+            if (isEdit && showtime.showtimeId === formData.showtimeId) {
+                return false;
+            }
+            if (String(showtime.room.roomId) === String(formData.roomId) && existingShowDate === formData.showDate) {
+
+
+
+                const existingStartTime = convertTo24HourFormat(showtime.startTime);
+                const existingEndTime = convertTo24HourFormat(showtime.endTime);
+
+
+
+                console.log("Checking against existing showtime:");
+                console.log("Existing showtime startTime:", showtime.startTime);
+                console.log("Existing showtime endTime:", showtime.endTime);
+                console.log("Existing startTime (Date object):", existingStartTime);
+                console.log("Existing endTime (Date object):", existingEndTime);
+                console.log("New StartTime:", newStartTime);
+                console.log("New EndTime:", newEndTime);
+                // Check duplicate
+                // return (
+                //     (newStartTime >= existingStartTime && newStartTime < existingEndTime) ||
+                //     (newEndTime > existingStartTime && newEndTime <= existingEndTime) ||
+                //     (newStartTime <= existingStartTime && newEndTime >= existingEndTime)
+                // );
+                // Thực hiện phép so sánh
+                const conflictResult = (
+                    (newStartTime >= existingStartTime && newStartTime < existingEndTime) ||
+                    (newEndTime > existingStartTime && newEndTime <= existingEndTime) ||
+                    (newStartTime <= existingStartTime && newEndTime >= existingEndTime)
+                );
+
+                console.log("Conflict detected:", conflictResult); // Kiểm tra kết quả so sánh
+                return conflictResult;
+
+            }
+            return false; // No conflict not in the same room or on the same day
+        });
+
+        // conflict resolution
+        if (isConflict) {
+            errors.startTime = 'This showtime conflicts with an existing showtime in the same room and date.';
+            setFormError(errors);
+            return; // stop if there's conflict
+        }
+
 
         setFormError(errors);
 
@@ -200,9 +343,8 @@ function ShowtimeManagement() {
             return;
         }
 
-        const formattedStartTime = `${convertTo24HourFormat(formData.startTime)}:00`; //Add SECOND
-        const formattedEndTime = `${convertTo24HourFormat(formData.endTime)}:00`;
-
+        const formattedStartTime = `${(formData.startTime)}:00`; //Add SECOND
+        const formattedEndTime = `${(formData.endTime)}:00`;
         const dataToSend = {
             showtimeId: formData.showtimeId,
             showDate: formData.showDate,
@@ -215,12 +357,10 @@ function ShowtimeManagement() {
             status: formData.status
         };
 
-            console.log('handleSubmit called');
-            console.log('Form data before submission:', formData);
+
 
             if (isEdit) {
                 await fetchUpdateShowtime({ ...dataToSend, showtimeId: formData.showtimeId });
-                // setShowtimes(showtimes.map(showtime => showtime.showtimeId === formData.showtimeId ? { ...dataToSend, showtimeId: formData.showtimeId } : showtime));
                 setShowtimes(showtimes.map(showtime =>
                     showtime.showtimeId === formData.showtimeId
                     ? { ...showtime, ...dataToSend, room: { name: showtime.room.name }, seatAvailable: formData.seatAvailable } : showtime));
@@ -256,9 +396,7 @@ function ShowtimeManagement() {
         if (name === 'roomId' && value) {
             setFormError(prev => ({ ...prev, roomId: '' }));
         }
-        // if (name === 'seatAvailable' && value > 0) {
-        //     setFormError(prev => ({ ...prev, seatAvailable: '' }));
-        // }
+
         if (name === 'status' && value) {
             setFormError(prev => ({ ...prev, status: '' }));
         }
@@ -269,28 +407,13 @@ function ShowtimeManagement() {
         return movie ? movie.name : 'N/A';
     };
 
-    function convertTo12HourFormat(timeString) {
-        const [hours, minutes] = timeString.split(':');
-        const period = +hours >= 12 ? 'PM' : 'AM';
-        const adjustedHours = +hours % 12 || 12; // Chuyển 0h thành 12h
-        return `${adjustedHours}:${minutes} ${period}`;
-    }
 
-    function convertTo24HourFormat(timeString) {
-        const [time, modifier] = timeString.split(' ');
-        let [hours, minutes] = time.split(':');
 
-        if (hours === '12') {
-            hours = '00';
-        }
 
-        if (modifier === 'PM') {
-            hours = parseInt(hours, 10) + 12;
-        }
-
-        return `${hours}:${minutes}`;
-    }
-
+    const logShowtimeDetails = () => {
+        console.log("Start Time:", formData.startTime);
+        console.log("End Time:", formData.endTime);
+    };
 
         const indexOfLastShowtime = currentPage * showtimesPerPage;
         const indexOfFirstShowtime = indexOfLastShowtime - showtimesPerPage;
@@ -301,7 +424,12 @@ function ShowtimeManagement() {
 
         return (
             <div className="showtime-management-page">
-                <CManagerHeader/>
+                {loading && (
+                    <div className="showtime-management-loading-overlay">
+                        <div className="showtime-management-spinner"></div>
+                    </div>
+                )}
+                    <CManagerHeader/>
                 <div className="layout">
                     <Sidebar/>
                     <div className="showtime-management-content">
@@ -334,7 +462,6 @@ function ShowtimeManagement() {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {/*{showtimes.map((showtime) => (*/}
                                     {currentShowtimes.map((showtime) => (
 
                                         <tr key={showtime.showtimeId}>
@@ -344,12 +471,11 @@ function ShowtimeManagement() {
                                                 ? new Date(showtime.showDate).toLocaleDateString('vi-VN')
                                                 : 'N/A'}</td>
 
-                                            <td>{convertTo12HourFormat(showtime.startTime)}</td>
-                                            <td>{convertTo12HourFormat(showtime.endTime)}</td>
+                                            <td>{(showtime.startTime)}</td>
+                                            <td>{(showtime.endTime)}</td>
                                             <td>{showtime.basePrice}</td>
                                             <td>{showtime.room ? showtime.room.name : 'N/A'}</td>
                                             <td>{showtime.seatAvailable}</td>
-                                            {/*<td>{showtime.status}</td>*/}
                                             <td>
                                                 {showtime.status === 0 ? 'Coming Soon' : 'Now Showing'}
                                             </td>
@@ -429,7 +555,8 @@ function ShowtimeManagement() {
                                         <select
                                             name="movieId"
                                             value={formData.movieId}
-                                            onChange={handleChange}
+                                            // onChange={handleChange}
+                                            onChange={handleMovieChange}
                                             required
                                             className="select-dropdown"
 
@@ -468,22 +595,23 @@ function ShowtimeManagement() {
                                             type="time"
                                             name="startTime"
                                             value={formData.startTime}
-                                            onChange={handleChange}
+                                            onChange={handleStartTimeChange}
                                             required
                                         />
 
                                         <div className="label-group">
                                             <label>End Time:</label>
-                                            {formError.endTime && (
-                                                <span className="showtime-error-message">{formError.endTime}</span>
-                                            )}
+                                            {/*{formError.endTime && (*/}
+                                            {/*    <span className="showtime-error-message">{formError.endTime}</span>*/}
+                                            {/*)}*/}
                                         </div>
+
+
                                         <input
                                             type="time"
                                             name="endTime"
                                             value={formData.endTime}
-                                            onChange={handleChange}
-                                            required
+                                            readOnly
                                         />
                                     </div>
 
@@ -502,20 +630,32 @@ function ShowtimeManagement() {
                                             required
                                         />
                                     </div>
+
+
+
                                     <div>
-                                        <div className="label-group">
-                                            <label>Room ID:</label>
-                                            {formError.roomId && (
-                                                <span className="showtime-error-message">{formError.roomId}</span>
-                                            )}
-                                        </div>
-                                        <input
-                                            type="number"
+                                        <label>Room:</label>
+                                        {formError.roomId && (
+                                            <span className="showtime-error-message">{formError.roomId}</span>
+                                        )}
+                                        <select
                                             name="roomId"
                                             value={formData.roomId}
                                             onChange={handleChange}
                                             required
-                                        />
+                                            className="select-dropdown"
+
+                                        >
+                                            <option value="">Select Room</option>
+                                            {roomlist.map(room => (
+
+
+                                                    <option key={room.roomId} value={room.roomId}>
+                                                        {room.name}
+                                                    </option>
+
+                                            ))}
+                                        </select>
                                     </div>
 
 

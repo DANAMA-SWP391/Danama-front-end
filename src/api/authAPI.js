@@ -22,7 +22,7 @@ export async function login(email, password) {
             localStorage.setItem('user', JSON.stringify(data.user));
             // console.log(data);
             if (data.user && data.user.roleId === 2) {
-                localStorage.setItem('cinema', data.cinema);
+                localStorage.setItem('cinema', JSON.stringify(data.cinema));
             }
         }
         return data;

@@ -79,3 +79,12 @@
     color: #FF4500; /* Icon chuyển sang màu cam khi hover */
 }
 
+.menu-item.active {
+    background-color: rgba(255, 255, 255, 0.2); /* Màu nền nổi bật */
+    color: #FF4500; /* Màu chữ nổi bật */
+}
+
+.sidebar .menu .menu-item.active .icon {
+    color: #FF4500; /* Đổi màu icon khi active */
+}
+

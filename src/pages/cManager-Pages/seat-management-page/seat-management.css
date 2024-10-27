@@ -13,7 +13,7 @@
     flex-direction: column; /* Xếp theo chiều dọc cho header và layout */
     height: 100vh; /* Chiều cao toàn bộ trang */
 }
-.header {
+.cmanager-header {
     padding: 20px;
     z-index: 1000; /* Đảm bảo header nằm trên cùng */
     position: fixed; /* Giữ header cố định ở trên cùng */
@@ -85,7 +85,16 @@
 
 
 
-
+.seatType-dropdown {
+    width: 100%; /* Chiếm toàn bộ chiều rộng của container */
+    padding: 8px; /* Đảm bảo khoảng cách nội dung bên trong */
+    font-size: 16px; /* Đảm bảo kích thước chữ tương đương */
+    border-radius: 4px; /* Bo tròn cạnh tương tự */
+    border: 1px solid #ccc; /* Viền tương tự các ô khác */
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng chiều rộng */
+    margin-bottom: 15px;
+    margin-top:10px;
+}
 
 
 
@@ -219,13 +228,7 @@
     margin: 0;
 }
 
-/*.room-name-display {*/
-/*    align-self: flex-end; !* Đặt vị trí cuối phía bên phải *!*/
-/*    font-size: 18px;      !* Kích thước chữ to hơn một chút để nổi bật *!*/
-/*    font-weight: bold;*/
-/*    color: #333;          !* Màu chữ đậm để dễ đọc *!*/
-/*    margin-bottom: 10px;  !* Khoảng cách dưới để không dính vào các phần khác *!*/
-/*}*/
+
 
 .seat-header-container {
     display: flex;

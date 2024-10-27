@@ -1,7 +1,3 @@
-
-
-
-
 import { useEffect, useState } from "react";
 import Sidebar from "../../../components/common/CMangerSideBar/CManagerSideBar.jsx";
 import "./seat-management.css";
@@ -15,9 +11,9 @@ import BackSpace from "../../../assets/Icons/back-space.svg";
 
 function SeatManagement() {
     // const { roomId } = useParams();
-    const location = useLocation(); // Lấy dữ liệu từ state
-    const navigate = useNavigate(); // Hook điều hướng
-    const room = location.state?.room; // Truy cập object room
+    const location = useLocation(); // Get data from state
+    const navigate = useNavigate(); // Navigation Hook
+    const room = location.state?.room; // Access object room
     const [seats, setSeats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -26,7 +22,8 @@ function SeatManagement() {
     const [formData, setFormData] = useState({ seatId: '', row: '', col: '', seatNum: '', type: '' });
     const [seatToDelete, setSeatToDelete] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [selectedSeat, setSelectedSeat] = useState(null);  // Chứa thông tin của ghế được chọn
+    const [selectedSeat, setSelectedSeat] = useState(null);  // Contains information about selected seats
+    const [selectedSeats, setSelectedSeats] = useState([]); //selected seats list
     const [errorMessage, setErrorMessage] = useState('');
     const seatsInfo = [
          ["Standard", "#1BA0D4"], ["VIP", "#D64242"]
@@ -58,29 +55,32 @@ function SeatManagement() {
     const openDeleteModal = () => {
         setSeatToDelete(selectedSeat.seatId);
         setIsDeleteModalOpen(true);
-        setSelectedSeat(null); // Đóng choice-popup
+        setSelectedSeat(null); // Close choice-popup
 
     };
 
-    const openAddSeatModal = (seat) => {
-        setIsEdit(false);
-        // Tạo seatNum dựa trên row và col
-        const rowLetter = String.fromCharCode(64 + seat.row); // Convert row 1 -> A, row 2 -> B, etc.
-        const seatNum = `${rowLetter}${seat.col}`; // Ví dụ: B4
+    // const openAddSeatModal = (seat) => {
+    //     setIsEdit(false);
+    //     // Tạo seatNum dựa trên row và col
+    //     const rowLetter = String.fromCharCode(64 + seat.row); // Convert row 1 -> A, row 2 -> B, etc.
+    //     const seatNum = `${rowLetter}${seat.col}`; // Ví dụ: B4
+    //
+    //     setFormData({
+    //         row: seat.row,
+    //         col: seat.col,
+    //         seatNum: seatNum, // Tự động set giá trị seatNum
+    //         type: ''
+    //     });
+    //     setIsModalOpen(true);
+    // };
 
-        setFormData({
-            row: seat.row,
-            col: seat.col,
-            seatNum: seatNum, // Tự động set giá trị seatNum
-            type: ''
-        });
+    const openAddSeatModal = () => {
         setIsModalOpen(true);
     };
 
     useEffect(() => {
         if (!isEdit && formData.row && formData.col) {
-            setIsModalOpen(true); // Chỉ mở modal sau khi row và col được cập nhật
-            console.log("Modal mở với formData:", formData); // Kiểm tra dữ liệu
+            setIsModalOpen(true); // Open  modal after row and col are updated
         }
     }, [formData.row, formData.col]);
 
@@ -95,39 +95,63 @@ function SeatManagement() {
             type: selectedSeat.type
         });
         setIsModalOpen(true);
-        setSelectedSeat(null); // Đóng choice-popup
+        setSelectedSeat(null); // Close choice-popup
 
     };
+
+
 
     const handleSubmit = async () => {
         if (!formData.type) {
             setErrorMessage("Please select a Seat Type");
-            return; // Dừng submit nếu không chọn loại ghế
+            return;
         }
-
-        const dataToSend = {
-            row: formData.row,
-            col: formData.col,
-            seatNum: formData.seatNum,
-            type: formData.type,
-            room: { roomId: room.roomId }
-        };
 
         if (isEdit) {
-            await fetchChangeSeatType({ ...dataToSend, seatId: formData.seatId });
-            setSeats(seats.map(seat => seat.seatId === formData.seatId ? { ...dataToSend, seatId: formData.seatId } : seat));
+            // Handle updating seat
+            try {
+                await fetchChangeSeatType({
+                    seatId: formData.seatId,
+                    row: formData.row,
+                    col: formData.col,
+                    seatNum: formData.seatNum,
+                    type: formData.type,
+                    room: { roomId: room.roomId }
+                });
+                await getSeats(); //  Reload seat list after updating
+                setIsModalOpen(false);
+                setSelectedSeat(null); // Delete status of selected seat
+            } catch (error) {
+                setErrorMessage("An error occurred while updating the seat.");
+            }
         } else {
-            const newSeat = await fetchAddSeat(dataToSend);
-            if (newSeat && newSeat.seatId) {
-                setSeats([...seats, newSeat]);
-            } else {
-                await getSeats();
+            // Handling add new seats
+            const promises = selectedSeats.map(seat => {
+                const newSeat = {
+                    row: seat.row,
+                    col: seat.col,
+                    seatNum: `${String.fromCharCode(64 + seat.row)}${seat.col}`,
+                    type: formData.type,
+                    room: { roomId: room.roomId }
+                };
+                return fetchAddSeat(newSeat);
+            });
+
+            try {
+                await Promise.all(promises);
+                await getSeats(); // Get new data from server
+                setSelectedSeats([]); // delete selected seats
+                setIsModalOpen(false);
+            } catch (error) {
+                setErrorMessage("An error occurred while adding seats.");
             }
         }
-        setIsModalOpen(false);
-        setErrorMessage(''); // Reset lại thông báo lỗi sau khi submit thành công
 
+        setErrorMessage('');
     };
+
+
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -149,19 +173,21 @@ function SeatManagement() {
         }
     };
 
-    const handleSeatClick = (seat) => {
-        // setSelectedSeat(seat);  // Lưu ghế được chọn
-        // Nếu seat có ID, đó là ghế đã có, mở modal Update/Delete
-        if (seat.seatId) {
-            setSelectedSeat(seat);
-        } else {
-            // // Nếu seat không có ID, đó là ghế trống, mở modal thêm ghế mới
-            // setFormData({ row: seat.row, col: seat.col, seatNum: '', type: '' });
-            // // openAddSeatModal();
-            // setIsEdit(false);
-            // setIsModalOpen(true); // Mở modal để thêm ghế mới ngay lập tức
-            openAddSeatModal(seat); // Gọi hàm thêm ghế mới với thông tin row và col
 
+
+
+
+    const handleSeatClick = (seat) => {
+        if (seat.seatId) {
+            setSelectedSeat(seat); // If seat has seatID , that's an existing seat
+        } else {
+            //  Add or delete empty seat into/out of 'selectedSeats'
+            const isSeatSelected = selectedSeats.some(s => s.row === seat.row && s.col === seat.col);
+            if (isSeatSelected) {
+                setSelectedSeats(selectedSeats.filter(s => s.row !== seat.row || s.col !== seat.col));
+            } else {
+                setSelectedSeats([...selectedSeats, seat]);
+            }
         }
     };
 
@@ -190,10 +216,14 @@ function SeatManagement() {
                         <>
                         <CManagerSeatLayout
                             seats={seats}
-                            selectedSeats={[]}
+                            // selectedSeats={[]}
+                            selectedSeats={selectedSeats} // transmit list of selected seats
                             getSeatColor={getSeatColor}
                             handleClick={handleSeatClick}
                         />
+                            <Button onClick={openAddSeatModal} disabled={selectedSeats.length === 0}>
+                                Add New Seats
+                            </Button>
 
                             <div className="seats-management-info">
                                 {seatsInfo.map((info, index) => (
@@ -250,6 +280,7 @@ function SeatManagement() {
                                         value={formData.type}
                                         onChange={handleChange}
                                         required
+                                        className="seatType-dropdown"
                                     >
                                         <option value="">Select Seat Type</option>
                                         <option value="VIP">VIP</option>

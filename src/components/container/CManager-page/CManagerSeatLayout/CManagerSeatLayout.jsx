@@ -22,8 +22,10 @@ const CManagerSeatLayout = ({ seats, selectedSeats, getSeatColor, handleClick })
         const colIndex = seat.col - 1;  // Adjust column to be zero-based (subtract 1)
         seatFormat[rowIndex][colIndex] = {
             ...seat,
-            // price: getSeatPrice(seat.type), // Calculate the price for each seat
-            type: selectedSeats.includes(seat.seatNum) ? "Selected" : seat.type // Mark seat as selected
+
+            type: selectedSeats.some(selected => selected.row === seat.row && selected.col === seat.col)
+                ? "Selected"
+                : seat.type
         };
     });
 
@@ -43,16 +45,17 @@ const CManagerSeatLayout = ({ seats, selectedSeats, getSeatColor, handleClick })
                                     key={seat.seatId}
                                     seat={seat.seatNum}
                                     color={getSeatColor(seat.type)}
-                                    onClick={(action) => handleClick(seat, action)} // Pass seat and action type to handleClick
+                                    // onClick={(action) => handleClick(seat, action)} // Pass seat and action type to handleClick
+                                    onClick={() => handleClick(seat)}
+
                                 />
                             ) : (
                                 // Render empty seat blocks for places without seats
-
                                 <button
                                     key={seatIndex}
-                                    className="empty-seat"
-                            onClick={() => {
-                                console.log(`Clicked empty seat at row: ${rowIndex + 1}, col: ${seatIndex + 1}`);
+                                    className={`empty-seat ${selectedSeats.some(s => s.row === rowIndex + 1 && s.col === seatIndex + 1) ? 'selected-seat' : ''}`}
+
+                                    onClick={() => {
                                 handleClick({row: rowIndex + 1, col: seatIndex + 1});
                             }}
                                 >

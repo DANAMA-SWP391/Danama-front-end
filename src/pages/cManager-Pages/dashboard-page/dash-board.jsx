@@ -23,15 +23,15 @@ function CinemaDashboard() {
     const [error, setError] = useState(null);
     const chartRef = useRef(null);
 
-    const cinemaId = 1;
+    const storagecinema = localStorage.getItem('cinema');
+    const cinema = JSON.parse(storagecinema);
+    const cinemaId = cinema.cinemaId;
 
     useEffect(() => {
         const getDashboardData = async () => {
             try {
                 const data = await fetchCinemaDashBoardPage(cinemaId);
                 setDashboardData(data);
-                console.log("Tickets Sold in Current Month:", data.ticketsoldincurrentmonth);
-                console.log("Daily Total Revenue:", data.dailytotalrevenue);
             } catch (error) {
                 setError("Failed to fetch dashboard data.");
             }
@@ -75,17 +75,31 @@ function CinemaDashboard() {
         }
     }, [dashboardData]);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>{error}</div>;
-    }
+    // if (loading) {
+    //     return <div>Loading...</div>;
+    // }
+    //
+    // if (error) {
+    //     return <div>{error}</div>;
+    // }
 
     return (
         <div className="cinema-dashboard">
-            <CManagerHeader />
+            {loading && (
+                <div className="cinema-dashboard-loading-overlay">
+                    <div className="cinema-dashboard-spinner"></div>
+                </div>
+            )}
+
+            {error && (
+                <div className="error-message">
+                    {error}
+                </div>
+            )}
+
+            {!loading && !error && (
+                <>
+                <CManagerHeader />
             <div className="layout">
                 <Sidebar />
                 <div className="main-content">
@@ -120,29 +134,7 @@ function CinemaDashboard() {
                             </div>
                         </div>
 
-                        {/*<div className="movie-revenue-section">*/}
-                        {/*    <div className ="movie-revenue-table"><h3>Movie Revenue</h3>*/}
-                        {/*    <table>*/}
-                        {/*        <thead>*/}
-                        {/*        <tr>*/}
-                        {/*            <th>Movie Name</th>*/}
-                        {/*            <th>Ticket Sold</th>*/}
-                        {/*            <th>Total Revenue</th>*/}
-                        {/*        </tr>*/}
-                        {/*        </thead>*/}
-                        {/*        <tbody>*/}
-                        {/*        {dashboardData?.ticketsoldandtotalcosteachmovie?.map((movie, index) => (*/}
-                        {/*            <tr key={index}>*/}
-                        {/*                <td>{movie.movieName}</td>*/}
-                        {/*                <td>{movie.ticketSold}</td>*/}
-                        {/*                <td>${movie.totalRevenue.toLocaleString()}</td>*/}
-                        {/*            </tr>*/}
-                        {/*        ))}*/}
-                        {/*        </tbody>*/}
-                        {/*    </table>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                        {/* Movie Revenue Section */}
+
                         <div className="movie-revenue-section">
                             <div className="movie-revenue-table">
                                 <h3>Movie Revenue</h3>
@@ -168,25 +160,7 @@ function CinemaDashboard() {
                         </div>
                     </div>
 
-                    {/*<div className="most-watched-section">*/}
-                    {/*    <h3>Most Watched Showtimes</h3>*/}
-                    {/*    {dashboardData?.showtimes && dashboardData.showtimes.length > 0 ? (*/}
-                    {/*        <ul>*/}
-                    {/*            {dashboardData.showtimes.map((showtime, index) => (*/}
-                    {/*                <li key={index} className="movie-item">*/}
-                    {/*                    <div className="movie-info">*/}
-                    {/*                        <h4>{showtime.movie.name}</h4> /!* Movie title from the showtime *!/*/}
-                    {/*                        <span>*/}
-                    {/*                        {showtime.startTime} - {showtime.endTime}*/}
-                    {/*                        </span>*/}
-                    {/*                    </div>*/}
-                    {/*                </li>*/}
-                    {/*            ))}*/}
-                    {/*        </ul>*/}
-                    {/*    ) : (*/}
-                    {/*        <p>No data available for most-watched showtimes.</p>*/}
-                    {/*    )}*/}
-                    {/*</div>*/}
+
 
                     <div className="most-watched-section">
                         <h3 className="mostwatch">Most Watched</h3>
@@ -217,8 +191,12 @@ function CinemaDashboard() {
                     </div>
                 </div>
             </div>
+                </>
+            )}
         </div>
+
     );
+
 }
 
 export default CinemaDashboard;

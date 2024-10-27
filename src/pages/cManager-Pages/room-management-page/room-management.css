@@ -109,63 +109,7 @@
     padding: 5px 8px; /* Điều chỉnh padding của nút */
     font-size: 12px; /* Giảm kích thước font nếu cần */
 }
-/*.modal {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    justify-content: center; !* Căn giữa theo chiều dọc *!*/
-/*    align-items: center; !* Căn giữa theo chiều ngang *!*/
-/*    max-width: 500px; !* Đặt chiều rộng tối đa cho modal *!*/
-/*    margin: auto; !* Căn giữa modal *!*/
-/*    padding: 20px; !* Thêm padding bên trong modal *!*/
-/*    border-radius: 10px; !* Bo góc modal *!*/
-/*    background-color: #fff; !* Màu nền của modal *!*/
-/*    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); !* Đổ bóng cho modal *!*/
-/*}*/
 
-/*.modal-header {*/
-/*    width: 100%; !* Đặt chiều rộng 100% *!*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*    align-items: center;*/
-/*    padding: 10px 20px;*/
-/*    background-color: #6A2222; !* Màu nền của header *!*/
-/*    color: white; !* Màu chữ *!*/
-/*    border-radius: 10px 10px 0 0; !* Bo góc trên cho header *!*/
-/*}*/
-
-/*.modal-title {*/
-/*    font-size: 1.5em;*/
-/*    margin: 0;*/
-/*}*/
-
-/*.modal-body {*/
-/*    width: 100%; !* Đặt chiều rộng 100% *!*/
-/*    padding: 20px;*/
-/*}*/
-
-/*.modal-footer {*/
-/*    display: flex;*/
-/*    justify-content: center; !* Căn giữa các nút *!*/
-/*    padding: 10px 0; !* Thêm padding cho footer *!*/
-/*    width: 100%; !* Đặt chiều rộng 100% *!*/
-/*}*/
-
-/*.modal-footer button {*/
-/*    margin: 0 10px; !* Khoảng cách giữa các nút *!*/
-/*}*/
-
-/*.modal {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    justify-content: center; !* Căn giữa theo chiều dọc *!*/
-/*    align-items: center; !* Căn giữa theo chiều ngang *!*/
-/*    max-width: 500px; !* Đặt chiều rộng tối đa cho modal *!*/
-/*    margin: auto; !* Căn giữa modal *!*/
-/*    padding: 0; !* Bỏ padding bên ngoài modal *!*/
-/*    border-radius: 10px; !* Bo góc modal *!*/
-/*    background-color: #fff; !* Màu nền của modal *!*/
-/*    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); !* Đổ bóng cho modal *!*/
-/*}*/
 
 .modal {
     display: flex;
@@ -287,5 +231,36 @@ p.error-message {
     color: red;
     font-size: 12px;
     margin: 0; /* Loại bỏ khoảng cách mặc định */
+}
+
+.room-management-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Increase opacity for stronger overlay */
+    z-index: 100; /* Ensure it's on top of all other content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.room-management-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1); /* Light grey */
+    border-left-color: #000; /* Black color for the rotating part */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
