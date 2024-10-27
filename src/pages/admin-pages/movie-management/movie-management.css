@@ -281,7 +281,7 @@ button.add-genre-btn {
 button.add-genre-btn:hover {
     background-color: #45a049;
 }
-.sidebar {
+.admin-sidebar {
     width: 250px;
     background-color: #6A2222;
     height: 100vh;

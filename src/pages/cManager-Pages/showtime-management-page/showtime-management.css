@@ -1,0 +1,260 @@
+/* room-management.css */
+
+.showtime-management-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Đảm bảo chiếm toàn bộ chiều cao */
+}
+
+.layout {
+    display: flex;
+    flex: 1; /* Để phần này chiếm không gian còn lại */
+}
+
+.showtime-management-content {
+    flex: 1; /* Chiếm không gian còn lại của layout */
+    padding: 20px; /* Thêm một chút khoảng cách */
+    margin-left: 200px;
+    background-color: #f9f9f9; /* Nền sáng hơn để dễ đọc */
+}
+
+.title {
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 20px;/* Khoảng cách dưới tiêu đề */
+}
+
+.add-showtime-button {
+    margin-bottom: 20px; /* Khoảng cách dưới bảng */
+    padding: 5px 10px;
+    font-size: 16px; /* Kích thước chữ */
+    background-color: #349e25; /* Màu nền của nút */
+    color: white; /* Màu chữ */
+    border: none;
+    border-radius: 5px; /* Bo góc nút */
+    cursor: pointer;
+    float: right; /* Căn nút sang phải */
+    margin-right: 0px; /* Có thể chỉnh thêm để canh lề với bảng */
+}
+
+.add-showtime-button:hover {
+    background-color: #0056b3; /* Màu khi hover */
+}
+
+.showtime-table {
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    border-collapse: collapse; /* Gộp viền bảng */
+}
+
+.showtime-table th,
+.showtime-table td {
+    border: 1px solid #ddd; /* Viền cho các ô */
+    padding: 8px; /* Thêm padding cho các ô */
+    text-align: center; /* Căn trái cho văn bản */
+}
+
+.showtime-table th {
+    color: white;
+    background-color: #343a40;
+    font-weight: bold;
+}
+
+/*.room-table tr:nth-child(even) {*/
+/*    background-color: #f2f2f2; !* Nền cho hàng chẵn *!*/
+/*}*/
+
+.room-table tr:hover {
+    background-color: #f1f0f0; /* Nền cho hàng khi hover */
+}
+
+.edit-button,
+.delete-button {
+    padding: 5px 10px; /* Padding cho nút */
+    border: none; /* Bỏ viền */
+    border-radius: 5px; /* Bo góc */
+    cursor: pointer; /* Con trỏ chuột khi hover */
+}
+
+
+
+.delete-button {
+    background-color: #dc3545; /* Màu đỏ cho nút xóa */
+    color: #f6f1f1; /* Màu chữ trắng */
+}
+
+.edit-button:hover {
+    background-color: #e0a800; /* Màu khi hover cho nút sửa */
+}
+
+.delete-button:hover {
+    background-color: #c82333; /* Màu khi hover cho nút xóa */
+}
+
+.showtime-table th.icon-column {
+    width: 10px;
+    text-align: center; /* Optional: to center the icons */
+}
+
+.showtime-table td.icon-column {
+    width: 10px;
+    text-align: center; /* Optional: to center the icons */
+}
+
+.select-dropdown {
+    width: 100%; /* Chiếm toàn bộ chiều rộng của container */
+    padding: 8px; /* Đảm bảo khoảng cách nội dung bên trong */
+    font-size: 16px; /* Đảm bảo kích thước chữ tương đương */
+    border-radius: 4px; /* Bo tròn cạnh tương tự */
+    border: 1px solid #ccc; /* Viền tương tự các ô khác */
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng chiều rộng */
+    margin-bottom: 15px;
+    margin-top:10px;
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 500px;
+    margin: auto;
+    padding: 0;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    /*z-index: 1000;*/
+    margin-top: 60px; /* Adjust this if needed */
+    max-height: 90vh; /* Limit height to 90% of viewport height */
+    overflow-y: auto; /* Allow scrolling if the content is too tall */
+}
+
+.modal-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #6A2222;
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+.modal-body {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.modal-footer button {
+    margin: 0 10px;
+}
+
+.time-inputs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.time-inputs input {
+    width: 100px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    background-color: #f2f2f2; /* Màu nền của các nút không được chọn */
+    color: #333; /* Màu chữ */
+    border: 1px solid #ddd; /* Viền nhạt */
+    margin: 0 3px; /* Khoảng cách giữa các nút */
+    padding: 5px; /* Giảm kích thước padding để tạo nút nhỏ hơn */
+    width: 30px; /* Chiều rộng cố định để tạo hình vuông */
+    height: 30px; /* Chiều cao cố định để tạo hình vuông */
+    border-radius: 4px; /* Giảm bo góc để tạo nút vuông */
+    cursor: pointer; /* Thêm con trỏ khi hover */
+    transition: background-color 0.3s ease; /* Hiệu ứng khi hover */
+    font-size: 12px; /* Giảm kích thước font */
+    text-align: center; /* Căn giữa văn bản trong nút */
+    line-height: 20px; /* Căn chỉnh chiều dọc của số trong nút */
+}
+
+.pagination button.active {
+    background-color: #D77B2F; /* Màu nền cho trang hiện tại */
+    color: white; /* Màu chữ cho nút trang hiện tại */
+    border: 1px solid #D77B2F; /* Viền đồng màu với nền */
+}
+
+.pagination button:hover {
+    background-color: #ddd; /* Thay đổi màu nền khi hover */
+}
+
+.pagination button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed; /* Không cho phép nhấp vào các nút disabled */
+}
+
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.label-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa label và thông báo lỗi */
+}
+
+.showtime-error-message {
+    color: red;
+    font-size: 12px;
+    margin-left: 10px;
+    margin-top:0px;
+}
+
+
+.showtime-management-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Increase opacity for stronger overlay */
+    z-index: 100; /* Ensure it's on top of all other content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.showtime-management-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1); /* Light grey */
+    border-left-color: #000; /* Black color for the rotating part */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

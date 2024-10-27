@@ -1,0 +1,342 @@
+/* General layout */
+.cinema-dashboard {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.layout {
+    display: flex;
+    flex: 1;
+}
+
+/* Main content area to center the cards and chart */
+.main-content {
+    display: flex;
+    flex: 1;
+    justify-content: center; /* Center the content horizontally */
+    align-items: flex-start; /* Align the content at the top */
+    padding: 20px;
+}
+
+/* Content layout */
+.cinema-dashboard-content {
+    flex: 3;
+    padding: 20px;
+    padding-left: 225px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content in the middle of the space */
+}
+
+/* Sidebar styling */
+/* Sidebar styling for Most Watched Movies */
+.most-watched-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 350px; /* Tăng chiều rộng cho phần Most Watched */
+    margin-left: 20px;
+    padding-top: 40px;
+    margin-top: 20px;
+}
+
+.most-watched-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-align: center; /* Căn giữa chữ */
+    color: #000;
+    padding-left: 0; /* Loại bỏ padding bên trái */
+}
+
+.most-watched-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.movie-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd; /* Thêm đường viền dưới để ngăn cách */
+    padding-bottom: 10px;
+}
+
+.movie-poster-wrapper {
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+.movie-poster-large {
+    width: 75px; /* Kích thước lớn hơn cho poster */
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.movie-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.movie-title {
+    font-size: 1rem;
+    margin: 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.movie-genre {
+    font-size: 0.8rem;
+    color: #999;
+    margin-bottom: 5px;
+}
+
+.showtime {
+    font-size: 0.9rem;
+    color: #007bff;
+}
+
+.movie-info h4 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #201f1f;
+}
+
+.movie-info .showtime {
+    font-size: 0.9rem;
+    color: #007bff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .most-watched-section {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+
+
+/* Ensure consistency with the sidebar */
+
+
+
+
+
+/* Card Styling */
+.revenue-cards {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px; /* Limit the max width of the cards row */
+    margin-bottom: 20px;
+}
+
+.card {
+    background-color: #f1f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 30%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top:30px;
+}
+
+
+.revenue-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.revenue-data p {
+    font-size: 1.2rem;
+    color: #777;
+}
+
+.revenue-data h3 {
+    font-size: 1.8rem;
+    color: #e74c3c;
+    margin-top: 5px;
+}
+
+/* Chart section */
+.chart-section {
+    width: 100%;
+    max-width: 800px; /* Limit the width of the chart */
+    margin-top: 20px;
+}
+
+.chart-container {
+    width: 100%;
+    height: 400px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+#ticketSoldChart {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .main-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .most-watched-section {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .chart-container,
+    .revenue-cards {
+        width: 100%;
+    }
+}
+
+/*.movie-revenue-section {*/
+/*    margin-top: 30px;*/
+/*    max-width: 800px; !* Set the same width as the chart *!*/
+/*    width: 100%;*/
+
+/*}*/
+
+/*.movie-revenue-section table {*/
+/*    width: 100%;*/
+/*    border-collapse: collapse;*/
+/*}*/
+
+/*.movie-revenue-section th,*/
+/*.movie-revenue-section td {*/
+/*    padding: 10px;*/
+/*    text-align: left;*/
+/*    border-bottom: 1px solid #ddd;*/
+/*}*/
+
+/*.movie-revenue-section th {*/
+/*    background-color: #f4f4f4;*/
+/*    font-weight: bold;*/
+/*}*/
+
+/*.movie-revenue-section td {*/
+/*    font-size: 14px;*/
+/*}*/
+
+/*.movie-revenue-section tr:hover {*/
+/*    background-color: #f1f1f1;*/
+/*}*/
+
+/*.movie-revenue-container {*/
+/*    padding-right:300px;*/
+/*    width: 800px;*/
+/*    margin-top: 80px;*/
+/*}*/
+
+.movie-revenue-section {
+    margin-top: 30px;
+    width: 100%;
+    max-width: 800px; /* Match the chart's max-width */
+    background-color: #fff; /* Add background color */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    padding: 20px; /* Add padding around the table */
+}
+
+.movie-revenue-section h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center; /* Center the title */
+    color: #333;
+}
+
+.movie-revenue-section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.movie-revenue-section th,
+.movie-revenue-section td {
+    padding: 15px; /* Increase padding for better spacing */
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.movie-revenue-section th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    text-transform: uppercase; /* Add uppercase for a modern look */
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.movie-revenue-section td {
+    font-size: 0.95rem;
+    color: #333; /* Darker text for readability */
+}
+
+.movie-revenue-section tr:hover {
+    background-color: #f9f9f9; /* Light hover effect */
+}
+
+.movie-revenue-section th:first-child,
+.movie-revenue-section td:first-child {
+    width: 50%; /* Tăng độ rộng của cột Movie Name lên 50% */
+}
+
+.movie-revenue-section th:nth-child(2),
+.movie-revenue-section td:nth-child(2) {
+    width: 20%; /* Đặt độ rộng cho cột Ticket Sold */
+    text-align: center;
+}
+
+.movie-revenue-section th:last-child,
+.movie-revenue-section td:last-child {
+    width: 25%; /* Đặt độ rộng cho cột Total Revenue */
+    text-align: right; /* Căn phải cột Total Revenue */
+    padding-right: 20px; /* Thêm khoảng cách bên phải */
+}
+
+
+.cinema-dashboard-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Increase opacity for stronger overlay */
+    z-index: 100; /* Ensure it's on top of all other content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cinema-dashboard-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1); /* Light grey */
+    border-left-color: #000; /* Black color for the rotating part */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+

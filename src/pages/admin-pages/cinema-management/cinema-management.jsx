@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { fetchAddCinema, fetchCinemaList, fetchDeleteCinema, fetchUpdateCinema } from "../../../api/admin-api.js";
-import Sidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
 import CustomModal from "../../../components/common/CustomModal/CustomModal.jsx";
 import { upFileToAzure } from "../../../api/webAPI.jsx";
 import "./cinema-management.css";
 import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx";
+import AdminSidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
 
 const CinemaManagement = () => {
     const [cinemas, setCinemas] = useState([]);
@@ -200,7 +200,7 @@ const CinemaManagement = () => {
         <>
             <AdminHeader />
             <div className="cinema-list-container">
-                <Sidebar />
+                <AdminSidebar />
                 <div className="cinema-list-content">
                     <div className="cinema-list-header">
                         <h2 className="title">Cinema List</h2>

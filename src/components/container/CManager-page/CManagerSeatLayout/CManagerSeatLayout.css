@@ -1,0 +1,92 @@
+
+.cmanagerseats {
+    display: grid;
+    grid-template-columns: repeat(17, 50px); /* 17 cột với kích thước ghế là 50px */
+    grid-gap: 15px; /* Khoảng cách giữa các ghế */
+    margin-top: 20px;
+    justify-content: center; /* Canh giữa toàn bộ layout ghế */
+}
+
+.seat-row {
+    display: contents;
+}
+
+.CManagerSeat-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.cmanager-seat, .empty-seat {
+
+    width: 50px; /* Kích thước của ghế */
+    height: 50px; /* Kích thước của ghế */
+    display: flex;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    border-radius: 5px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    border: none; /* Loại bỏ viền */
+    margin: 0; /* Đảm bảo không có margin làm lệch ghế */
+    padding: 0; /* Loại bỏ padding */
+}
+
+
+.cmanager-seat {
+    background-color: #3498db; /* Màu ghế Standard */
+}
+.cmanager-seat.vip {
+    background-color: #e74c3c; /* Màu đỏ cho ghế VIP */
+}
+
+
+
+.cmanager-seat:hover {
+    opacity: 0.8; /* Hiệu ứng hover làm mờ ghế một chút */
+}
+
+
+.empty-seat {
+    background-color: #ecf0f1; /* Màu nền ghế trống */
+    color: #7f8c8d; /* Màu chữ cho ghế trống */
+}
+
+.empty-seat:hover {
+    background-color: #e0e0e0; /* Đổi màu khi hover vào ghế trống */
+}
+
+.cmanager-screen {
+    width: 50%; /* Chiều rộng của thanh Screen */
+    height: 5px;
+    background-color: black;
+    margin: 20px auto; /* Canh giữa */
+    position: relative;
+    margin-top: 100px; /* Điều chỉnh khoảng cách trên dưới */
+    margin-bottom: 80px;
+
+}
+
+.cmanager-screen p {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: -10px;
+    color: black;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-top:20px;
+}
+
+.empty-seat.selected-seat {
+    background-color: #FFD700; /* Màu vàng cho ghế trống được chọn */
+    border: 2px solid #FFA500; /* Đường viền màu cam để nổi bật hơn */
+    color: white;
+    font-weight: bold;
+    transform: scale(1.1); /* Phóng to nhẹ để nổi bật */
+    transition: background-color 0.3s, border 0.3s, transform 0.3s; /* Hiệu ứng chuyển mượt mà */
+}
+
