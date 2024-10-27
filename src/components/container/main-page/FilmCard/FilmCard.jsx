@@ -3,7 +3,7 @@ import "./FilmCard.css";
 import SeatLayout from "../SeatLayout/SeatLayout.jsx";
 import BookingInfo from "../BookingInfo/BookingInfo.jsx";
 import BackSpace from '../../../../assets/Icons/back-space.svg';
-import { useState} from "react";
+import {useState} from "react";
 import {fetchDetailShowtime} from "../../../../api/webAPI.jsx";
 import {fetchJwtToken} from "../../../../api/authAPI.js";
 import {addBooking} from "../../../../api/userAPI.js";
@@ -18,18 +18,24 @@ function FilmCard({film, showtimes}) {
     ];
     const [price, setPrice] = useState(0);
     const [selectedSeats, setSelectedSeats] = useState([]);
-    const [showtime, setShowtime] =useState({});
+    const [showtime, setShowtime] = useState({});
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const handleSelectedShowtime = async (showtime) => {
         setIsClick(true);
         setShowtime(showtime);
         setLoading(true);
-        if(!user) {
+        if (!user) {
             try {
                 const result = await fetchJwtToken(); // Fetch user info by validating token
                 if (result.success) {
-                    setUser(result.user); // Set user info if token is valid
+                    if (result.user.roleId === 1 || result.user.roleId === 2) {
+                        alert("You do not have permission to select seats.");
+                        setLoading(false);
+                        setIsClick(false);
+                        return;
+                    }
+                    setUser(result.user);
                 } else {
                     alert('Please log in to select seats.');
                     navigate('/login');
@@ -52,7 +58,7 @@ function FilmCard({film, showtimes}) {
             setLoading(false);
         }
     };
-    const handleClick =() => {
+    const handleClick = () => {
         setIsClick(!isClick);
         setSeats([]);
         setSelectedSeats([]);
@@ -75,17 +81,21 @@ function FilmCard({film, showtimes}) {
     };
     const getSeatColor = (type) => {
         switch (type) {
-            case 'Booked': return 'black';
-            case 'Selected': return '#BCB3B3';
-            case 'VIP': return '#D64242';
-            default: return '#1BA0D4';
+            case 'Booked':
+                return 'black';
+            case 'Selected':
+                return '#BCB3B3';
+            case 'VIP':
+                return '#D64242';
+            default:
+                return '#1BA0D4';
         }
     };
     const handlePurchase = async () => {
         setLoading(true);
         try {
             const bookingData = {
-                user: { UID: user.UID },
+                user: {UID: user.UID},
                 totalCost: price,
                 timestamp: new Date().toISOString(),
                 status: 0,
@@ -96,8 +106,8 @@ function FilmCard({film, showtimes}) {
                 name: user.name,
                 email: user.email,
                 phone: user.phone,
-                showtime: { showtimeId: showtime.showtimeId },
-                seat: { seatId: seat.seatId },
+                showtime: {showtimeId: showtime.showtimeId},
+                seat: {seatId: seat.seatId},
             }));
 
             const response = await addBooking(bookingData, tickets);
@@ -131,23 +141,26 @@ function FilmCard({film, showtimes}) {
                 <div className="book-ticket-container">
                     {loading && (
                         <div className="loading-overlay">
-                            <div className="spinner"></div> {/* Spinner instead of text */}
+                            <div className="spinner"></div>
+                            {/* Spinner instead of text */}
                         </div>
                     )}
                     <img src={BackSpace} alt="back-space" onClick={handleClick}/>
                     <h2>Book Ticket</h2>
 
-                    <SeatLayout selectedSeats={selectedSeats} handleClick={handleSelectSeat} getSeatColor={getSeatColor} seats={seats} basePrice={showtime.basePrice} />
+                    <SeatLayout selectedSeats={selectedSeats} handleClick={handleSelectSeat} getSeatColor={getSeatColor}
+                                seats={seats} basePrice={showtime.basePrice}/>
 
                     <div className="seats-info">
                         {seatsInfo.map((info, index) => (
                             <div className="info" key={index}>
-                                <div className="color" style={{ backgroundColor: info[1] }}></div>
+                                <div className="color" style={{backgroundColor: info[1]}}></div>
                                 <p>{info[0]}</p>
                             </div>
                         ))}
                     </div>
-                    <BookingInfo price={price} selectedSeats={selectedSeats} handlePurchase={handlePurchase} film={film}  showtime={showtime} />
+                    <BookingInfo price={price} selectedSeats={selectedSeats} handlePurchase={handlePurchase} film={film}
+                                 showtime={showtime}/>
                 </div>
             )}
             <div className="schedule-film">
@@ -160,8 +173,8 @@ function FilmCard({film, showtimes}) {
                         {showtimes.map((showtime, index) => (
                             <div key={index} className="showtime" onClick={() => handleSelectedShowtime(showtime)}>
                                 {/* Display the startTime and endTime exactly as they are without conversion */}
-                                <p >{showtime.startTime} ~ {showtime.endTime}</p>
-                                <p >Price: {showtime.basePrice}đ</p>
+                                <p>{showtime.startTime} ~ {showtime.endTime}</p>
+                                <p>Price: {showtime.basePrice}đ</p>
                             </div>
                         ))}
                     </div>

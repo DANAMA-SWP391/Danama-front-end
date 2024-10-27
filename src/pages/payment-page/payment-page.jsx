@@ -4,15 +4,16 @@ import PaymentMethod from "../../components/container/payment-page/PaymentMethod
 import BookingDetails from "../../components/container/payment-page/BookingDetails/BookingDetails.jsx";
 import Footer from "../../components/container/main-page/Footer/Footer.jsx";
 import Header from "../../components/common/Header/Header.jsx";
-import {useLocation} from "react-router-dom";
+import {Navigate, useLocation} from "react-router-dom";
 import {useState} from "react";
 
 function Payment() {
     const location = useLocation();
     const { bookingId, bookingData } = location.state || {}; // Destructure the state
-    console.log(bookingData);
     const [method, setMethod] = useState(''); // Manage selected payment method here
-
+    if (!bookingId || !bookingData) {
+        return <Navigate to="/" />;
+    }
     return (
         <div className="payment-page">
             <Header />

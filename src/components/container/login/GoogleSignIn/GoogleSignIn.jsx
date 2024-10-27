@@ -15,8 +15,16 @@ function GoogleSignIn() {
             // Call the loginByGoogle function with the token
             const data = await loginByGoogle(token);
             setUser(data.user);
-            navigate('/');
+            if(data.user.roleId === 1) {
+                navigate('/admin-dashboard')
+            } else if(data.user.roleId === 2){
+                navigate('/Cmanager');
+            }
+            else {
+                navigate('/');
+            }
         } catch (error) {
+            alert("Error during google login!");
             console.error("Error during Google login:", error);
         }
     };

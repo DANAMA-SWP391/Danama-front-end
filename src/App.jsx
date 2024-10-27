@@ -17,6 +17,7 @@ import CinemaManagement from "./pages/admin-pages/cinema-management/cinema-manag
 import MovieManagement from "./pages/admin-pages/movie-management/movie-management.jsx";
 import AccountManagement from "./pages/admin-pages/account-management/account-management.jsx";
 import AdminDashboardPage from "./pages/admin-page/admin-dashboard-page.jsx";
+import {ProtectedRoute, PublicRoute} from "./filter/FilterRoute.jsx";
 
 // import Payment from "./pages/payment-page/payment-page.jsx";
 
@@ -25,23 +26,42 @@ function App( ) {
         <UserProvider>
             <Router>
                 <Routes>
-                    <Route path="/admin-dashboard" element={<AdminDashboardPage/>} />
-                    <Route path="/movie-management" element={<MovieManagement/>} />
-                    <Route path="/account-management" element={<AccountManagement/>} />
-                    <Route path="/cinema-management" element={<CinemaManagement/>} />
+                    {/* Admin and Management Routes */}
+                    <Route
+                        path="/admin-dashboard"
+                        element={<ProtectedRoute element={<AdminDashboardPage />} requiredRole={1} />}
+                    />
+                    <Route
+                        path="/movie-management"
+                        element={<ProtectedRoute element={<MovieManagement />} requiredRole={1} />}
+                    />
+                    <Route
+                        path="/account-management"
+                        element={<ProtectedRoute element={<AccountManagement />} requiredRole={1} />}
+                    />
+                    <Route
+                        path="/cinema-management"
+                        element={<ProtectedRoute element={<CinemaManagement />} requiredRole={1} />}
+                    />
 
-                    <Route path="/" element={<MainPage/>} />
-                    <Route path="/film-list" element={<FilmListPage/>} />
-                    <Route path="/booking-detail" element={<BookingDetailsPage/>} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route path="/reset-pass" element={<ResetPass />} />
-                    <Route path="/email-verification" element={<EmailVerification />}/>
+                    {/* Protected Routes for logged-in users */}
+                    <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
+                    <Route path="/booking-detail" element={<ProtectedRoute element={<BookingDetailsPage />} />} />
+
+                    {/* Public Routes */}
+                    <Route path="/login" element={<PublicRoute element={<Login />} redirectTo="/profile" />} />
+                    <Route path="/signup" element={<PublicRoute element={<SignUp />} redirectTo="/profile" />} />
+                    <Route path="/reset-pass" element={<PublicRoute element={<ResetPass />} redirectTo="/profile" />} />
+                    <Route path="/email-verification" element={<PublicRoute element={<EmailVerification />} redirectTo="/profile" />} />
+
+                    {/* Open Routes */}
+                    <Route path="/" element={<MainPage />} />
+                    <Route path="/film-list" element={<FilmListPage />} />
                     <Route path="/film-page" element={<FilmPage />} />
                     <Route path="/payment" element={<Payment />} />
-                    <Route path="/profile" element={<Profile />} />
                 </Routes>
             </Router>
+
         </UserProvider>
     )
 }

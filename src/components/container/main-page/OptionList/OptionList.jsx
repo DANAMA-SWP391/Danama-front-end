@@ -12,9 +12,6 @@ function OptionList() {
                 <a href="/film-list" >Films</a>
             </div>
             <div className="option">
-                <a href="" onClick={(e) => handleScroll(".schedule-section", e)}>Cinemas</a>
-            </div>
-            <div className="option">
                 <a href="" onClick={(e) => handleScroll(".schedule-section", e)}>Schedules</a>
             </div>
         </div>

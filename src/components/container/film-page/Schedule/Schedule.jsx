@@ -10,51 +10,16 @@ import ScheduleDate from "../../../common/Date/Date.jsx";
 import {WebContext} from "../../../../utils/webContext.jsx";
 import {useContext, useEffect, useState} from "react";
 import ShowtimeCard from "../ShowtimeCard/ShowtimeCard.jsx";
-import {formatCurrency} from "../../../../utils/utility.js";
-import Address from "../../../../assets/Icons/address.svg";
-
-// Helper function to format the date into "MMM dd, yyyy"
-const formatDate = (dateObj) => {
-    const options = {month: 'short', day: 'numeric', year: 'numeric'};
-    return dateObj.toLocaleDateString('en-US', options);
-};
-
-// Helper function to convert date into ['Day in week', dd]
-const getDisplayDate = (dateObj) => {
-    const dayOfWeek = dateObj.toLocaleDateString('en-US', {weekday: 'short'});
-    const day = dateObj.getDate();
-    return [dayOfWeek, day];
-};
-
-// Helper function to calculate price range for a cinema's showtimes
-const getPriceRangeForCinema = (cinemaId, showtimeList) => {
-    const cinemaShowtimes = showtimeList.filter(showtime => showtime.room.cinema.cinemaId === cinemaId);
-    if (cinemaShowtimes.length === 0) {
-        return null; // No showtimes, no price range
-    }
-
-    const prices = cinemaShowtimes.map(showtime => showtime.basePrice); // Collect prices
-    const minPrice = Math.min(...prices); // Minimum price
-    const maxPrice = Math.max(...prices); // Maximum price
-
-    return {minPrice, maxPrice};
-};
-const getNext7Days = () => {
-    const dates = [];
-    const today = new Date();
-
-    for (let i = 0; i < 7; i++) {
-        const nextDate = new Date(today);
-        nextDate.setDate(today.getDate() + i);
-        dates.push(nextDate);
-    }
-
-    return dates;
-};
+import {
+    formatCurrency,
+    formatDate,
+    getDisplayDate,
+    getNext7Days,
+    getPriceRangeForCinema
+} from "../../../../utils/utility.js";
 
 function Schedule({showtimes, film}) {
     const {cinemaList} = useContext(WebContext);
-    const [userLocation, setUserLocation] = useState(null);
 
     const dates = getNext7Days();
 

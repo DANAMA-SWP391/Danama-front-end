@@ -52,7 +52,7 @@ function FilmPage() {
             <MainSlide isLogged={isLogged} filmLists={[film]} />
             {/*<ScreenShotSlider screenShots={screenShots} />*/}
             <SeparateLine />
-            <CommentSection user={user} reviews={reviews} movieId={film.movieId}/>
+            <CommentSection reviews={reviews} movieId={film.movieId}/>
             <SeparateLine />
             <Schedule showtimes={showtimes} film={film} />
             <SeparateLine />

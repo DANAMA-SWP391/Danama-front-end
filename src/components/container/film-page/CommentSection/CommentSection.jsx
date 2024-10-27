@@ -50,8 +50,14 @@ function CommentSection({ reviews, movieId }) {
     const currentComments = commentList.slice(indexOfFirstComment, indexOfLastComment);
 
     const handleCommentClick = () => {
+        console.log(user);
         if (user) {
-            setIsCommentBoxVisible(true);
+            if(user.roleId === 1 || user.roleId ===2) {
+                alert("You can't leave comment!!");
+                window.location.href = "/";
+            } else {
+                setIsCommentBoxVisible(true);
+            }
         } else if (window.confirm("You need to login to comment. Do you want to login?")) {
             window.location.href = "/login";
         }

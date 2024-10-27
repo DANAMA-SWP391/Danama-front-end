@@ -81,7 +81,7 @@ function BookingDetailsPage() {
                 }
 
             } catch (error) {
-                alert("Failed to fetch booking details. " + error.message);
+                console.log(error);
             } finally {
                 setLoading(false);
             }

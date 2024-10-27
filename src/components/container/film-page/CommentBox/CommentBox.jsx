@@ -83,7 +83,7 @@ function CommentBox({ setIsCommentBoxVisible, movieId, uid }) {
 CommentBox.propTypes = {
     setIsCommentBoxVisible: PropTypes.func.isRequired,
     movieId: PropTypes.number.isRequired, // Expecting the movie ID to be passed
-    uid: PropTypes.string.isRequired // Now we pass UID as a prop
+    uid: PropTypes.number.isRequired // Now we pass UID as a prop
 };
 
 export default CommentBox;
