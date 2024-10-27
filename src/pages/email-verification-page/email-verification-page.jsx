@@ -64,8 +64,10 @@ function EmailVerification() {
                     onChange={(e) => setCode(e.target.value)}
                     // Update code state on input change
                 />
-                <button onClick={handleClick}>Verify</button>
-                <button onClick={handleResendCode}>Resend Code</button> {/* Resend Code Button */}
+                <div>
+                    <button onClick={handleClick}>Verify</button>
+                    <button onClick={handleResendCode}>Resend Code</button> {/* Resend Code Button */}
+                </div>
             </div>
         </div>
     );
