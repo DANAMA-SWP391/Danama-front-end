@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchAddCinema, fetchCinemaList, fetchDeleteCinema, fetchUpdateCinema } from "../../../api/admin-api.js";
 import CustomModal from "../../../components/common/CustomModal/CustomModal.jsx";
 import { upFileToAzure } from "../../../api/webAPI.jsx";
 import "./cinema-management.css";
 import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx";
 import AdminSidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
+import {useCustomAlert} from "../../../utils/CustomAlertContext.jsx";
 
 const CinemaManagement = () => {
     const [cinemas, setCinemas] = useState([]);
@@ -13,7 +14,7 @@ const CinemaManagement = () => {
     const [formError, setFormError] = useState({});
     const [newCinema, setNewCinema] = useState({ name: '', logo: '', address: '', description: '', managerId: '' });
     const [editCinemaId, setEditCinemaId] = useState(null);
-
+    const showAlert = useCustomAlert();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalType, setModalType] = useState(''); // 'add' or 'edit'
     const [selectedFile, setSelectedFile] = useState(null);
@@ -106,7 +107,7 @@ const CinemaManagement = () => {
             if (uploadedImageUrl) {
                 logoUrl = uploadedImageUrl;
             } else {
-                alert('Failed to upload image.');
+                showAlert('Failed to upload image.');
                 return;
             }
         }
@@ -116,7 +117,7 @@ const CinemaManagement = () => {
             // alert('Cinema added successfully!');
             // setCinemas([...cinemas, { ...newCinema, logo: logoUrl }]);
             // handleCloseModal(); // Reset form và đóng modal sau khi thêm thành công
-            alert('Cinema added successfully!');
+            showAlert('Cinema added successfully!');
 
             // Fetch the updated list of cinemas
             const updatedCinemas = await fetchCinemaList();
@@ -126,7 +127,7 @@ const CinemaManagement = () => {
 
             handleCloseModal(); // Reset form and close modal after successful addition
         } else {
-            alert('Failed to add cinema.');
+            showAlert('Failed to add cinema.');
         }
     };
 
@@ -155,18 +156,18 @@ const CinemaManagement = () => {
             if (uploadedImageUrl) {
                 logoUrl = uploadedImageUrl;
             } else {
-                alert('Failed to upload image.');
+                showAlert('Failed to upload image.');
                 return;
             }
         }
 
         const success = await fetchUpdateCinema({ ...newCinema, logo: logoUrl });
         if (success) {
-            alert('Cinema updated successfully!');
+            showAlert('Cinema updated successfully!');
             setCinemas(cinemas.map((cinema) => (cinema.cinemaId === newCinema.cinemaId ? { ...cinema, ...newCinema, logo: logoUrl } : cinema)));
             handleCloseModal(); // Reset form và đóng modal sau khi cập nhật thành công
         } else {
-            alert('Failed to update cinema.');
+            showAlert('Failed to update cinema.');
         }
     };
 
@@ -176,20 +177,22 @@ const CinemaManagement = () => {
         if (isConfirmed) {
             const success = await fetchDeleteCinema(cinemaId);
             if (success) {
-                alert('Cinema deleted successfully!');
+                showAlert('Cinema deleted successfully!');
                 setCinemas(cinemas.filter((cinema) => cinema.cinemaId !== cinemaId));
                 handleCloseModal(); // Reset form and close modal after successful deletion
             } else {
-                alert('Failed to delete cinema.');
+                showAlert('Failed to delete cinema.');
             }
         } else {
             // Optional: handle cancel action or close modal
-            alert('Delete action canceled.');
+            showAlert('Delete action canceled.');
         }
     };
 
     if (loading) {
-        return <p>Loading cinemas...</p>;
+        return <div className="loading-overlay">
+            <div className="spinner"></div>
+        </div>;
     }
 
     if (error) {
@@ -214,10 +217,10 @@ const CinemaManagement = () => {
                     <table className="cinema-table">
                         <thead>
                         <tr>
-                            <th>Cinema's ID</th>
+                            <th>Cinema ID</th>
                             <th>Name</th>
                             <th>Logo</th>
-                            <th>Manager</th>
+                            <th>Manager ID</th>
                             <th>Address</th>
                             <th>Action</th>
                         </tr>

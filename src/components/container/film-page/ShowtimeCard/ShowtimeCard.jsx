@@ -8,8 +8,12 @@ import {addBooking} from "../../../../api/userAPI.js";
 import BackSpace from '../../../../assets/Icons/back-space.svg';
 import SeatLayout from "../../main-page/SeatLayout/SeatLayout.jsx";
 import BookingInfo from "../../main-page/BookingInfo/BookingInfo.jsx";
+import {formatCurrency} from "../../../../utils/utility.js";
+import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
-function ShowtimeCard({film,showtime}) {
+
+function ShowtimeCard({film, showtime}) {
+    const showAlert = useCustomAlert();
     const [isClick, setIsClick] = useState(false);
     const [seats, setSeats] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -22,23 +26,35 @@ function ShowtimeCard({film,showtime}) {
     ];
     const getSeatColor = (type) => {
         switch (type) {
-            case 'Booked': return 'black';
-            case 'Selected': return '#BCB3B3';
-            case 'VIP': return '#D64242';
-            default: return '#1BA0D4';
+            case 'Booked':
+                return 'black';
+            case 'Selected':
+                return '#BCB3B3';
+            case 'VIP':
+                return '#D64242';
+            default:
+                return '#1BA0D4';
         }
     };
     // Function to handle the selection of a showtime
     const handleSelectedShowtime = async () => {
         setIsClick(true);
         setLoading(true);
-        if(!user) {
+
+        // Check if user exists or needs to be fetched
+        if (!user) {
             try {
                 const result = await fetchJwtToken(); // Fetch user info by validating token
                 if (result.success) {
-                    setUser(result.user); // Set user info if token is valid
+                    if (result.user.roleId === 1 || result.user.roleId === 2) {
+                        showAlert("You do not have permission to select seats.");
+                        setLoading(false);
+                        setIsClick(false);
+                        return;
+                    }
+                    setUser(result.user);
                 } else {
-                    alert('Please log in to select seats.');
+                    showAlert('Please log in to select seats.');
                     navigate('/login');
                     return; // Exit if user not logged in
                 }
@@ -47,7 +63,6 @@ function ShowtimeCard({film,showtime}) {
                 return;
             }
         }
-
         try {
             const response = await fetchDetailShowtime(showtime.showtimeId, showtime.room.roomId);
             if (response) {
@@ -58,7 +73,9 @@ function ShowtimeCard({film,showtime}) {
         } finally {
             setLoading(false);
         }
+
     };
+
 
     // Handle the seat selection logic
     const handleSelectSeat = (seat) => {
@@ -77,7 +94,7 @@ function ShowtimeCard({film,showtime}) {
         setLoading(true);
         try {
             const bookingData = {
-                user: { UID: user.UID },
+                user: {UID: user.UID},
                 totalCost: price,
                 timestamp: new Date().toISOString(),
                 status: 0,
@@ -88,8 +105,8 @@ function ShowtimeCard({film,showtime}) {
                 name: user.name,
                 email: user.email,
                 phone: user.phone,
-                showtime: { showtimeId: showtime.showtimeId },
-                seat: { seatId: seat.seatId },
+                showtime: {showtimeId: showtime.showtimeId},
+                seat: {seatId: seat.seatId},
             }));
 
             const response = await addBooking(bookingData, tickets);
@@ -107,8 +124,9 @@ function ShowtimeCard({film,showtime}) {
                         },
                     },
                 });
+                window.scroll(0,0);
             } else {
-                alert('Booking failed');
+                showAlert('Booking failed');
                 setLoading(false);
             }
         } catch (error) {
@@ -121,7 +139,7 @@ function ShowtimeCard({film,showtime}) {
             {isClick && <div className="overlay"></div>}
             <div className="showtime" onClick={handleSelectedShowtime}>
                 <p>{showtime.startTime} ~ {showtime.endTime}</p>
-                <p>Price: {showtime.basePrice}đ</p>
+                <p>Price: {formatCurrency(showtime.basePrice)}</p>
             </div>
 
             {isClick && (
@@ -141,7 +159,14 @@ function ShowtimeCard({film,showtime}) {
                         basePrice={showtime.basePrice}
                         getSeatColor={getSeatColor}
                     />
-
+                    <div className="seats-info">
+                        {seatsInfo.map((info, index) => (
+                            <div className="info" key={index}>
+                                <div className="color" style={{backgroundColor: info[1]}}></div>
+                                <p>{info[0]}</p>
+                            </div>
+                        ))}
+                    </div>
                     <BookingInfo
                         price={price}
                         selectedSeats={selectedSeats}

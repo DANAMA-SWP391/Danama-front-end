@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
     fetchAccountById,
     fetchAccountList,
@@ -6,7 +6,6 @@ import {
     fetchBanAccount,
     fetchUpdateAccount,
 } from '../../../api/admin-api.js';
-import Sidebar from '../../../components/common/AdminSideBar/AdminSideBar.jsx';
 import Modal from '../../../components/common/Modal/Modal.jsx';
 import './account-management.css';
 import { upFileToAzure } from '../../../api/webAPI.jsx';

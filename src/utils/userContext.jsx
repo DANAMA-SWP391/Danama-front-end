@@ -6,7 +6,8 @@ export const UserContext = createContext();
 
 // Create the provider component
 export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null); // State for user information
+    const [user, setUser] = useState(null);  // State for user information
+    const [isLoading, setIsLoading] = useState(true);  // Loading state
 
     // Load user info from localStorage
     useEffect(() => {
@@ -14,6 +15,7 @@ export const UserProvider = ({ children }) => {
         if (storedUser) {
             setUser(JSON.parse(storedUser));
         }
+        setIsLoading(false); // Set loading to false after retrieving user data
     }, []);
 
     // Save user info to localStorage when it changes
@@ -26,7 +28,7 @@ export const UserProvider = ({ children }) => {
     }, [user]);
 
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ user, setUser, isLoading }}>
             {children}
         </UserContext.Provider>
     );

@@ -9,12 +9,12 @@
 
 @font-face {
   font-family: 'Albert Sans bold';
-    src: url("./assets/fonts/static/AlbertSans-Bold.ttf") format('truetype');
+  src: url("./assets/fonts/static/AlbertSans-Bold.ttf") format('truetype');
 }
 
 @font-face {
   font-family: 'Albert Sans light';
-    src: url("./assets/fonts/static/AlbertSans-Light.ttf") format('truetype');
+  src: url("./assets/fonts/static/AlbertSans-Light.ttf") format('truetype');
 }
 
 @font-face {
@@ -24,7 +24,7 @@
 
 @font-face {
   font-family: 'Albert Sans extra-bold';
-    src: url("./assets/fonts/static/AlbertSans-ExtraBold.ttf") format('truetype');
+  src: url("./assets/fonts/static/AlbertSans-ExtraBold.ttf") format('truetype');
 }
 
 html, body, :root  , #root {
