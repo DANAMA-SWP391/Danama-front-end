@@ -281,8 +281,8 @@ const AccountManagement = () => {
                         </thead>
                         <tbody>
                         {paginatedAccounts.map((account) => (
-                            <tr key={account.id}>
-                                <td>{account.id}</td>
+                            <tr key={account.UID}>
+                                <td>{account.UID}</td>
                                 <td>{account.email}</td>
                                 <td>{account.name}</td>
                                 <td>{account.phone}</td>
