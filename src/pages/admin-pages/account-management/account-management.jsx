@@ -12,6 +12,7 @@ import './account-management.css';
 import { upFileToAzure } from '../../../api/webAPI.jsx';
 import CustomModal from '../../../components/common/CustomModal/CustomModal.jsx';
 import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx";
+import AdminSidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
 
 const AccountManagement = () => {
     const [accounts, setAccounts] = useState([]);
@@ -253,7 +254,7 @@ const AccountManagement = () => {
             <AdminHeader />
             <div className="account-management-container">
 
-                <Sidebar />
+                <AdminSidebar />
                 <div className="account-management-content">
                     <div className="account-management-header">
                         <h2>ACCOUNT MANAGEMENT</h2>

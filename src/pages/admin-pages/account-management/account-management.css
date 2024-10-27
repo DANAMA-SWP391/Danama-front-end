@@ -5,7 +5,7 @@
 }
 
 /* Sidebar nằm cố định bên trái */
-.sidebar {
+.admin-sidebar {
     width: 250px;
     background-color: #6A2222;
     position: sticky;
