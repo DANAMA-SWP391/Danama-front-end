@@ -129,11 +129,12 @@ function FilmCard({film, showtimes}) {
                     },
                 });
             } else {
-                showAlert('Booking failed');
+                showAlert(response.error || 'Booking failed');
                 setLoading(false);
             }
         } catch (error) {
             console.error('Error during booking creation:', error);
+            showAlert('An error occurred while processing your booking.');
             setLoading(false);
         }
     };
