@@ -119,7 +119,7 @@ function ShowtimeManagement() {
             endTime: '00:00:00',
             basePrice: '',
             roomId: '',
-            status: ''
+            // status: ''
         }); // Reset data
         setFormError({ // Reset error when open form
             movieId: '',
@@ -128,7 +128,7 @@ function ShowtimeManagement() {
             endTime: '',
             basePrice: '',
             roomId: '',
-            status: ''
+            // status: ''
         });
         setIsModalOpen(true);
     };
@@ -141,13 +141,16 @@ function ShowtimeManagement() {
             movieId: showtime.movie.movieId,
             showDate: new Date(showtime.showDate).toLocaleDateString('en-CA'),
 
-            startTime:  showtime.startTime.slice(0, 5),  // Just select HH:mm for time picker
-            endTime: showtime.endTime.slice(0, 5),
+            // startTime:  showtime.startTime.slice(0, 5),  // Just select HH:mm for time picker
+            // endTime: showtime.endTime.slice(0, 5),
+
+            startTime: convertTo24HourFormat(showtime.startTime),  // Chỉ lấy phần HH:mm:ss
+            endTime: convertTo24HourFormat(showtime.endTime),
             // startTime:  convertTo24HourFormat(showtime.startTime),  // Just select HH:mm for time picker
             // endTime: convertTo24HourFormat(showtime.endTime),
             basePrice: showtime.basePrice,
             roomId: showtime.room.roomId,
-            status: showtime.status
+            // status: showtime.status
         });
 
         setFormError({ // Reset error when open form
@@ -157,7 +160,7 @@ function ShowtimeManagement() {
             endTime: '',
             basePrice: '',
             roomId: '',
-            status: ''
+            // status: ''
         });
         setIsModalOpen(true);
     };
@@ -177,7 +180,7 @@ function ShowtimeManagement() {
 
     // Update endTime when chosing new film
     const handleMovieChange = (e) => {
-        const selectedMovieId = Number(e.target.value); // Chuyển đổi selectedMovieId thành số
+        const selectedMovieId = Number(e.target.value);
         const selectedMovie = filmList.find(film => film.movieId === selectedMovieId);
         const duration = selectedMovie ? selectedMovie.duration : 0;
 
@@ -185,7 +188,7 @@ function ShowtimeManagement() {
             ...prev,
             movieId: selectedMovieId,
             duration: duration,
-            endTime: calculateEndTime(prev.startTime, duration) // Tính endTime ngay khi movie được chọn
+            endTime: calculateEndTime(prev.startTime, duration) // Calculate endTime imediately when movie chosed
         }));
 
         setFormError(prev => ({ ...prev, movieId: '' }));
@@ -239,7 +242,7 @@ function ShowtimeManagement() {
             endTime: '',
             basePrice: '',
             roomId: '',
-            status: ''
+            // status: ''
         };
 
         if (!formData.movieId) {
@@ -269,10 +272,10 @@ function ShowtimeManagement() {
 
 
 
-        if (formData.status === null || formData.status === undefined || formData.status === '') {
-            errors.status = 'Status is required';
-            hasError = true;
-        }
+        // if (formData.status === null || formData.status === undefined || formData.status === '') {
+        //     errors.status = 'Status is required';
+        //     hasError = true;
+        // }
 
 
         // Create object  Date for startTime and endTime of new showtime
@@ -354,7 +357,7 @@ function ShowtimeManagement() {
             movie: {movieId: formData.movieId},
             room: {roomId: formData.roomId},
             seatAvailable: formData.seatAvailable,
-            status: formData.status
+            // status: formData.status
         };
 
 
@@ -397,9 +400,9 @@ function ShowtimeManagement() {
             setFormError(prev => ({ ...prev, roomId: '' }));
         }
 
-        if (name === 'status' && value) {
-            setFormError(prev => ({ ...prev, status: '' }));
-        }
+        // if (name === 'status' && value) {
+        //     setFormError(prev => ({ ...prev, status: '' }));
+        // }
     };
 
     const getMovieName = (movieId) => {
@@ -455,7 +458,7 @@ function ShowtimeManagement() {
                                         <th>Base Price</th>
                                         <th>Room Name</th>
                                         <th>Seat Available</th>
-                                        <th>Status</th>
+                                        {/*<th>Status</th>*/}
 
                                         <th className="icon-column">Delete Showtime</th>
                                         <th className="icon-column">Update Showtime</th>
@@ -476,9 +479,9 @@ function ShowtimeManagement() {
                                             <td>{showtime.basePrice}</td>
                                             <td>{showtime.room ? showtime.room.name : 'N/A'}</td>
                                             <td>{showtime.seatAvailable}</td>
-                                            <td>
-                                                {showtime.status === 0 ? 'Coming Soon' : 'Now Showing'}
-                                            </td>
+                                            {/*<td>*/}
+                                            {/*    {showtime.status === 0 ? 'Coming Soon' : 'Now Showing'}*/}
+                                            {/*</td>*/}
 
 
                                             <td>
@@ -659,24 +662,24 @@ function ShowtimeManagement() {
                                     </div>
 
 
-                                    <div>
-                                        <div className="label-group">
-                                            <label>Status:</label>
-                                            {formError.status && (
-                                                <span className="showtime-error-message">{formError.status}</span>
-                                            )}
-                                        </div>
-                                        <select
-                                            name="status"
-                                            value={formData.status}
-                                            onChange={handleChange}
-                                            required
-                                        >
-                                            <option value="">Select Status</option>
-                                            <option value="0">Coming Soon</option>
-                                            <option value="1">Now Showing</option>
-                                        </select>
-                                    </div>
+                                    {/*<div>*/}
+                                    {/*    <div className="label-group">*/}
+                                    {/*        <label>Status:</label>*/}
+                                    {/*        {formError.status && (*/}
+                                    {/*            <span className="showtime-error-message">{formError.status}</span>*/}
+                                    {/*        )}*/}
+                                    {/*    </div>*/}
+                                    {/*    <select*/}
+                                    {/*        name="status"*/}
+                                    {/*        value={formData.status}*/}
+                                    {/*        onChange={handleChange}*/}
+                                    {/*        required*/}
+                                    {/*    >*/}
+                                    {/*        <option value="">Select Status</option>*/}
+                                    {/*        <option value="0">Coming Soon</option>*/}
+                                    {/*        <option value="1">Now Showing</option>*/}
+                                    {/*    </select>*/}
+                                    {/*</div>*/}
 
                                     <div className="modal-footer">
                                         <Button onClick={handleSubmit}>{isEdit ? "Update" : "Add"}</Button>
