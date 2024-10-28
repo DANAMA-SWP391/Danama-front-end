@@ -12,8 +12,10 @@ import { upFileToAzure } from '../../../api/webAPI.jsx';
 import CustomModal from '../../../components/common/CustomModal/CustomModal.jsx';
 import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx";
 import AdminSidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
+import {useCustomAlert} from "../../../utils/CustomAlertContext.jsx";
 
 const AccountManagement = () => {
+    const showAlert = useCustomAlert();
     const [accounts, setAccounts] = useState([]);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [newAccount, setNewAccount] = useState(initialAccountState());
@@ -144,7 +146,7 @@ const AccountManagement = () => {
 
         // Kiểm tra form có hợp lệ không
         if (!validateForm()) {
-            alert('Please fix the validation errors.');
+            showAlert('Please fix the validation errors.');
             return;
         }
 
@@ -157,12 +159,12 @@ const AccountManagement = () => {
                 if (uploadedImageUrl) {
                     avatarUrl = uploadedImageUrl; // Update the avatar URL after a successful upload
                 } else {
-                    alert('Failed to upload image.');
+                    showAlert('Failed to upload image.');
                     return;
                 }
             } catch (error) {
                 console.error('Image upload failed:', error);
-                alert('Error uploading image.');
+                showAlert('Error uploading image.');
                 return;
             }
         }
@@ -171,7 +173,7 @@ const AccountManagement = () => {
         try {
             const success = await fetchAddAccount({ ...newAccount, avatar: avatarUrl }); // Add account API call
             if (success) {
-                alert('Account added successfully!'); // Show success message
+                showAlert('Account added successfully!'); // Show success message
 
                 // Update account list in UI
                 setAccounts((prevAccounts) => [
@@ -184,11 +186,11 @@ const AccountManagement = () => {
                 setIsModalOpen(false); // Close modal
                 setSelectedFile(null); // Clear selected file
             } else {
-                alert('Failed to add account.'); // Show error if adding account failed
+                showAlert('Failed to add account.'); // Show error if adding account failed
             }
         } catch (error) {
             console.error('Failed to add account:', error);
-            alert('Error adding account.');
+            showAlert('Error adding account.');
         }
     };
 
@@ -209,7 +211,7 @@ const AccountManagement = () => {
                             account.UID === UID ? { ...account, roleId: 3 } : account
                         )
                     );
-                    alert('Account unbanned successfully!');
+                    showAlert('Account unbanned successfully!');
                 }
             } else {
                 // Ban logic
@@ -220,7 +222,7 @@ const AccountManagement = () => {
                             account.UID === UID ? { ...account, roleId: 0 } : account
                         )
                     );
-                    alert('Account banned successfully!');
+                    showAlert('Account banned successfully!');
                 }
             }
         } catch (error) {
@@ -240,7 +242,7 @@ const AccountManagement = () => {
                 setSelectedAccount(accountDetails);
                 setIsViewModalOpen(true);
             } else {
-                alert('Account not found');
+                showAlert('Account not found');
             }
         } catch (error) {
             console.error('Failed to view account:', error);

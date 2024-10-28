@@ -203,7 +203,9 @@ function SeatManagement() {
                     {/*<h2 className="title">Seat Management</h2>*/}
 
                     {loading ? (
-                        <p>Loading...</p>
+                        <div className="loading-overlay">
+                            <div className="spinner"></div>
+                        </div>
                     ) : error ? (
                         <p>{error}</p>
                     ) : (

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import Sidebar from "../../../components/common/CMangerSideBar/CManagerSideBar.jsx";
-import { fetchBookingListPage } from "../../../api/cManagerAPI.js";
+import {fetchBookingListPage} from "../../../api/cManagerAPI.js";
 import "./list-booking.css";
 import CManagerHeader from "../../../components/common/CManagerHeader/CManagerHeader.jsx";
 import {useNavigate} from "react-router-dom";
@@ -39,10 +39,9 @@ function BookingList() {
         const selectedDate = e.target.value;
         setSearchDate(selectedDate);
 
-        if(selectedDate == '') {
+        if (selectedDate == '') {
             setFilteredBookings(bookings);
-        }
-        else  {
+        } else {
             const filtered = bookings.filter((booking) => {
                 // const bookingDate = new Date(booking.timestamp).toISOString().split('T')[0];
                 const bookingDate = new Date(booking.timestamp).toLocaleDateString('en-CA');
@@ -68,9 +67,9 @@ function BookingList() {
                     <div className="booking-management-spinner"></div>
                 </div>
             )}
-            <CManagerHeader />
+            <CManagerHeader/>
             <div className="layout">
-                <Sidebar />
+                <Sidebar/>
                 <div className="booking-list-content">
                     <h2 className="booking-title">BOOKINGS LIST</h2>
                     <div className="search-container">
@@ -101,9 +100,9 @@ function BookingList() {
                                 <tbody>
                                 {currentBookings.length > 0 ? (
                                     // filteredBookings.map((booking) => (
-                                currentBookings.map((booking) => (
+                                    currentBookings.map((booking) => (
 
-                                    <tr key={booking.bookingId}>
+                                        <tr key={booking.bookingId}>
                                             <td>{booking.bookingId}</td>
                                             <td>{booking.user ? booking.user.UID : 'N/A'}</td>
                                             <td>
@@ -112,8 +111,14 @@ function BookingList() {
                                                     : 'N/A'}
                                             </td>
                                             <td>{booking.totalCost ? booking.totalCost.toLocaleString('vi-VN') : 0} VND</td>
-                                            <td>{booking.status}</td>
-                                            <td className='details-btn' onClick={() => navigate(`/booking-detail?bookingId=${booking.bookingId}`)}>Details</td>
+                                            <td>
+                                                {booking.status === 0 ? "Pending" :
+                                                    booking.status === 1 ? "Confirmed" :
+                                                        booking.status === 2 ? "Failed" : "Unknown"}
+                                            </td>
+                                            <td className='details-btn'
+                                                onClick={() => navigate(`/booking-detail?bookingId=${booking.bookingId}`)}>Details
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (
