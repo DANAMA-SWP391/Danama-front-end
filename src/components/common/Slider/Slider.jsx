@@ -3,7 +3,7 @@ import BackWardBtn from "../BackWardBtn/BackWardBtn.jsx";
 import ForwardBtn from "../ForwardBtn/ForwardBtn.jsx";
 import FilmCard from "../FilmCard/FilmCard.jsx";
 import { useState } from "react";
-import PropTypes from "prop-types";
+import PropTypes, {object} from "prop-types";
 
 function Slider({ filmLists }) {
 
@@ -64,11 +64,10 @@ function Slider({ filmLists }) {
 Slider.propTypes = {
     filmLists: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.number.isRequired,
+            movieId: PropTypes.number.isRequired,
             poster: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
-            number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-            genre: PropTypes.string.isRequired,
+            genres: PropTypes.arrayOf(object).isRequired,
         })
     ).isRequired,
 };

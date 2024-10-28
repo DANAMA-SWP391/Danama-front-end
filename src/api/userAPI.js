@@ -32,7 +32,6 @@ export function updateProfile(user) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(user),  // Convert the user object to JSON
-        credentials: 'include',  // Include cookies (for session handling)
     })
         .then(response => {
             if (!response.ok) {
@@ -155,20 +154,13 @@ export async function addBooking(booking, tickets) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ booking, tickets }), // Send the booking and tickets as JSON
+            body: JSON.stringify({ booking, tickets }),
         });
 
-        // Check if the response is okay (status in the range 200-299)
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        // Parse the JSON response
         const responseData = await response.json();
 
-        // Check if the operation was successful
         if (!responseData.success) {
-            throw new Error('Failed to add booking or tickets');
+            throw new Error(responseData.error || 'Failed to add booking or tickets');
         }
         return responseData;
     } catch (error) {
@@ -176,6 +168,7 @@ export async function addBooking(booking, tickets) {
         throw error; // Re-throw the error to be handled by the caller
     }
 }
+
 
 export async function cancelBooking(bookingId) {
     try {

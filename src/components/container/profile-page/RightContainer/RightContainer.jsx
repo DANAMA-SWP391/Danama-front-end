@@ -122,11 +122,14 @@ function RightContainer({ selectedOption }) {
                     localStorage.setItem('user', JSON.stringify(userFromStorage));
                 }
                 window.location.reload();
+                showAlert("Update profile successfully!");
             } else {
                 console.error('Profile update failed:', response.message);
+                showAlert("Update failed");
             }
         } catch (error) {
             console.error('Error updating profile:', error);
+            showAlert("Update failed");
         }
     };
     const renderContent = () => {
