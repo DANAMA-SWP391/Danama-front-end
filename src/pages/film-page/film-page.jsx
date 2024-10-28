@@ -51,10 +51,11 @@ function FilmPage() {
             <Header />
             <MainSlide isLogged={isLogged} filmLists={[film]} />
             {/*<ScreenShotSlider screenShots={screenShots} />*/}
+
+
+            <Schedule showtimes={showtimes} film={film} />
             <SeparateLine />
             <CommentSection reviews={reviews} movieId={film.movieId}/>
-            <SeparateLine />
-            <Schedule showtimes={showtimes} film={film} />
             <SeparateLine />
             <div className="others-films">
                 <h2>Others Films</h2>
