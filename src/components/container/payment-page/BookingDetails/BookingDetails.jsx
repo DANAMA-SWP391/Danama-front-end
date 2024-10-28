@@ -55,6 +55,7 @@ function BookingDetails({bookingData, paymentMethod, bookingId}) {
                 showAlert("Payment confirmed successfully!");
                 setIsPaymentInProgress(false); // Disable overlay
                 navigate(`/booking-detail?bookingId=${bookingId}`);
+                window.scrollTo(0,0);
             } else {
                 showAlert("Payment did not complete. Please try again.");
                 setIsPaymentInProgress(false); // Disable overlay
@@ -110,6 +111,7 @@ function BookingDetails({bookingData, paymentMethod, bookingId}) {
 
 
     return (
+
         <div className={`booking-details-page ${isPaymentInProgress ? 'overlay-active' : ''}`}>
             <div className='booking-details-page__content'>
                 <h2>Booking Details</h2>
@@ -158,10 +160,9 @@ function BookingDetails({bookingData, paymentMethod, bookingId}) {
             <Button onClick={handlePurchase} disabled={isPaymentInProgress}>Purchase</Button>
             <Button onClick={handleCancel} className="cancel-button" disabled={isPaymentInProgress}>Cancel
                 Booking</Button>
-
             {isPaymentInProgress && (
-                <div className="overlay">
-                    <p>Please complete payment....</p>
+                <div className="overlay loading-overlay">
+                    <div className="spinner"></div>
                 </div>
             )}
         </div>

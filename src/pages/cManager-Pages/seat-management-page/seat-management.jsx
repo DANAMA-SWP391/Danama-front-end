@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import Sidebar from "../../../components/common/CMangerSideBar/CManagerSideBar.jsx";
 import "./seat-management.css";
 import CManagerHeader from "../../../components/common/CManagerHeader/CManagerHeader.jsx";
-import { fetchSeatList, fetchDeleteSeat, fetchAddSeat, fetchChangeSeatType } from "../../../api/cManagerAPI.js";
+import {fetchSeatList, fetchDeleteSeat, fetchAddSeat, fetchChangeSeatType} from "../../../api/cManagerAPI.js";
 import Button from "../../../components/common/Button/Button.jsx";
 import Modal from "react-modal";
-import {  useLocation,useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import CManagerSeatLayout from "../../../components/container/CManager-page/CManagerSeatLayout/CManagerSeatLayout.jsx";
 import BackSpace from "../../../assets/Icons/back-space.svg";
 
@@ -19,14 +19,14 @@ function SeatManagement() {
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    const [formData, setFormData] = useState({ seatId: '', row: '', col: '', seatNum: '', type: '' });
+    const [formData, setFormData] = useState({seatId: '', row: '', col: '', seatNum: '', type: ''});
     const [seatToDelete, setSeatToDelete] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedSeat, setSelectedSeat] = useState(null);  // Contains information about selected seats
     const [selectedSeats, setSelectedSeats] = useState([]); //selected seats list
     const [errorMessage, setErrorMessage] = useState('');
     const seatsInfo = [
-         ["Standard", "#1BA0D4"], ["VIP", "#D64242"]
+        ["Standard", "#1BA0D4"], ["VIP", "#D64242"]
     ];
 
     const getSeats = async () => {
@@ -100,7 +100,6 @@ function SeatManagement() {
     };
 
 
-
     const handleSubmit = async () => {
         if (!formData.type) {
             setErrorMessage("Please select a Seat Type");
@@ -116,7 +115,7 @@ function SeatManagement() {
                     col: formData.col,
                     seatNum: formData.seatNum,
                     type: formData.type,
-                    room: { roomId: room.roomId }
+                    room: {roomId: room.roomId}
                 });
                 await getSeats(); //  Reload seat list after updating
                 setIsModalOpen(false);
@@ -132,7 +131,7 @@ function SeatManagement() {
                     col: seat.col,
                     seatNum: `${String.fromCharCode(64 + seat.row)}${seat.col}`,
                     type: formData.type,
-                    room: { roomId: room.roomId }
+                    room: {roomId: room.roomId}
                 };
                 return fetchAddSeat(newSeat);
             });
@@ -151,11 +150,9 @@ function SeatManagement() {
     };
 
 
-
-
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        const {name, value} = e.target;
+        setFormData(prev => ({...prev, [name]: value}));
     };
 
     const getSeatColor = (seatType) => {
@@ -174,9 +171,6 @@ function SeatManagement() {
     };
 
 
-
-
-
     const handleSeatClick = (seat) => {
         if (seat.seatId) {
             setSelectedSeat(seat); // If seat has seatID , that's an existing seat
@@ -193,9 +187,9 @@ function SeatManagement() {
 
     return (
         <div className="seat-management-page">
-            <CManagerHeader  />
+            <CManagerHeader/>
             <div className="seat-management-layout">
-                <Sidebar />
+                <Sidebar/>
                 <div className="seat-management-content">
                     <div className="seat-header-container">
                         <img
@@ -214,13 +208,13 @@ function SeatManagement() {
                         <p>{error}</p>
                     ) : (
                         <>
-                        <CManagerSeatLayout
-                            seats={seats}
-                            // selectedSeats={[]}
-                            selectedSeats={selectedSeats} // transmit list of selected seats
-                            getSeatColor={getSeatColor}
-                            handleClick={handleSeatClick}
-                        />
+                            <CManagerSeatLayout
+                                seats={seats}
+                                // selectedSeats={[]}
+                                selectedSeats={selectedSeats} // transmit list of selected seats
+                                getSeatColor={getSeatColor}
+                                handleClick={handleSeatClick}
+                            />
                             <Button onClick={openAddSeatModal} disabled={selectedSeats.length === 0}>
                                 Add New Seats
                             </Button>
@@ -257,14 +251,14 @@ function SeatManagement() {
                         isOpen={isModalOpen}
                         onRequestClose={() => {
                             setIsModalOpen(false);
-                    setErrorMessage(''); // Reset thông báo lỗi khi đóng modal
+                            setErrorMessage(''); // Reset thông báo lỗi khi đóng modal
                         }}
-                    contentLabel={isEdit ? "Update Seat" : "Add Seat"}
+                        contentLabel={isEdit ? "Update Seat" : "Add Seat"}
                         className="seatmanagement-modal"
 
                     >
                         <div className="seatmanagement-modal-header">
-                            <h2 className="modal-title">{isEdit ? "Update Seat" : "Add Seat" }</h2>
+                            <h2 className="modal-title">{isEdit ? "Update Seat" : "Add Seat"}</h2>
                         </div>
                         <div className="seatmanagment-modal-body">
                             <form onSubmit={handleSubmit}>
@@ -273,7 +267,8 @@ function SeatManagement() {
                                 <div>
                                     <div>
                                         <label>Type:</label>
-                                    {errorMessage && <p className="seattype-error" style={{ color: 'red' }}>{errorMessage}</p>}
+                                        {errorMessage &&
+                                            <p className="seattype-error" style={{color: 'red'}}>{errorMessage}</p>}
                                     </div>
                                     <select
                                         name="type"
