@@ -51,3 +51,39 @@ export const getDisplayDate = (dateObj) => {
     const day = dateObj.getDate();
     return [dayOfWeek, day];
 };
+export const checkShowtimeValid = (showDate, startTime) => {
+    // Month mapping for converting month abbreviations to numbers
+    const months = {
+        Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+        Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+    };
+
+    // Parse `showDate` string into components
+    const [monthStr, day, year] = showDate.split(' ');
+    const month = months[monthStr];
+
+    // Parse `startTime` string into hours and minutes
+    const [hours, minutes] = startTime.split(':').map(Number);
+
+    if (month === undefined || !day || !year || hours === undefined || minutes === undefined) {
+        console.error('Invalid date or time format:', showDate, startTime);
+        return false;
+    }
+
+    // Construct the local datetime of the show
+    const showDateTime = new Date(
+        parseInt(year),
+        month,
+        parseInt(day),
+        hours,
+        minutes
+    );
+
+    // Get current local time
+    const now = new Date();
+
+    // Check if showtime is at least 30 minutes in the future
+    return (showDateTime - now) > 30 * 60 * 1000; // 30 minutes in milliseconds
+};
+
+

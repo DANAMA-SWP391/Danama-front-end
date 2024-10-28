@@ -9,7 +9,7 @@ import {fetchJwtToken} from "../../../../api/authAPI.js";
 import {addBooking} from "../../../../api/userAPI.js";
 import {useNavigate} from "react-router-dom";
 import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
-import {formatCurrency} from "../../../../utils/utility.js";
+import {checkShowtimeValid, formatCurrency} from "../../../../utils/utility.js";
 
 function FilmCard({film, showtimes}) {
     const showAlert = useCustomAlert();
@@ -95,6 +95,10 @@ function FilmCard({film, showtimes}) {
         }
     };
     const handlePurchase = async () => {
+        if(selectedSeats?.length === 0) {
+            showAlert("Please choose a seat before purchase!!");
+            return;
+        }
         setLoading(true);
         try {
             const bookingData = {
@@ -176,13 +180,19 @@ function FilmCard({film, showtimes}) {
                         {film.genres.map(genre => genre.name).join(", ")}
                     </p>
                     <div className="film-schedule">
-                        {showtimes.map((showtime, index) => (
-                            <div key={index} className="showtime" onClick={() => handleSelectedShowtime(showtime)}>
-                                {/* Display the startTime and endTime exactly as they are without conversion */}
-                                <p>{showtime.startTime} ~ {showtime.endTime}</p>
-                                <p>Price: {formatCurrency(showtime.basePrice)}</p>
-                            </div>
-                        ))}
+                        {showtimes.map((showtime, index) => {
+                            const isValid = checkShowtimeValid(showtime.showDate, showtime.startTime);
+                            return (
+                                <div
+                                    key={index}
+                                    className={`showtime ${isValid ? '' : 'outdated'}`}
+                                    onClick={isValid ? () => handleSelectedShowtime(showtime) : null}
+                                >
+                                    <p>{showtime.startTime} ~ {showtime.endTime}</p>
+                                    <p>Price: {formatCurrency(showtime.basePrice)}</p>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

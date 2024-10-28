@@ -3,7 +3,7 @@ import "./MainSlide.css";
 import Trailer from "../../../common/Trailer/Trailer.jsx";
 import FilmPoster from "../../../common/FilmPoster/FilmPoster.jsx";
 import Button from "../../../common/Button/Button.jsx";
-import PropTypes from "prop-types";
+import PropTypes, {object} from "prop-types";
 
 function MainSlide({filmLists = [] }) {
     const [canPlay, setCanPlay] = useState(false);
@@ -47,7 +47,7 @@ function MainSlide({filmLists = [] }) {
                     <div className="dots">
                         {filmLists.map((film, index) => (
                             <p
-                                key={film.id}
+                                key={film.movieId}
                                 className={`dot ${activeDot === index ? "active" : ""}`}
                                 onClick={() => handleDotClick(index)}
                             >
@@ -103,18 +103,16 @@ function MainSlide({filmLists = [] }) {
 MainSlide.propTypes = {
     isLogged: PropTypes.bool.isRequired,
     filmLists: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        movieId: PropTypes.number.isRequired,
         name: PropTypes.string,
-        genre: PropTypes.string,
-        age: PropTypes.string,
+        genres: PropTypes.arrayOf(object).isRequired,
+        ageRestricted: PropTypes.number,
         description: PropTypes.string,
-        rating: PropTypes.string,
-        nation: PropTypes.string,
-        duration: PropTypes.string,
+        country: PropTypes.string,
+        duration: PropTypes.number,
         releaseDate: PropTypes.string,
-        formatted: PropTypes.string,
         director: PropTypes.string,
-        stars: PropTypes.string,
+        actors: PropTypes.string,
     })).isRequired,
 };
 

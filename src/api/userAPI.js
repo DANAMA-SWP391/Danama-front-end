@@ -32,7 +32,6 @@ export function updateProfile(user) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(user),  // Convert the user object to JSON
-        credentials: 'include',  // Include cookies (for session handling)
     })
         .then(response => {
             if (!response.ok) {

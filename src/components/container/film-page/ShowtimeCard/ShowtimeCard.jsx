@@ -8,11 +8,11 @@ import {addBooking} from "../../../../api/userAPI.js";
 import BackSpace from '../../../../assets/Icons/back-space.svg';
 import SeatLayout from "../../main-page/SeatLayout/SeatLayout.jsx";
 import BookingInfo from "../../main-page/BookingInfo/BookingInfo.jsx";
-import {formatCurrency} from "../../../../utils/utility.js";
+import { formatCurrency} from "../../../../utils/utility.js";
 import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
 
-function ShowtimeCard({film, showtime}) {
+function ShowtimeCard({film, showtime, isValid}) {
     const showAlert = useCustomAlert();
     const [isClick, setIsClick] = useState(false);
     const [seats, setSeats] = useState([]);
@@ -91,6 +91,10 @@ function ShowtimeCard({film, showtime}) {
     };
 
     const handlePurchase = async () => {
+        if(selectedSeats.length === 0) {
+            showAlert("Please choose a seat before purchase!!");
+            return;
+        }
         setLoading(true);
         try {
             const bookingData = {
@@ -137,7 +141,10 @@ function ShowtimeCard({film, showtime}) {
     return (
         <div className={`wrapper ${isClick ? 'darken' : ''}`}>
             {isClick && <div className="overlay"></div>}
-            <div className="showtime" onClick={handleSelectedShowtime}>
+            <div
+                className={`showtime ${isValid ? '' : 'outdated'}`}
+                onClick={isValid ? () => handleSelectedShowtime(showtime) : null}
+            >
                 <p>{showtime.startTime} ~ {showtime.endTime}</p>
                 <p>Price: {formatCurrency(showtime.basePrice)}</p>
             </div>
@@ -182,6 +189,7 @@ function ShowtimeCard({film, showtime}) {
 
 ShowtimeCard.propTypes = {
     film: PropTypes.object.isRequired,
-    showtime: PropTypes.object.isRequired
+    showtime: PropTypes.object.isRequired,
+    isValid: PropTypes.bool.isRequired,
 }
 export default ShowtimeCard;
