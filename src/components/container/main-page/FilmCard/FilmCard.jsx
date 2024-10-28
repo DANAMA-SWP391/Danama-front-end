@@ -132,6 +132,7 @@ function FilmCard({film, showtimes}) {
                         },
                     },
                 });
+                window.scrollTo(0, 0);
             } else {
                 showAlert(response.error || 'Booking failed');
                 setLoading(false);
