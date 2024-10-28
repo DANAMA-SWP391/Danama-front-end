@@ -19,6 +19,7 @@ const CinemaManagement = () => {
     const [modalType, setModalType] = useState(''); // 'add' or 'edit'
     const [selectedFile, setSelectedFile] = useState(null);
 
+
     // Hàm reset state newCinema
     const resetForm = () => {
         setNewCinema({ name: '', logo: '', address: '', description: '', managerId: '' });
