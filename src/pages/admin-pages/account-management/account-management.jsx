@@ -216,7 +216,9 @@ const AccountManagement = () => {
                 const success = await fetchBanAccount(UID);
                 if (success) {
                     setAccounts((prevAccounts) =>
-                        prevAccounts.filter((account) => account.UID !== UID)
+                        prevAccounts.map((account) =>
+                            account.UID === UID ? { ...account, roleId: 0 } : account
+                        )
                     );
                     alert('Account banned successfully!');
                 }
@@ -301,11 +303,19 @@ const AccountManagement = () => {
                                         👁️
                                     </button>
                                     <button
-                                        className={account.roleId === 3 ? 'ban-btn' : 'ban-btn-disabled'} // Add a conditional class
+                                        // className={account.roleId === 3 ? 'ban-btn' : 'ban-btn-disabled'} // Add a conditional class
+                                        className={
+                                            account.roleId === 3
+                                                ? 'ban-btn'
+                                                : account.roleId === 0
+                                                    ? 'unban-btn'
+                                                    : 'ban-btn-disabled'
+                                        }
                                         onClick={() => handleBanUnbanAccount(account.UID, account.roleId)}
-                                        disabled={account.roleId !== 3} // Disable the button for roleId 1 and 2
+                                        // disabled={account.roleId !== 3} // Disable the button for roleId 1 and 2
                                     >
-                                        {account.roleId === 3 ? 'Ban' : 'Unavailable'}
+                                        {account.roleId === 3 ? 'Ban' : account.roleId === 0 ? 'Unban' : 'Unavailable'}
+
                                     </button>
                                 </td>
                             </tr>

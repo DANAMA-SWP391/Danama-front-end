@@ -13,6 +13,7 @@ import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx"
 import AdminSidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
 import {useCustomAlert} from "../../../utils/CustomAlertContext.jsx";
 
+
 const MovieManagement = () => {
     const showAlert = useCustomAlert();
     const [movies, setMovies] = useState([]);
@@ -29,6 +30,7 @@ const MovieManagement = () => {
     const [itemsPerPage] = useState(10); // Số mục hiển thị trên mỗi trang
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
     const [errors, setErrors] = useState({});
+
 
     const paginatedMovies = movies.slice(
         (currentPage - 1) * itemsPerPage,
@@ -229,6 +231,8 @@ const MovieManagement = () => {
             }
         }
     };
+
+
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setSelectedMovie(null);
@@ -776,6 +780,7 @@ const MovieManagement = () => {
                             </div>
                         )}
                     </Modal>
+
                 </div>
             </div>
         </>
