@@ -33,6 +33,7 @@ const AccountManagement = () => {
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
+    const [loading, setLoading] = useState(true);
 
     // Load accounts on component mount
     useEffect(() => {
@@ -43,6 +44,7 @@ const AccountManagement = () => {
             } catch (error) {
                 console.error('Failed to load accounts:', error);
             }
+            setLoading(false);
         };
 
         loadAccounts();
@@ -247,6 +249,11 @@ const AccountManagement = () => {
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]); // Store the selected file in state
     };
+    if (loading) {
+        return <div className="loading-overlay">
+            <div className="spinner"></div>
+        </div>;
+    }
 
     return (
         <>
