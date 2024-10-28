@@ -141,8 +141,11 @@ function ShowtimeManagement() {
             movieId: showtime.movie.movieId,
             showDate: new Date(showtime.showDate).toLocaleDateString('en-CA'),
 
-            startTime:  showtime.startTime.slice(0, 5),  // Just select HH:mm for time picker
-            endTime: showtime.endTime.slice(0, 5),
+            // startTime:  showtime.startTime.slice(0, 5),  // Just select HH:mm for time picker
+            // endTime: showtime.endTime.slice(0, 5),
+
+            startTime: convertTo24HourFormat(showtime.startTime),  // Chỉ lấy phần HH:mm:ss
+            endTime: convertTo24HourFormat(showtime.endTime),
             // startTime:  convertTo24HourFormat(showtime.startTime),  // Just select HH:mm for time picker
             // endTime: convertTo24HourFormat(showtime.endTime),
             basePrice: showtime.basePrice,
@@ -177,7 +180,7 @@ function ShowtimeManagement() {
 
     // Update endTime when chosing new film
     const handleMovieChange = (e) => {
-        const selectedMovieId = Number(e.target.value); // Chuyển đổi selectedMovieId thành số
+        const selectedMovieId = Number(e.target.value);
         const selectedMovie = filmList.find(film => film.movieId === selectedMovieId);
         const duration = selectedMovie ? selectedMovie.duration : 0;
 
@@ -185,7 +188,7 @@ function ShowtimeManagement() {
             ...prev,
             movieId: selectedMovieId,
             duration: duration,
-            endTime: calculateEndTime(prev.startTime, duration) // Tính endTime ngay khi movie được chọn
+            endTime: calculateEndTime(prev.startTime, duration) // Calculate endTime imediately when movie chosed
         }));
 
         setFormError(prev => ({ ...prev, movieId: '' }));
