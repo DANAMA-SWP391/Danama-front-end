@@ -1,28 +1,28 @@
 /* CustomAlert.css */
 .custom-alert {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 50px;
+    right: 10px;
     background: #ffffff;
     padding: 15px 25px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     max-width: 300px;
     z-index: 9999;
-    font-size: 16px;
-    color: #333;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     gap: 15px;
     border: 1px solid #305b89;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .custom-alert p {
     margin: 0;
     flex: 1;
-    font-size: 14px;
-    color: #333;
+    font-size: 16px;
+    font-family: "Albert Sans", sans-serif;
+    font-weight: 600; /* semi-bold */
+    color: #da4545;
 }
 
 .close-btn {
