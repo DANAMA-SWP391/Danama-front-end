@@ -43,7 +43,8 @@ function BookingList() {
         }
         else  {
             const filtered = bookings.filter((booking) => {
-                const bookingDate = new Date(booking.timestamp).toISOString().split('T')[0];
+                // const bookingDate = new Date(booking.timestamp).toISOString().split('T')[0];
+                const bookingDate = new Date(booking.timestamp).toLocaleDateString('en-CA');
                 return bookingDate === selectedDate;
             });
 
