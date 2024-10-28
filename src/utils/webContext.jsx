@@ -65,8 +65,6 @@ export const WebProvider = ({ children }) => {
             if (isDataMissing) {
                 await updateDataFromAPI();
             }
-
-            // Set interval to call API every 1 hour (3600000 milliseconds)
             const intervalId = setInterval(updateDataFromAPI, 900000);
 
             // Clean up interval on unmount

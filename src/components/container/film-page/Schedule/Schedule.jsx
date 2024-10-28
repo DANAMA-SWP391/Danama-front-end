@@ -11,6 +11,7 @@ import {WebContext} from "../../../../utils/webContext.jsx";
 import {useContext, useEffect, useState} from "react";
 import ShowtimeCard from "../ShowtimeCard/ShowtimeCard.jsx";
 import {
+    checkShowtimeValid,
     formatCurrency,
     formatDate,
     getDisplayDate,
@@ -158,11 +159,14 @@ function Schedule({showtimes, film}) {
                         <p className="address">{selectedCinema?.address}</p>
                         {showtimes
                             .filter(showtime => showtime.room.cinema.cinemaId === selectedCinema?.cinemaId && showtime.showDate === selectedDate)
-                            .map((showtime, index) => (
-                                <div className="showtimes" key={index}>
-                                    <ShowtimeCard showtime={showtime} film={film}/>
-                                </div>
-                            ))}
+                            .map((showtime, index) => {
+                                const isValid = checkShowtimeValid(showtime.showDate, showtime.startTime);
+                                return (
+                                    <div className='showtimes' key={index}>
+                                    <ShowtimeCard film={film} showtime={showtime} isValid={isValid}/>
+                                    </div>
+                                );
+                            })}
                     </div>
 
                 </div>

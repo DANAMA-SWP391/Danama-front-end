@@ -33,7 +33,7 @@ function ShowtimeManagement() {
         basePrice: '',
         roomId: '',
         roomName: '',
-        seatAvailable:'',
+        seatAvailable: '',
         status: '',
         duration: 0
     });
@@ -79,8 +79,6 @@ function ShowtimeManagement() {
         }
         // setLoading(false);
     };
-
-
 
 
     useEffect(() => {
@@ -191,7 +189,7 @@ function ShowtimeManagement() {
             endTime: calculateEndTime(prev.startTime, duration) // Calculate endTime imediately when movie chosed
         }));
 
-        setFormError(prev => ({ ...prev, movieId: '' }));
+        setFormError(prev => ({...prev, movieId: ''}));
     };
 
     // Cập nhật endTime khi startTime thay đổi
@@ -210,7 +208,7 @@ function ShowtimeManagement() {
 
         }));
 
-        setFormError(prev => ({ ...prev, startTime: '' }));
+        setFormError(prev => ({...prev, startTime: ''}));
     };
 
     // Method endTime base on startTime and duration
@@ -271,7 +269,6 @@ function ShowtimeManagement() {
         }
 
 
-
         // if (formData.status === null || formData.status === undefined || formData.status === '') {
         //     errors.status = 'Status is required';
         //     hasError = true;
@@ -299,10 +296,8 @@ function ShowtimeManagement() {
             if (String(showtime.room.roomId) === String(formData.roomId) && existingShowDate === formData.showDate) {
 
 
-
                 const existingStartTime = convertTo24HourFormat(showtime.startTime);
                 const existingEndTime = convertTo24HourFormat(showtime.endTime);
-
 
 
                 console.log("Checking against existing showtime:");
@@ -361,43 +356,46 @@ function ShowtimeManagement() {
         };
 
 
+        if (isEdit) {
+            await fetchUpdateShowtime({...dataToSend, showtimeId: formData.showtimeId});
+            setShowtimes(showtimes.map(showtime =>
+                showtime.showtimeId === formData.showtimeId
+                    ? {
+                        ...showtime, ...dataToSend,
+                        room: {name: showtime.room.name},
+                        seatAvailable: formData.seatAvailable
+                    } : showtime));
+            await getShowtimes();
 
-            if (isEdit) {
-                await fetchUpdateShowtime({ ...dataToSend, showtimeId: formData.showtimeId });
-                setShowtimes(showtimes.map(showtime =>
-                    showtime.showtimeId === formData.showtimeId
-                    ? { ...showtime, ...dataToSend, room: { name: showtime.room.name }, seatAvailable: formData.seatAvailable } : showtime));
-                await getShowtimes();
-
-            } else {
-                await fetchAddShowtime(dataToSend);
-                await getShowtimes();
-            }
-            setIsModalOpen(false);
-        };
+        } else {
+            await fetchAddShowtime(dataToSend);
+            await getShowtimes();
+        }
+        setIsModalOpen(false);
+    };
 
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        const {name, value} = e.target;
+        setFormData(prev => ({...prev, [name]: value}));
 
         if (name === 'movieId' && value) {
-            setFormError(prev => ({ ...prev, movieId: '' }));
+            setFormError(prev => ({...prev, movieId: ''}));
         }
         if (name === 'showDate' && value) {
-            setFormError(prev => ({ ...prev, showDate: '' }));
+            setFormError(prev => ({...prev, showDate: ''}));
         }
         if (name === 'startTime' && value) {
-            setFormError(prev => ({ ...prev, startTime: '' }));
+            setFormError(prev => ({...prev, startTime: ''}));
         }
         if (name === 'endTime' && value) {
-            setFormError(prev => ({ ...prev, endTime: '' }));
+            setFormError(prev => ({...prev, endTime: ''}));
         }
         if (name === 'basePrice' && !isNaN(value)) {
-            setFormError(prev => ({ ...prev, basePrice: '' }));
+            setFormError(prev => ({...prev, basePrice: ''}));
         }
         if (name === 'roomId' && value) {
-            setFormError(prev => ({ ...prev, roomId: '' }));
+            setFormError(prev => ({...prev, roomId: ''}));
         }
 
         // if (name === 'status' && value) {
@@ -411,305 +409,302 @@ function ShowtimeManagement() {
     };
 
 
-
-
     const logShowtimeDetails = () => {
         console.log("Start Time:", formData.startTime);
         console.log("End Time:", formData.endTime);
     };
 
-        const indexOfLastShowtime = currentPage * showtimesPerPage;
-        const indexOfFirstShowtime = indexOfLastShowtime - showtimesPerPage;
-        const currentShowtimes = showtimes.slice(indexOfFirstShowtime, indexOfLastShowtime);
-        const totalPages = Math.ceil(showtimes.length / showtimesPerPage);
+    const indexOfLastShowtime = currentPage * showtimesPerPage;
+    const indexOfFirstShowtime = indexOfLastShowtime - showtimesPerPage;
+    const currentShowtimes = showtimes.slice(indexOfFirstShowtime, indexOfLastShowtime);
+    const totalPages = Math.ceil(showtimes.length / showtimesPerPage);
 
-        const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-        return (
-            <div className="showtime-management-page">
-                {loading && (
-                    <div className="showtime-management-loading-overlay">
-                        <div className="showtime-management-spinner"></div>
-                    </div>
-                )}
-                    <CManagerHeader/>
-                <div className="layout">
-                    <Sidebar/>
-                    <div className="showtime-management-content">
-                        <h2 className="title">Showtime List</h2>
-                        <Button className="add-showtime-button" onClick={openAddShowtimeModal}>+ Add new
-                            showtime</Button>
-
-
-                        {loading ? (
-                            <p>Loading...</p>
-                        ) : error ? (
-                            <p>{error}</p>
-                        ) : (
-                            <div>
-                                <table className="showtime-table">
-                                    <thead>
-                                    <tr>
-                                        <th>Showtime ID</th>
-                                        <th>Movie Name</th>
-                                        <th>Show Date</th>
-                                        <th>Start Time</th>
-                                        <th>End Time</th>
-                                        <th>Base Price</th>
-                                        <th>Room Name</th>
-                                        <th>Seat Available</th>
-                                        {/*<th>Status</th>*/}
-
-                                        <th className="icon-column">Delete Showtime</th>
-                                        <th className="icon-column">Update Showtime</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {currentShowtimes.map((showtime) => (
-
-                                        <tr key={showtime.showtimeId}>
-                                            <td>{showtime.showtimeId}</td>
-                                            <td>{getMovieName(showtime.movie.movieId)}</td>
-                                            <td>{showtime.showDate
-                                                ? new Date(showtime.showDate).toLocaleDateString('vi-VN')
-                                                : 'N/A'}</td>
-
-                                            <td>{(showtime.startTime)}</td>
-                                            <td>{(showtime.endTime)}</td>
-                                            <td>{showtime.basePrice}</td>
-                                            <td>{showtime.room ? showtime.room.name : 'N/A'}</td>
-                                            <td>{showtime.seatAvailable}</td>
-                                            {/*<td>*/}
-                                            {/*    {showtime.status === 0 ? 'Coming Soon' : 'Now Showing'}*/}
-                                            {/*</td>*/}
+    return (
+        <div className="showtime-management-page">
+            {loading && (
+                <div className="showtime-management-loading-overlay">
+                    <div className="showtime-management-spinner"></div>
+                </div>
+            )}
+            <CManagerHeader/>
+            <div className="layout">
+                <Sidebar/>
+                <div className="showtime-management-content">
+                    <h2 className="title">Showtime List</h2>
+                    <Button className="add-showtime-button" onClick={openAddShowtimeModal}>+ Add new
+                        showtime</Button>
 
 
-                                            <td>
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : error ? (
+                        <p>{error}</p>
+                    ) : (
+                        <div>
+                            <table className="showtime-table">
+                                <thead>
+                                <tr>
+                                    <th>Showtime ID</th>
+                                    <th>Movie Name</th>
+                                    <th>Show Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Base Price</th>
+                                    <th>Room Name</th>
+                                    <th>Seat Available</th>
+                                    {/*<th>Status</th>*/}
 
-                                                <Button
+                                    <th className="icon-column">Delete Showtime</th>
+                                    <th className="icon-column">Update Showtime</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {currentShowtimes.map((showtime) => (
 
-                                                    className="delete-button"
-                                                    onClick={() => openDeleteModal(showtime.showtimeId)}
-                                                >
+                                    <tr key={showtime.showtimeId}>
+                                        <td>{showtime.showtimeId}</td>
+                                        <td>{getMovieName(showtime.movie.movieId)}</td>
+                                        <td>{showtime.showDate
+                                            ? new Date(showtime.showDate).toLocaleDateString('vi-VN')
+                                            : 'N/A'}</td>
+
+                                        <td>{(showtime.startTime)}</td>
+                                        <td>{(showtime.endTime)}</td>
+                                        <td>{showtime.basePrice}</td>
+                                        <td>{showtime.room ? showtime.room.name : 'N/A'}</td>
+                                        <td>{showtime.seatAvailable}</td>
+                                        {/*<td>*/}
+                                        {/*    {showtime.status === 0 ? 'Coming Soon' : 'Now Showing'}*/}
+                                        {/*</td>*/}
+
+
+                                        <td>
+
+                                            <Button
+
+                                                className="delete-button"
+                                                onClick={() => openDeleteModal(showtime.showtimeId)}
+                                            >
                                                 <span className="icon"><MdDeleteOutline
                                                     style={{fontSize: '20px'}}/></span>
 
 
-                                                </Button>
-                                            </td>
-                                            <td>
+                                            </Button>
+                                        </td>
+                                        <td>
 
-                                                <Button className="update-button"
-                                                        onClick={() => openUpdateShowtimeModal(showtime)}>
+                                            <Button className="update-button"
+                                                    onClick={() => openUpdateShowtimeModal(showtime)}>
                                                     <span className="icon"><FaPencilAlt
                                                         style={{fontSize: '20px'}}/></span>
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    </tbody>
-                                </table>
-                                <div className="pagination">
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                            <div className="pagination">
+                                <button
+                                    onClick={() => paginate(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                    className={currentPage === 1 ? 'disabled' : ''}
+                                >
+                                    &laquo;
+                                </button>
+                                {[...Array(totalPages)].map((_, index) => (
                                     <button
-                                        onClick={() => paginate(currentPage - 1)}
-                                        disabled={currentPage === 1}
-                                        className={currentPage === 1 ? 'disabled' : ''}
+                                        key={index}
+                                        onClick={() => paginate(index + 1)}
+                                        className={currentPage === index + 1 ? 'active' : ''}
                                     >
-                                        &laquo;
+                                        {index + 1}
                                     </button>
-                                    {[...Array(totalPages)].map((_, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => paginate(index + 1)}
-                                            className={currentPage === index + 1 ? 'active' : ''}
-                                        >
-                                            {index + 1}
-                                        </button>
-                                    ))}
-                                    <button
-                                        onClick={() => paginate(currentPage + 1)}
-                                        disabled={currentPage === totalPages}
-                                        className={currentPage === totalPages ? 'disabled' : ''}
-                                    >
-                                        &raquo;
-                                    </button>
-                                </div>
+                                ))}
+                                <button
+                                    onClick={() => paginate(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                    className={currentPage === totalPages ? 'disabled' : ''}
+                                >
+                                    &raquo;
+                                </button>
                             </div>
-                        )}
+                        </div>
+                    )}
 
-                        <Modal
-                            isOpen={isModalOpen}
-                            onRequestClose={() => setIsModalOpen(false)}
-                            contentLabel={isEdit ? "Update Showtime" : "Add Showtime"}
-                            className="modal"
-                        >
-                            <div className="modal-header">
-                                <h2 className="modal-title">{isEdit ? "Update Showtime" : "Add Showtime"}</h2>
-                            </div>
-                            <div className="modal-body">
-                                <form onSubmit={handleSubmit}>
-                                    <div>
-                                        <div className="label-group">
-                                            <label>Movie:</label>
-                                            {formError.movieId && (
-                                                <span className="showtime-error-message">{formError.movieId}</span>
-                                            )}
-                                        </div>
-                                        <select
-                                            name="movieId"
-                                            value={formData.movieId}
-                                            // onChange={handleChange}
-                                            onChange={handleMovieChange}
-                                            required
-                                            className="select-dropdown"
-
-                                        >
-                                            <option value="">Select Movie</option>
-                                            {filmList.map(film => (
-                                                <option key={film.movieId} value={film.movieId}>
-                                                    {film.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <div className="label-group">
-                                            <label>Show Date:</label>
-                                            {formError.showDate && (
-                                                <span className="showtime-error-message">{formError.showDate}</span>
-                                            )}
-                                        </div>
-                                        <input
-                                            type="date"
-                                            name="showDate"
-                                            value={formData.showDate}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="time-inputs">
-                                        <div className="label-group">
-                                            <label>Start Time:</label>
-                                            {formError.startTime && (
-                                                <span className="showtime-error-message">{formError.startTime}</span>
-                                            )}
-                                        </div>
-                                        <input
-                                            type="time"
-                                            name="startTime"
-                                            value={formData.startTime}
-                                            onChange={handleStartTimeChange}
-                                            required
-                                        />
-
-                                        <div className="label-group">
-                                            <label>End Time:</label>
-                                            {/*{formError.endTime && (*/}
-                                            {/*    <span className="showtime-error-message">{formError.endTime}</span>*/}
-                                            {/*)}*/}
-                                        </div>
-
-
-                                        <input
-                                            type="time"
-                                            name="endTime"
-                                            value={formData.endTime}
-                                            readOnly
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <div className="label-group">
-                                            <label>Base Price:</label>
-                                            {formError.basePrice && (
-                                                <span className="showtime-error-message">{formError.basePrice}</span>
-                                            )}
-                                        </div>
-                                        <input
-                                            type="text"
-                                            name="basePrice"
-                                            value={formData.basePrice}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </div>
-
-
-
-                                    <div>
-                                        <label>Room:</label>
-                                        {formError.roomId && (
-                                            <span className="showtime-error-message">{formError.roomId}</span>
+                    <Modal
+                        isOpen={isModalOpen}
+                        onRequestClose={() => setIsModalOpen(false)}
+                        contentLabel={isEdit ? "Update Showtime" : "Add Showtime"}
+                        className="modal"
+                    >
+                        <div className="modal-header">
+                            <h2 className="modal-title">{isEdit ? "Update Showtime" : "Add Showtime"}</h2>
+                        </div>
+                        <div className="modal-body">
+                            <form onSubmit={handleSubmit}>
+                                <div>
+                                    <div className="label-group">
+                                        <label>Movie:</label>
+                                        {formError.movieId && (
+                                            <span className="showtime-error-message">{formError.movieId}</span>
                                         )}
-                                        <select
-                                            name="roomId"
-                                            value={formData.roomId}
-                                            onChange={handleChange}
-                                            required
-                                            className="select-dropdown"
+                                    </div>
+                                    <select
+                                        name="movieId"
+                                        value={formData.movieId}
+                                        // onChange={handleChange}
+                                        onChange={handleMovieChange}
+                                        required
+                                        className="select-dropdown"
 
-                                        >
-                                            <option value="">Select Room</option>
-                                            {roomlist.map(room => (
+                                    >
+                                        <option value="">Select Movie</option>
+                                        {filmList.map(film => (
+                                            <option key={film.movieId} value={film.movieId}>
+                                                {film.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <div className="label-group">
+                                        <label>Show Date:</label>
+                                        {formError.showDate && (
+                                            <span className="showtime-error-message">{formError.showDate}</span>
+                                        )}
+                                    </div>
+                                    <input
+                                        type="date"
+                                        name="showDate"
+                                        value={formData.showDate}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="time-inputs">
+                                    <div className="label-group">
+                                        <label>Start Time:</label>
+                                        {formError.startTime && (
+                                            <span className="showtime-error-message">{formError.startTime}</span>
+                                        )}
+                                    </div>
+                                    <input
+                                        type="time"
+                                        name="startTime"
+                                        value={formData.startTime}
+                                        onChange={handleStartTimeChange}
+                                        required
+                                    />
 
-
-                                                    <option key={room.roomId} value={room.roomId}>
-                                                        {room.name}
-                                                    </option>
-
-                                            ))}
-                                        </select>
+                                    <div className="label-group">
+                                        <label>End Time:</label>
+                                        {/*{formError.endTime && (*/}
+                                        {/*    <span className="showtime-error-message">{formError.endTime}</span>*/}
+                                        {/*)}*/}
                                     </div>
 
 
-                                    {/*<div>*/}
-                                    {/*    <div className="label-group">*/}
-                                    {/*        <label>Status:</label>*/}
-                                    {/*        {formError.status && (*/}
-                                    {/*            <span className="showtime-error-message">{formError.status}</span>*/}
-                                    {/*        )}*/}
-                                    {/*    </div>*/}
-                                    {/*    <select*/}
-                                    {/*        name="status"*/}
-                                    {/*        value={formData.status}*/}
-                                    {/*        onChange={handleChange}*/}
-                                    {/*        required*/}
-                                    {/*    >*/}
-                                    {/*        <option value="">Select Status</option>*/}
-                                    {/*        <option value="0">Coming Soon</option>*/}
-                                    {/*        <option value="1">Now Showing</option>*/}
-                                    {/*    </select>*/}
-                                    {/*</div>*/}
+                                    <input
+                                        type="time"
+                                        name="endTime"
+                                        value={formData.endTime}
+                                        readOnly
+                                    />
+                                </div>
 
-                                    <div className="modal-footer">
-                                        <Button onClick={handleSubmit}>{isEdit ? "Update" : "Add"}</Button>
-                                        <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
+                                <div>
+                                    <div className="label-group">
+                                        <label>Base Price:</label>
+                                        {formError.basePrice && (
+                                            <span className="showtime-error-message">{formError.basePrice}</span>
+                                        )}
                                     </div>
-                                </form>
-                            </div>
-                        </Modal>
+                                    <input
+                                        type="text"
+                                        name="basePrice"
+                                        value={formData.basePrice}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
 
-                        <Modal
-                            isOpen={isDeleteModalOpen}
-                            onRequestClose={() => setIsDeleteModalOpen(false)}
-                            contentLabel="Confirm Delete"
-                            className="modal"
-                        >
-                            <div className="modal-header">
-                                <h2 className="modal-title">Confirm Delete</h2>
-                            </div>
-                            <div className="modal-body">
-                                <p>Are you sure you want to delete this showtime?</p>
-                            </div>
-                            <div className="modal-footer">
-                                <Button onClick={handleConfirmDelete}>Yes</Button>
-                                <Button onClick={() => setIsDeleteModalOpen(false)}>Cancel</Button>
-                            </div>
-                        </Modal>
-                    </div>
+
+                                <div>
+                                    <label>Room:</label>
+                                    {formError.roomId && (
+                                        <span className="showtime-error-message">{formError.roomId}</span>
+                                    )}
+                                    <select
+                                        name="roomId"
+                                        value={formData.roomId}
+                                        onChange={handleChange}
+                                        required
+                                        className="select-dropdown"
+
+                                    >
+                                        <option value="">Select Room</option>
+                                        {roomlist.map(room => (
+
+
+                                            <option key={room.roomId} value={room.roomId}>
+                                                {room.name}
+                                            </option>
+
+                                        ))}
+                                    </select>
+                                </div>
+
+
+                                {/*<div>*/}
+                                {/*    <div className="label-group">*/}
+                                {/*        <label>Status:</label>*/}
+                                {/*        {formError.status && (*/}
+                                {/*            <span className="showtime-error-message">{formError.status}</span>*/}
+                                {/*        )}*/}
+                                {/*    </div>*/}
+                                {/*    <select*/}
+                                {/*        name="status"*/}
+                                {/*        value={formData.status}*/}
+                                {/*        onChange={handleChange}*/}
+                                {/*        required*/}
+                                {/*    >*/}
+                                {/*        <option value="">Select Status</option>*/}
+                                {/*        <option value="0">Coming Soon</option>*/}
+                                {/*        <option value="1">Now Showing</option>*/}
+                                {/*    </select>*/}
+                                {/*</div>*/}
+
+                                <div className="modal-footer">
+                                    <Button onClick={handleSubmit}>{isEdit ? "Update" : "Add"}</Button>
+                                    <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
+                                </div>
+                            </form>
+                        </div>
+                    </Modal>
+
+                    <Modal
+                        isOpen={isDeleteModalOpen}
+                        onRequestClose={() => setIsDeleteModalOpen(false)}
+                        contentLabel="Confirm Delete"
+                        className="modal"
+                    >
+                        <div className="modal-header">
+                            <h2 className="modal-title">Confirm Delete</h2>
+                        </div>
+                        <div className="modal-body">
+                            <p>Are you sure you want to delete this showtime?</p>
+                        </div>
+                        <div className="modal-footer">
+                            <Button onClick={handleConfirmDelete}>Yes</Button>
+                            <Button onClick={() => setIsDeleteModalOpen(false)}>Cancel</Button>
+                        </div>
+                    </Modal>
                 </div>
             </div>
-        );
+        </div>
+    );
 }
 
 export default ShowtimeManagement;

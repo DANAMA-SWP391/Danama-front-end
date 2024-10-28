@@ -4,6 +4,7 @@ import { fetchAdminDashBoardPage } from "../../api/admin-api.js";
 import './admin-dashboard-page.css';
 import AdminHeader from "../../components/common/AdminHeader/AdminHeader.jsx";
 import AdminSidebar from "./../../components/common/AdminSideBar/AdminSideBar.jsx";
+import {formatCurrency} from "../../utils/utility.js";
 
 function AdminDashboardPage() {
     const [dashboardData, setDashboardData] = useState(null);
@@ -118,7 +119,7 @@ function AdminDashboardPage() {
                                     </td>
                                     <td>{movie.name}</td>
                                     <td>{movie.totalTicketsSold}</td>
-                                    <td>{movie.totalRevenue}</td>
+                                    <td>{formatCurrency(movie.totalRevenue)}</td>
                                 </tr>
                             ))}
                             </tbody>
@@ -145,13 +146,13 @@ function AdminDashboardPage() {
                         <div className="dashboard-revenue-summary">
                             <h2>Total</h2>
                             <div className='total-revenue'>
-                            <p>Total revenue: {totalRevenueAmount.toFixed(2)} VND</p>
+                            <p>Total revenue: {formatCurrency(totalRevenueAmount)}</p>
                             </div>
                             <div className="dashboard-cinema-revenue-list">
                                 {cinemaRevenues.map((cinema, index) => (
                                     <div key={index} className="dashboard-cinema-revenue">
                                         <span>{cinema.cinemaName}</span>
-                                        <span>{cinema.totalRevenue} VND</span>
+                                        <span>{formatCurrency(cinema.totalRevenue)} </span>
                                         <div className="dashboard-revenue-bar">
                                             <div className="dashboard-revenue-fill"
                                                  style={{width: `${(cinema.totalRevenue / totalRevenueAmount) * 100}%`}}></div>
