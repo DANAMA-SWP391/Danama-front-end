@@ -6,6 +6,8 @@ import {WebContext} from "../../../../utils/webContext.jsx";
 import {cancelBooking} from "../../../../api/userAPI.js";
 import {useNavigate} from "react-router-dom";
 import {checkPaymentStatus, doVNPayPayment} from "../../../../api/paymentAPI.js";
+import {formatCurrency} from "../../../../utils/utility.js";
+import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
 function formatDateTime(dateString) {
     const date = new Date(dateString);
@@ -26,14 +28,8 @@ function formatTime(timeString) {
     }).format(date);
 }
 
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-    }).format(amount) + 'VND';
-}
-
 function BookingDetails({bookingData, paymentMethod, bookingId}) {
+    const showAlert = useCustomAlert();
     const {cinemaList} = useContext(WebContext);
     const navigate = useNavigate();
     const {film, showtime, selectedSeats, price, cinema} = bookingData;
@@ -43,7 +39,7 @@ function BookingDetails({bookingData, paymentMethod, bookingId}) {
 
     const handlePurchase = async () => {
         if (!paymentMethod) {
-            alert("Please select a payment method.");
+            showAlert("Please select a payment method.");
             return;
         }
         try {
@@ -56,16 +52,16 @@ function BookingDetails({bookingData, paymentMethod, bookingId}) {
             const paymentCompleted = await pollForPaymentCompletion(bookingId);
 
             if (paymentCompleted) {
-                alert("Payment confirmed successfully!");
+                showAlert("Payment confirmed successfully!");
                 setIsPaymentInProgress(false); // Disable overlay
                 navigate(`/booking-detail?bookingId=${bookingId}`);
             } else {
-                alert("Payment did not complete. Please try again.");
+                showAlert("Payment did not complete. Please try again.");
                 setIsPaymentInProgress(false); // Disable overlay
             }
         } catch (error) {
             console.error("Error during payment:", error);
-            alert("Error during payment. Please try again.");
+            showAlert("Error during payment. Please try again.");
             setIsPaymentInProgress(false); // Disable overlay
         }
     };
@@ -78,19 +74,19 @@ function BookingDetails({bookingData, paymentMethod, bookingId}) {
             // Call the cancel booking API
             const response = await cancelBooking(bookingId);
             if (response.success) {
-                alert("Booking cancelled successfully!");
+                showAlert("Booking cancelled successfully!");
                 navigate("/");
             } else {
-                alert("Cancellation failed. Please try again.");
+                showAlert("Cancellation failed. Please try again.");
             }
         } catch (error) {
             console.error("Error during booking cancellation:", error);
-            alert("Error during cancellation. Please try again.");
+            showAlert("Error during cancellation. Please try again.");
         }
     };
 
     const pollForPaymentCompletion = async (bookingId) => {
-        const maxRetries = 20;
+        const maxRetries = 60;
         let retries = 0;
         let paymentCompleted = false;
 

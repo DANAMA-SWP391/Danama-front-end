@@ -81,11 +81,13 @@
 .main-slide .cont-1 p:nth-child(2) {
     font-size: 16px;
     font-family: "Albert Sans", sans-serif;
+    color:white;
 }
 
 .main-slide .cont-1 p:nth-child(3) {
     font-size: 30px;
     font-family: "Albert Sans bold", sans-serif;
+    color:white;
     position: absolute;
     right: 5%;
     top: 5%;
@@ -135,6 +137,7 @@
 
 .main-slide .cont-2 div:nth-child(2) p {
     font-size: 16px;
+    color:white;
 }
 
 .main-slide .cont-2 div:nth-child(2) div:nth-child(2) {
@@ -157,8 +160,11 @@
 
 .main-slide .cont-2 div:nth-child(3) p:first-child {
     margin-bottom: 20px;
+    color:white;
 }
-
+.main-slide .cont-2 div:nth-child(3) p {
+    color:white;
+}
 .main-slide .cont-2 div:nth-child(3) p span {
     color: #cccccc;
 }

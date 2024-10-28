@@ -13,6 +13,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
+import {formatCurrency} from "../../../utils/utility.js";
 
 // Register necessary components
 Chart.register(BarController, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -109,7 +110,7 @@ function CinemaDashboard() {
                                 <span className="revenue-icon">💰</span>
                                 <div className="revenue-data">
                                     <p>Daily Revenue</p>
-                                    <h3>${dashboardData.dailytotalrevenue.toLocaleString()}</h3>
+                                    <h3>{formatCurrency(dashboardData.dailytotalrevenue)}</h3>
                                 </div>
                             </div>
                             <div className="card">
@@ -123,7 +124,7 @@ function CinemaDashboard() {
                                 <span className="revenue-icon">💵</span>
                                 <div className="revenue-data">
                                     <p>Total Revenue (This Month)</p>
-                                    <h3>${dashboardData.monthtotalrevenue.toLocaleString()}</h3>
+                                    <h3>{formatCurrency(dashboardData.monthtotalrevenue)}</h3>
                                 </div>
                             </div>
                         </div>
@@ -151,7 +152,7 @@ function CinemaDashboard() {
                                         <tr key={index}>
                                             <td>{movie.movieName}</td>
                                             <td>{movie.ticketSold}</td>
-                                            <td>${movie.totalRevenue.toLocaleString()}</td>
+                                            <td>{formatCurrency(movie.totalRevenue)}</td>
                                         </tr>
                                     ))}
                                     </tbody>

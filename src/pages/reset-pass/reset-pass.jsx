@@ -5,8 +5,10 @@ import { useEffect, useRef, useState } from "react";
 import InputBox from "../../components/common/InputBox/InputBox.jsx";
 import { validateEmail } from "../../utils/validateHelper.js";
 import {fetchListEmails, resetPassword, sendVerificationCode} from "../../api/authAPI.js";
+import {useNavigate} from "react-router-dom";
 
 function ResetPass() {
+    const navigate = useNavigate();
     const emailRef = useRef(null);
     const codeRef = useRef(null);
     const passwordRef = useRef(null);
@@ -93,6 +95,7 @@ function ResetPass() {
             await resetPassword(email, passwordRef.current.value);
             updateFormState({ content: "Password reset successful", isSuccess: false, active: false });
             resetFields([passwordRef, confirmRef]);
+            navigate('/');
         } catch (error) {
             updateFormState({ err: true, content: "Error resetting password" });
             console.error(error);
