@@ -1,0 +1,65 @@
+.about-us-section {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.about-us-section> .intro-header {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.about-us-section> .intro-header .logo {
+    font-size: 60px;
+}
+
+.about-us-section> .intro-header > h1 {
+    font-size: 40px;
+    font-family: "Albert Sans", sans-serif;
+    font-weight: 600; /* semi-bold */
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.about-us-section .intro-text {
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.about-us-section .intro-text p {
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+.about-us-section .features-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.about-us-section .features-container > div {
+    width: 30%;
+    text-align: center;
+}
+
+.about-us-section .features-container .feature-item img {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+.about-us-section .features-container .feature-item h3 {
+    font-size: 24px;
+    font-family: "Albert Sans", sans-serif;
+    font-weight: 600; /* semi-bold */
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.about-us-section .features-container .feature-item a {
+    font-size: 16px;
+    line-height: 1.5;
+}

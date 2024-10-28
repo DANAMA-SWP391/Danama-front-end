@@ -5,6 +5,7 @@ import Schedule from "../Schedule/Schedule.jsx";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../../../utils/userContext.jsx";
 import {WebContext} from "../../../../utils/webContext.jsx";
+import AboutUs from "../AboutUs/AboutUs.jsx";
 
 function Body() {
     const {user} = useContext(UserContext);
@@ -20,6 +21,7 @@ function Body() {
             <MainSlide isLogged={isLogged} filmLists={filmList}  />
             <FilmLists />
             <Schedule />
+            <AboutUs />
         </div>
     );
 }
