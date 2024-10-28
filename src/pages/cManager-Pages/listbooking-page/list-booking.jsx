@@ -3,6 +3,7 @@ import Sidebar from "../../../components/common/CMangerSideBar/CManagerSideBar.j
 import { fetchBookingListPage } from "../../../api/cManagerAPI.js";
 import "./list-booking.css";
 import CManagerHeader from "../../../components/common/CManagerHeader/CManagerHeader.jsx";
+import {useNavigate} from "react-router-dom";
 
 function BookingList() {
     const [bookings, setBookings] = useState([]);
@@ -15,7 +16,7 @@ function BookingList() {
     const storagecinema = localStorage.getItem('cinema');
     const cinema = JSON.parse(storagecinema);
     const cinemaId = cinema.cinemaId;
-
+    const navigate = useNavigate();
 
     const handleFetchBookings = async (cinemaId) => {
         setLoading(true);
@@ -94,6 +95,7 @@ function BookingList() {
                                     <th>Date</th>
                                     <th>Total Cost</th>
                                     <th>Status</th>
+                                    <th>Details</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -111,6 +113,7 @@ function BookingList() {
                                             </td>
                                             <td>{booking.totalCost ? booking.totalCost.toLocaleString('vi-VN') : 0} VND</td>
                                             <td>{booking.status}</td>
+                                            <td className='details-btn' onClick={() => navigate(`/booking-detail?bookingId=${booking.bookingId}`)}>Details</td>
                                         </tr>
                                     ))
                                 ) : (

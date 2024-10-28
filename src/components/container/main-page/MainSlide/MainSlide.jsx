@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import "./MainSlide.css";
 import Trailer from "../../../common/Trailer/Trailer.jsx";
-import Slogan from "../../../common/Slogan 2/Slogan 2.jsx";
-import SignUpBtn from "../SignUpBtn/SignUpBtn.jsx";
 import FilmPoster from "../../../common/FilmPoster/FilmPoster.jsx";
 import Button from "../../../common/Button/Button.jsx";
 import PropTypes from "prop-types";

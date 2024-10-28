@@ -70,7 +70,7 @@ function Login() {
             navigate("/Cmanager");
         }
         else if(user.roleId === 1) {
-            navigate("/admin");
+            navigate("/admin-dashboard");
         } else {
             navigate("/");
         }

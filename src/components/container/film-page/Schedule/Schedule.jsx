@@ -10,48 +10,18 @@ import ScheduleDate from "../../../common/Date/Date.jsx";
 import {WebContext} from "../../../../utils/webContext.jsx";
 import {useContext, useEffect, useState} from "react";
 import ShowtimeCard from "../ShowtimeCard/ShowtimeCard.jsx";
+import {
+    formatCurrency,
+    formatDate,
+    getDisplayDate,
+    getNext7Days,
+    getPriceRangeForCinema
+} from "../../../../utils/utility.js";
+import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
-// Helper function to format the date into "MMM dd, yyyy"
-const formatDate = (dateObj) => {
-    const options = { month: 'short', day: 'numeric', year: 'numeric' };
-    return dateObj.toLocaleDateString('en-US', options);
-};
-
-// Helper function to convert date into ['Day in week', dd]
-const getDisplayDate = (dateObj) => {
-    const dayOfWeek = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
-    const day = dateObj.getDate();
-    return [dayOfWeek, day];
-};
-
-// Helper function to calculate price range for a cinema's showtimes
-const getPriceRangeForCinema = (cinemaId, showtimeList) => {
-    const cinemaShowtimes = showtimeList.filter(showtime => showtime.room.cinema.cinemaId === cinemaId);
-    if (cinemaShowtimes.length === 0) {
-        return null; // No showtimes, no price range
-    }
-
-    const prices = cinemaShowtimes.map(showtime => showtime.basePrice); // Collect prices
-    const minPrice = Math.min(...prices); // Minimum price
-    const maxPrice = Math.max(...prices); // Maximum price
-
-    return { minPrice, maxPrice };
-};
-const getNext7Days = () => {
-    const dates = [];
-    const today = new Date();
-
-    for (let i = 0; i < 7; i++) {
-        const nextDate = new Date(today);
-        nextDate.setDate(today.getDate() + i);
-        dates.push(nextDate);
-    }
-
-    return dates;
-};
-function Schedule({ showtimes, film }) {
-    const { cinemaList } = useContext(WebContext);
-    const [userLocation, setUserLocation] = useState(null);
+function Schedule({showtimes, film}) {
+    const showAlert = useCustomAlert();
+    const {cinemaList} = useContext(WebContext);
 
     const dates = getNext7Days();
 
@@ -66,58 +36,30 @@ function Schedule({ showtimes, film }) {
             setSelectedCinema(defaultCinema);
         }
     }, [cinemaList]);
-    // Get user's current location using the Geolocation API
-    const getUserLocation = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    setUserLocation({ latitude, longitude });
-                },
-                (error) => {
-                    console.error("Error fetching location", error);
-                    alert("Unable to retrieve your location.");
-                }
-            );
-        } else {
-            alert("Geolocation is not supported by this browser.");
-        }
-    };
-    // Function to generate Google Maps direction URL
-    const getDirectionsUrl = () => {
-        if (!selectedCinema || !userLocation) return "#"; // No selected cinema or no user location yet
-
-        const destination = encodeURIComponent(selectedCinema.name);
-        const { latitude, longitude } = userLocation;
-        const origin = `${latitude},${longitude}`;
-
-        return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
-    };
     // Handle the directions button click
     const handleDirectionOnClick = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    const { latitude, longitude } = position.coords;
+                    const {latitude, longitude} = position.coords;
 
                     // Generate the Google Maps directions URL
                     if (selectedCinema) {
-                        const destination = encodeURIComponent(selectedCinema.address);
+                        const destination = encodeURIComponent(selectedCinema.name);
                         const origin = `${latitude},${longitude}`;
                         const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
                         window.open(url, '_blank'); // Open the URL in a new tab
-                    }
-                    else {
-                        alert("Select a cinema!!");
+                    } else {
+                        showAlert("Select a cinema!!");
                     }
                 },
                 (error) => {
                     console.error("Error fetching location", error);
-                    alert("Unable to retrieve your location.");
+                    showAlert("Unable to retrieve your location.");
                 }
             );
         } else {
-            alert("Geolocation is not supported by this browser.");
+            showAlert("Geolocation is not supported by this browser.");
         }
     };
 
@@ -185,8 +127,8 @@ function Schedule({ showtimes, film }) {
                                 {priceRange ? (
                                     <p className="price-range">
                                         {priceRange.minPrice === priceRange.maxPrice
-                                            ? `Price: ${priceRange.minPrice}đ`
-                                            : `Price range: ${priceRange.minPrice}đ - ${priceRange.maxPrice}đ`}
+                                            ? `Price: ${formatCurrency(priceRange.minPrice)}`
+                                            : `Price range: ${formatCurrency(priceRange.minPrice)} - ${formatCurrency(priceRange.maxPrice)}`}
                                     </p>
                                 ) : (
                                     <p className="price-range">No showtimes available</p>
@@ -207,20 +149,22 @@ function Schedule({ showtimes, film }) {
                             />
                         </Button>
                         <Button onClick={handleDirectionOnClick}>
-                            <img src={Location} alt="directions" /> Get Directions
+                            <img src={Location} alt="directions"/> Get Directions
                         </Button>
                     </div>
-                    {showtimes
-                        .filter(showtime => showtime.room.cinema.cinemaId === selectedCinema?.cinemaId && showtime.showDate === selectedDate)
-                        .map((showtime, index) => (
-                            <div className="schedule" key={index}>
-                                <h2>{selectedCinema?.name}</h2>
-                                <p className="address">{selectedCinema?.address}</p>
-                                <div className="showtimes">
-                                    <ShowtimeCard showtime={showtime} film={film} />
+
+                    <div className="schedule">
+                        <h2>{selectedCinema?.name}</h2>
+                        <p className="address">{selectedCinema?.address}</p>
+                        {showtimes
+                            .filter(showtime => showtime.room.cinema.cinemaId === selectedCinema?.cinemaId && showtime.showDate === selectedDate)
+                            .map((showtime, index) => (
+                                <div className="showtimes" key={index}>
+                                    <ShowtimeCard showtime={showtime} film={film}/>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                    </div>
+
                 </div>
             </div>
         </div>

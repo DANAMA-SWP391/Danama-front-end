@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './movie-management.css';
-import Sidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
 import {
     fetchMovieList,
     fetchViewMovie,
@@ -10,11 +9,12 @@ import {
 } from "../../../api/admin-api.js"; // Đảm bảo tạo file CSS để định dạng style
 import Modal from "../../../components/common/Modal/Modal.jsx";
 import {upFileToAzure} from "../../../api/webAPI.jsx";
-import Header from "../../../components/common/Header/Header.jsx";
 import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx";
 import AdminSidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
+import {useCustomAlert} from "../../../utils/CustomAlertContext.jsx";
 
 const MovieManagement = () => {
+    const showAlert = useCustomAlert();
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -78,12 +78,12 @@ const MovieManagement = () => {
             const imageUrl = await upFileToAzure(posterFile); // Upload image to Azure
             if (imageUrl) {
                 setSelectedMovie({ ...selectedMovie, poster: imageUrl }); // Set the new poster URL
-                alert("Poster uploaded successfully!");
+                showAlert("Poster uploaded successfully!");
             } else {
-                alert("Failed to upload poster.");
+                showAlert("Failed to upload poster.");
             }
         } else {
-            alert("Please select a file to upload.");
+            showAlert("Please select a file to upload.");
         }
     };
     // Mở modal để thêm phim mới
@@ -114,7 +114,7 @@ const MovieManagement = () => {
         // Kiểm tra genre hợp lệ
         const hasInvalidGenres = selectedMovie.genres.some(genre => !genre.genreId || genre.genreId === "");
         if (hasInvalidGenres) {
-            alert('Please ensure all genres have been selected properly.');
+            showAlert('Please ensure all genres have been selected properly.');
             return;
         }
 
@@ -125,7 +125,7 @@ const MovieManagement = () => {
 
         const success = await fetchAddMovie(movieToAdd);
         if (success) {
-            alert('Movie added successfully!');
+            showAlert('Movie added successfully!');
 
             // setMovies([...movies, movieToAdd]); // Thêm phim mới vào danh sách phim
 
@@ -138,7 +138,7 @@ const MovieManagement = () => {
             setIsAdding(false);
             setIsModalOpen(false);
         } else {
-            alert('Failed to add movie.');
+            showAlert('Failed to add movie.');
         }
     };
     // Hiển thị chi tiết phim trong modal
@@ -149,7 +149,7 @@ const MovieManagement = () => {
             setIsEditing(false);      // Ensure we're not in editing mode
             setIsViewModalOpen(true);     // Open the modal to view the movie details
         } else {
-            alert('Movie not found or error occurred.');
+            showAlert('Movie not found or error occurred.');
         }
     };
     const handleCloseViewModal = () => {
@@ -176,7 +176,7 @@ const MovieManagement = () => {
         // Kiểm tra genre hợp lệ
         const hasInvalidGenres = selectedMovie.genres.some(genre => !genre.genreId || genre.genreId === "");
         if (hasInvalidGenres) {
-            alert('Please ensure all genres have been selected properly.');
+            showAlert('Please ensure all genres have been selected properly.');
             return;
         }
 
@@ -189,7 +189,7 @@ const MovieManagement = () => {
         // Gửi yêu cầu cập nhật phim
         const success = await fetchUpdateMovie(movieToUpdate);
         if (success) {
-            alert('Movie updated successfully!');
+            showAlert('Movie updated successfully!');
 
             // Định dạng lại ngày của tất cả các phim, bao gồm phim vừa cập nhật
             const updatedMovies = movies.map(movie => {
@@ -212,7 +212,7 @@ const MovieManagement = () => {
             setIsEditing(false);
             setIsModalOpen(false);
         } else {
-            alert('Failed to update movie.');
+            showAlert('Failed to update movie.');
         }
     };
 
@@ -222,10 +222,10 @@ const MovieManagement = () => {
         if (confirmed) {
             const success = await fetchDeleteMovie(movieId);
             if (success) {
-                alert('Movie deleted successfully!');
+                showAlert('Movie deleted successfully!');
                 setMovies(movies.filter((movie) => movie.movieId !== movieId));  // Remove the deleted movie from the list
             } else {
-                alert('Failed to delete movie.');
+                showAlert('Failed to delete movie.');
             }
         }
     };
@@ -308,7 +308,9 @@ const MovieManagement = () => {
     };
 
     if (loading) {
-        return <p>Loading movies...</p>;
+        return <div className="loading-overlay">
+            <div className="spinner"></div>
+        </div>;
     }
 
     if (error) {

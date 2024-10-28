@@ -1,10 +1,11 @@
 .film-card {
     height: 100%;
-    width: 300px;
+    width: 190px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     color: #000000;
+    margin-right: 110px;
 }
 
 .film-card:hover {

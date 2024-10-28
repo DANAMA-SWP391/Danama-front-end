@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import {formatCurrency} from "../../../../utils/utility.js";
 
 const CinemaListBox = ({ cinemas, selectedCinema, showtimeList, handleCinemaClick, getPriceRangeForCinema }) => {
     return (
@@ -16,8 +17,8 @@ const CinemaListBox = ({ cinemas, selectedCinema, showtimeList, handleCinemaClic
                         {priceRange ? (
                             <p className="price-range">
                                 {priceRange.minPrice === priceRange.maxPrice
-                                    ? `Price: ${priceRange.minPrice}đ`
-                                    : `Price range: ${priceRange.minPrice}đ - ${priceRange.maxPrice}đ`}
+                                    ? `Price: ${formatCurrency(priceRange.minPrice)}`
+                                    : `Price range: ${formatCurrency(priceRange.minPrice)} - ${formatCurrency(priceRange.maxPrice)}`}
                             </p>
                         ) : (
                             <p className="price-range">No showtimes available</p>

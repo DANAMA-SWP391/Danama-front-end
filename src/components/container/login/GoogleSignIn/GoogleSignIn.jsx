@@ -4,9 +4,11 @@ import {loginByGoogle} from "../../../../api/authAPI.js";
 import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
 import {UserContext} from "../../../../utils/userContext.jsx";
+import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
 
 function GoogleSignIn() {
+    const showAlert = useCustomAlert();
     const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const handleSuccess = async (response) => {
@@ -15,8 +17,16 @@ function GoogleSignIn() {
             // Call the loginByGoogle function with the token
             const data = await loginByGoogle(token);
             setUser(data.user);
-            navigate('/');
+            if(data.user.roleId === 1) {
+                navigate('/admin-dashboard')
+            } else if(data.user.roleId === 2){
+                navigate('/Cmanager');
+            }
+            else {
+                navigate('/');
+            }
         } catch (error) {
+            showAlert("Error during google login!");
             console.error("Error during Google login:", error);
         }
     };

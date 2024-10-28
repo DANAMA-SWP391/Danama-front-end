@@ -4,22 +4,23 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
 }
 
 .total-container button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 1;
+    z-index: 1000;
     height: 100%;
 }
 
 .total-container button:nth-child(1) {
-    left: -8.5%;
+    left: -10%;
 }
 
 .total-container button:nth-child(2) {
-    right: -8.5%;
+    right: -10%;
 }
 
 .film-list-container {
@@ -30,4 +31,5 @@
     height: 100%;
     width: 100%;
     display: flex;
+
 }
