@@ -56,7 +56,6 @@ function CommentSection({ reviews, movieId }) {
         if (user) {
             if(user.roleId === 1 || user.roleId ===2) {
                 showAlert("You can't leave comment!!");
-                window.location.href = "/";
             } else {
                 setIsCommentBoxVisible(true);
             }
