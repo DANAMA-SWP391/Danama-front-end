@@ -32,30 +32,32 @@ function Slider({ filmLists }) {
     }
 
     return (
-        <div className="total-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <BackWardBtn className={isHover ? "" : "hidden"} onClick={handlePrevSlide}/>
-            <ForwardBtn className={isHover ? "" : "hidden"} onClick={handleNextSlide} />
-            <div className="film-list-container" >
-                <div
-                    className="film-list"
-                    style={{
-                        width: `${(filmLists.length / filmsPerSlide) * 100}%`,
-                        transform: `translateX(-${currentSlide * (100 / filmsPerSlide)}%)`,
-                        transition: 'transform 0.5s ease-in-out',
-                    }}
-                >
-                    {filmLists.map((film, index) => (
-                        <FilmCard film={film} index={index} key={film.movieId}
-                            // key={film.id}
-                            // poster={film.poster}
-                            // name={film.name}
-                            // number={index + 1}
-                            // genre={film.genre}
-                        />
-                    ))}
+        <>
+            <div className="total-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                <div className="film-list-container">
+                    <BackWardBtn className={isHover ? "" : "hidden"} onClick={handlePrevSlide}/>
+                    <ForwardBtn className={isHover ? "" : "hidden"} onClick={handleNextSlide}/>
+                    <div
+                        className="film-list"
+                        style={{
+                            width: `${(filmLists.length / filmsPerSlide) * 100}%`,
+                            transform: `translateX(-${currentSlide * (100 / filmsPerSlide)}%)`,
+                            transition: 'transform 0.5s ease-in-out',
+                        }}
+                    >
+                        {filmLists.map((film, index) => (
+                            <FilmCard film={film} index={index} key={film.movieId}
+                                // key={film.id}
+                                // poster={film.poster}
+                                // name={film.name}
+                                // number={index + 1}
+                                // genre={film.genre}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 
