@@ -116,10 +116,11 @@ function CommentSection({ reviews, movieId }) {
     return (
         <div className={`comment-section wrapper ${isCommentBoxVisible ? 'darken' : ''}`}>
             {isCommentBoxVisible && <div className="overlay"></div>}
-            <Button onClick={handleCommentClick}>Leave rate and comment?</Button>
+
             {isCommentBoxVisible && (
                 <CommentBox setIsCommentBoxVisible={setIsCommentBoxVisible} movieId={movieId} uid={user.UID}/>
             )}
+            <Button onClick={handleCommentClick}>Leave rate and comment?</Button>
 
             {/* Comments Header */}
             <div className="comment-section__header">
