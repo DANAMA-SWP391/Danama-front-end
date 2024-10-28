@@ -8,7 +8,7 @@ import {addBooking} from "../../../../api/userAPI.js";
 import BackSpace from '../../../../assets/Icons/back-space.svg';
 import SeatLayout from "../../main-page/SeatLayout/SeatLayout.jsx";
 import BookingInfo from "../../main-page/BookingInfo/BookingInfo.jsx";
-import { formatCurrency} from "../../../../utils/utility.js";
+import {checkShowtimeValid, formatCurrency} from "../../../../utils/utility.js";
 import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
 
@@ -94,6 +94,10 @@ function ShowtimeCard({film, showtime, isValid}) {
         if(selectedSeats.length === 0) {
             showAlert("Please choose a seat before purchase!!");
             return;
+        }
+        if(!checkShowtimeValid(showtime)) {
+            showAlert("This showtime can't book ticket anymore");
+            setIsClick(false);
         }
         setLoading(true);
         try {
