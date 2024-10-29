@@ -16,11 +16,16 @@ export async function login(email, password) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
         const data = await response.json();
+        console.log(data);
          // Return the response data, which includes success and message
         if (data.success && data.jwtToken) {
             // Store the JWT token in localStorage
             localStorage.setItem('jwtToken', data.jwtToken);
-            localStorage.setItem('user', JSON.stringify(data.user));
+            if(data.user && data.user.roleId !== 0) {
+                localStorage.setItem('user', JSON.stringify(data.user));
+            } else {
+                localStorage.clear();
+            }
             // console.log(data);
             if (data.user && data.user.roleId === 2) {
                 localStorage.setItem('cinema', JSON.stringify(data.cinema));
@@ -52,7 +57,9 @@ export async function loginByGoogle(token) {
         if (data.success && data.jwtToken) {
             // Store the JWT token in localStorage
             localStorage.setItem('jwtToken', data.jwtToken);
-            localStorage.setItem('user', JSON.stringify(data.user));
+            if(data.user.roleId !== 0) {
+                localStorage.setItem('user', JSON.stringify(data.user));
+            }
 
         }
         return data;

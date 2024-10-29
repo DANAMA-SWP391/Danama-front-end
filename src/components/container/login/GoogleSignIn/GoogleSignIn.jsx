@@ -16,13 +16,22 @@ function GoogleSignIn() {
             const token = response.credential;
             // Call the loginByGoogle function with the token
             const data = await loginByGoogle(token);
-            setUser(data.user);
+            if (data.user.roleId !== 0) {
+                setUser(data.user);
+            }
             if(data.user.roleId === 1) {
+                showAlert("Welcome admin!");
                 navigate('/admin-dashboard')
             } else if(data.user.roleId === 2){
+                showAlert("Welcome " + data.user.name);
                 navigate('/Cmanager');
             }
+            else if(data.user.roleId === 0) {
+                showAlert("Your account has been banned!!");
+                navigate('/');
+            }
             else {
+                showAlert("Welcome to DANAMA!");
                 navigate('/');
             }
         } catch (error) {

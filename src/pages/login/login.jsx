@@ -8,9 +8,11 @@ import LoginBox from "../../components/container/login/LoginBox/LoginBox.jsx";
 import Others from "../../components/container/login/Others/Others.jsx";
 import ErrMsgBox from "../../components/common/ErrMsgBox/ErrMsgBox.jsx";
 import { UserContext } from "../../utils/userContext.jsx";
-import {login} from "../../api/authAPI.js";
+import {login, logoutUser} from "../../api/authAPI.js";
+import {useCustomAlert} from "../../utils/CustomAlertContext.jsx";
 
 function Login() {
+    const showAlert = useCustomAlert();
     const {setUser } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -42,7 +44,9 @@ function Login() {
                 const response = await login(email, password); // Use the login function
 
                 if (response.success) {
-                    setUser(response.user);
+                    if (response.user.roleId !== 0) {
+                        setUser(response.user);
+                    }
                     handleLoginSuccess(response.user); // Call your success handler
                 } else {
                     handleLoginFailed(); // Call your failure handler
@@ -67,11 +71,19 @@ function Login() {
     const handleLoginSuccess = (user) => {
         setIsSuccess(true);
         if(user.roleId === 2) {
+            showAlert("Welcome " + user.name);
             navigate("/Cmanager");
         }
         else if(user.roleId === 1) {
+            showAlert("Welcome admin!");
             navigate("/admin-dashboard");
-        } else {
+        }
+        else if(user.roleId === 0) {
+            showAlert("Your account has been banned!!");
+            navigate("/");
+        }
+        else {
+            showAlert("Welcome to DANAMA!");
             navigate("/");
         }
     };
