@@ -58,6 +58,7 @@ function Schedule() {
     const {cinemaList, showtimeList, filmList} = useContext(WebContext);
     // Initialize the dates (actual dates stored as "MMM dd, yyyy")
     const dates = getNext7Days();
+    const [isVisible, setIsVisible] = useState(false);
     const [sortByPrice, setSortByPrice] = useState(false);
     const [sortOrder, setSortOrder] = useState('desc');
     const [selectedCinema, setSelectedCinema] = useState(null);
@@ -142,98 +143,133 @@ function Schedule() {
             showAlert("Geolocation is not supported by this browser.");
         }
     };
+
+    useEffect(() => {
+        const scheduleSection = document.querySelector('.schedule-section');
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setIsVisible(true);
+                        observer.unobserve(entry.target); // Stop observing after visibility change
+                    }
+                });
+            },
+            {
+                threshold: 0.25
+            }
+        );
+
+        if (scheduleSection) {
+            observer.observe(scheduleSection);
+        }
+
+        return () => {
+            if (scheduleSection) {
+                observer.unobserve(scheduleSection);
+            }
+        };
+    }, []);
+
+
+
     return (
-        <div className="schedule-section">
+        <div className={`schedule-section ${isVisible ? 'visible' : ''}`}>
             <SeparateLine />
             <h1>Select Films on Schedule</h1>
+            <>
+                {/* Cinema Logos (this part will not be sorted) */}
+                <div className="cinema-list">
+                    {cinemaList.map((cinema, index) => (
+                        <CinemaLogo
+                            key={index}
+                            logo={cinema.logo}
+                            name={cinema.name}
+                            onClick={() => handleCinemaClick(cinema)}
+                        />
+                    ))}
+                </div>
 
-            {/* Cinema Logos (this part will not be sorted) */}
-            <div className="cinema-list">
-                {cinemaList.map((cinema, index) => (
-                    <CinemaLogo
-                        key={index}
-                        logo={cinema.logo}
-                        name={cinema.name}
-                        onClick={() => handleCinemaClick(cinema)}
-                    />
-                ))}
-            </div>
-
-            <div className="line"></div>
-            <table>
-                <thead>
-                <tr>
-                    <th>
-                        <div className="buttons-cont">
-                            <Button onClick={handleSortByPrice}>
-                                <img src={Price} alt="price" /> Price
-                                <img
-                                    src={sortOrder === 'desc' ? ArrowUpward : ArrowDownward}
-                                    alt={sortOrder === 'desc' ? "arrow-up" : "arrow-down"}
-                                />
-                            </Button>
-                            <Button onClick={handleDirectionOnClick}>
-                                <img src={Location} alt="directions" /> Get Directions
-                            </Button>
-                        </div>
-                    </th>
-                    <th>
-                        {selectedCinema && (
-                            <div className="cinematic-info">
-                                <h2>Schedule of {selectedCinema.name}</h2>
-                                <div className="address-row">
-                                    <p>{selectedCinema.address}</p>
-                                    <a
-                                        className="map-link"
-                                        href={`https://www.google.com/maps?q=${encodeURIComponent(selectedCinema.address)}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <img src={Address} alt="Map icon" /> Map
-                                    </a>
+                <div className="line"></div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>
+                            <div className="buttons-cont">
+                                <Button onClick={handleSortByPrice}>
+                                    <img src={Price} alt="price" /> Price
+                                    <img
+                                        src={sortOrder === 'desc' ? ArrowUpward : ArrowDownward}
+                                        alt={sortOrder === 'desc' ? "arrow-up" : "arrow-down"}
+                                    />
+                                </Button>
+                                <Button onClick={handleDirectionOnClick}>
+                                    <img src={Location} alt="directions" /> Get Directions
+                                </Button>
+                            </div>
+                        </th>
+                        <th>
+                            {selectedCinema && (
+                                <div className="cinematic-info">
+                                    <h2>Schedule of {selectedCinema.name}</h2>
+                                    <div className="address-row">
+                                        <p>{selectedCinema.address}</p>
+                                        <a
+                                            className="map-link"
+                                            href={`https://www.google.com/maps?q=${encodeURIComponent(selectedCinema.address)}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            <img src={Address} alt="Map icon" /> Map
+                                        </a>
+                                    </div>
+                                </div>
+                            )}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {/* Use the CinemaList component here with sorted cinemas */}
+                            <CinemaListBox
+                                cinemas={sortByPrice ? sortCinemasByPrice([...cinemaList]) : cinemaList} // Clone cinemaList for sorting
+                                selectedCinema={selectedCinema}
+                                showtimeList={showtimeList}
+                                handleCinemaClick={handleCinemaClick}
+                                getPriceRangeForCinema={getPriceRangeForCinema}
+                            />
+                        </td>
+                        <td>
+                            <div className="films-list-container">
+                                <div className="dates">
+                                    {dates.map((date, index) => {
+                                        const displayDate = getDisplayDate(date);
+                                        return (
+                                            <ScheduleDate
+                                                key={index}
+                                                date={displayDate}
+                                                onClick={() => handleDateClick(date)}
+                                                selected={selectedDate === formatDate(date)}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                                <div className="films-list">
+                                    {filterFilmsByCinemaAndDate(selectedCinema?.cinemaId, selectedDate).map((film, index) => (
+                                        <>
+                                            <FilmCard key={index} film={film} showtimes={film.showtimes} />
+                                            <SeparateLine />
+                                        </>
+                                    ))}
                                 </div>
                             </div>
-                        )}
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        {/* Use the CinemaList component here with sorted cinemas */}
-                        <CinemaListBox
-                            cinemas={sortByPrice ? sortCinemasByPrice([...cinemaList]) : cinemaList} // Clone cinemaList for sorting
-                            selectedCinema={selectedCinema}
-                            showtimeList={showtimeList}
-                            handleCinemaClick={handleCinemaClick}
-                            getPriceRangeForCinema={getPriceRangeForCinema}
-                        />
-                    </td>
-                    <td>
-                        <div className="films-list-container">
-                            <div className="dates">
-                                {dates.map((date, index) => {
-                                    const displayDate = getDisplayDate(date);
-                                    return (
-                                        <ScheduleDate
-                                            key={index}
-                                            date={displayDate}
-                                            onClick={() => handleDateClick(date)}
-                                            selected={selectedDate === formatDate(date)}
-                                        />
-                                    );
-                                })}
-                            </div>
-                            <div className="films-list">
-                                {filterFilmsByCinemaAndDate(selectedCinema?.cinemaId, selectedDate).map((film, index) => (
-                                    <FilmCard key={index} film={film} showtimes={film.showtimes} />
-                                ))}
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </>
+
         </div>
     );
 }
