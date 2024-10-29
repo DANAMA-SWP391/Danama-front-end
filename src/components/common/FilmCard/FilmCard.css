@@ -8,6 +8,10 @@
     margin-right: 110px;
 }
 
+.film-card:last-child {
+    margin-right: 0;
+}
+
 .film-card:hover {
     transform: scale(1.025);
     transition: transform 0.25s;
