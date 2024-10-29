@@ -175,11 +175,10 @@ const AccountManagement = () => {
             if (success) {
                 showAlert('Account added successfully!'); // Show success message
 
-                // Update account list in UI
-                setAccounts((prevAccounts) => [
-                    ...prevAccounts,
-                    { ...newAccount, avatar: avatarUrl },
-                ]);
+
+                // Reload the account list from the server to update UI with the latest data
+                const updatedAccounts = await fetchAccountList();
+                setAccounts(updatedAccounts || []); // Cập nhật accounts với dữ liệu mới từ server
 
                 // Reset form data
                 setNewAccount(initialAccountState());
