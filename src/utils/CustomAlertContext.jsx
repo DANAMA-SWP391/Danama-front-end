@@ -1,4 +1,3 @@
-// CustomAlertProvider.jsx
 import { createContext, useContext, useState } from 'react';
 import CustomAlert from "../components/common/CustomAlert/CustomAlert.jsx";
 import PropTypes from "prop-types";
@@ -14,6 +13,12 @@ export const CustomAlertProvider = ({ children }) => {
     const showAlert = (message) => {
         setAlertMessage(message);
         setIsVisible(true);
+
+        // Automatically close the alert after 5 seconds
+        setTimeout(() => {
+            setIsVisible(false);
+            setAlertMessage('');
+        }, 5000);
     };
 
     // Function to close alert
@@ -29,9 +34,11 @@ export const CustomAlertProvider = ({ children }) => {
         </CustomAlertContext.Provider>
     );
 };
+
 CustomAlertProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
+
 // Custom hook to use the alert
 // eslint-disable-next-line react-refresh/only-export-components
 export const useCustomAlert = () => {
