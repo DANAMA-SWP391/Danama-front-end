@@ -43,8 +43,16 @@ function FilmListPage() {
             filtered = filtered.filter(film => film.country === country);
         }
         if (status) {
-            const statusValue = status === "Now playing" ? 1 : 2;
-            filtered = filtered.filter(film => film.status === statusValue);
+            const statusMapping = {
+                "Now playing": 1,
+                "Coming soon": 2,
+                "Inactive": 0
+            };
+            const statusValue = statusMapping[status];
+            console.log(statusValue);
+            if (statusValue !== undefined) {
+                filtered = filtered.filter(film => film.status === statusValue);
+            }
         }
         if (debouncedSearch) {
             filtered = filtered.filter(film =>
