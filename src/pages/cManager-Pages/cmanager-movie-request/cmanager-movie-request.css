@@ -1,0 +1,113 @@
+
+
+.movie-request-management-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Đảm bảo chiếm toàn bộ chiều cao */
+}
+
+.movie-request-layout {
+    display: flex;
+    flex: 1; /* Để phần này chiếm không gian còn lại */
+}
+
+.movie-request-management-content {
+    flex: 1; /* Chiếm không gian còn lại của layout */
+    padding: 20px; /* Thêm một chút khoảng cách */
+    margin-left: 200px;
+    background-color: #f9f9f9; /* Nền sáng hơn để dễ đọc */
+}
+
+.title {
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 20px;/* Khoảng cách dưới tiêu đề */
+}
+
+.movie-request-table {
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    border-collapse: collapse; /* Gộp viền bảng */
+}
+
+.movie-request-table th,
+.movie-request-table td {
+    border: 1px solid #ddd; /* Viền cho các ô */
+    padding: 8px; /* Thêm padding cho các ô */
+    text-align: center; /* Căn trái cho văn bản */
+}
+
+.movie-request-table th {
+    color: white;
+    background-color: #343a40;
+    font-weight: bold;
+}
+
+/*.room-table tr:nth-child(even) {*/
+/*    background-color: #f2f2f2; !* Nền cho hàng chẵn *!*/
+/*}*/
+
+.room-table tr:hover {
+    background-color: #f1f0f0; /* Nền cho hàng khi hover */
+}
+
+.delete-movie-request-button {
+    padding: 5px 10px; /* Padding cho nút */
+    border: none; /* Bỏ viền */
+    width: 60px;
+    border-radius: 5px; /* Bo góc */
+    cursor: pointer; /* Con trỏ chuột khi hover */
+}
+
+.delete-movie-request-button {
+    background-color: #dc3545; /* Màu đỏ cho nút xóa */
+    color: #f6f1f1; /* Màu chữ trắng */
+}
+
+.delete-movie-request-button:hover {
+    background-color: #c82333; /* Màu khi hover cho nút xóa */
+}
+
+.movie-request-table th.icon-column,
+.movie-request-table td.icon-column {
+    width: 80px; /* Giới hạn chiều rộng cột */
+    text-align: center; /* Căn giữa nội dung trong cột */
+    padding: 5px; /* Thêm khoảng cách giữa nội dung và viền */
+}
+
+.movie-request-table td.icon-column button {
+    padding: 5px 8px; /* Điều chỉnh padding của nút */
+    font-size: 12px; /* Giảm kích thước font nếu cần */
+}
+
+
+
+.movie-request-management-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Increase opacity for stronger overlay */
+    z-index: 100; /* Ensure it's on top of all other content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.movie-request-management-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1); /* Light grey */
+    border-left-color: #000; /* Black color for the rotating part */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

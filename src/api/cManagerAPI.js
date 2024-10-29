@@ -333,4 +333,103 @@ export const fetchUpdateShowtime = async (showtime) => {
     }
 };
 
+export const fetchMovieRequestList = async (cinemaId) => {
+    try {
+        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/MovieRequestController?cinemaId=${cinemaId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching movie request list:', error);
+        return false;
+    }
+};
+
+export const fetchAddMovieRequest = async (movierequest) => {
+    try {
+        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieRequestController', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 'add',
+                movierequest: movierequest
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error adding movie request:', error);
+        return false;
+    }
+};
+
+export const fetchUpdateMovieRequest = async (movierequest) => {
+    try {
+        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieRequestController', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 'update',
+                movierequest: movierequest,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Error updating movie request:', error);
+        return false;
+    }
+};
+
+export const fetchDeleteMovieRequest = async (movierequestId) => {
+    try {
+        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieRequestController', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 'delete',
+                movierequest: { requestId: movierequestId }
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error deleting movie request:', error);
+        return false;
+    }
+};
+
+
+
+
+
 
