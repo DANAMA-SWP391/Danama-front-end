@@ -22,22 +22,18 @@ function AboutUs() {
                 <div className="feature-item">
                     <img src={Booking} alt="Booking Icon" className="feature-icon"/>
                     <h3>We make booking easy and efficient.</h3>
-                    <a href="#booking" className="feature-link">Explore Our Booking Process</a>
                 </div>
                 <div className="feature-item">
                     <img src={Location} alt="Location Icon" className="feature-icon"/>
                     <h3>We bring cinemas closer to you.</h3>
-                    <a href="#cinemas" className="feature-link">Discover Nearby Cinemas</a>
                 </div>
                 <div className="feature-item">
                     <img src={SeatIcon} alt="Seat Icon" className="feature-icon"/>
                     <h3>Interactive Seat Selection</h3>
-                    <a href="#seat-selection" className="feature-link">View Our Seat Selection</a>
                 </div>
                 <div className="feature-item">
                     <img src={Security} alt="Security Icon" className="feature-icon"/>
                     <h3>Secure Payment Options</h3>
-                    <a href="#secure-payments" className="feature-link">Learn About Secure Payments</a>
                 </div>
             </div>
 

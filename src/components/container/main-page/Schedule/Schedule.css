@@ -1,6 +1,15 @@
 .schedule-section {
     width: 90%;
     margin: 50px auto;
+    display: block;
+    opacity: 0; /* Initially hidden */
+    transform: translateY(50px);
+    transition: transform 0.5s ease-in, opacity 0.5s ease-in;  /* Smooth fade-in effect */
+}
+
+.schedule-section.visible {
+    opacity: 1; /* Visible when scrolled into view */
+    transform: translateY(0);
 }
 
 .schedule-section p,
@@ -26,7 +35,11 @@
     background: rgba(0,0,0,0.25);
 }
 
-.schedule-section .separate-line {
+.films-list > .separate-line {
+    margin: 20px auto;
+}
+
+.schedule-section > .separate-line {
     margin: 70px auto;
 }
 
