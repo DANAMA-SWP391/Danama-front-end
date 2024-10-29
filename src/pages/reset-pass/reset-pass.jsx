@@ -6,8 +6,10 @@ import InputBox from "../../components/common/InputBox/InputBox.jsx";
 import { validateEmail } from "../../utils/validateHelper.js";
 import {fetchListEmails, resetPassword, sendVerificationCode} from "../../api/authAPI.js";
 import {useNavigate} from "react-router-dom";
+import {useCustomAlert} from "../../utils/CustomAlertContext.jsx";
 
 function ResetPass() {
+    const showAlert = useCustomAlert();
     const navigate = useNavigate();
     const emailRef = useRef(null);
     const codeRef = useRef(null);
@@ -96,6 +98,7 @@ function ResetPass() {
             updateFormState({ content: "Password reset successful", isSuccess: false, active: false });
             resetFields([passwordRef, confirmRef]);
             navigate('/');
+            showAlert('Reset password successfully!!');
         } catch (error) {
             updateFormState({ err: true, content: "Error resetting password" });
             console.error(error);

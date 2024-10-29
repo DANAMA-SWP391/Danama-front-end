@@ -8,7 +8,7 @@ import PropTypes, {object} from "prop-types";
 function Slider({ filmLists }) {
 
     const [currentSlide, setCurrentSlide] = useState(0);
-    const [filmsPerSlide] = useState(4);
+    const [filmsPerSlide] = useState(5);
     const [isHover, setIsHover] = useState(false);
 
     const handlePrevSlide = () => {

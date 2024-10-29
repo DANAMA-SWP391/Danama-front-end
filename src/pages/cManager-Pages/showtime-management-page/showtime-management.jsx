@@ -77,7 +77,6 @@ function ShowtimeManagement() {
         } catch (error) {
             console.error('Error fetching booking list:', error);
         }
-        // setLoading(false);
     };
 
 
