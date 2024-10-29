@@ -29,6 +29,7 @@ function FilterOption({ genre, setGenre, country, setCountry, status, setStatus,
                 <option value="">All Status</option>
                 <option value="Now playing">Now Playing</option>
                 <option value="Coming soon">Coming Soon</option>
+                <option value="Inactive">Inactive</option>
             </select>
 
             {/* Search Filter */}

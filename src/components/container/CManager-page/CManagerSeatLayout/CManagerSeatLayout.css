@@ -1,11 +1,11 @@
 
 .cmanagerseats {
     display: grid;
-    grid-template-columns: repeat(17, 50px); /* 17 cột với kích thước ghế là 50px */
-    grid-gap: 15px; /* Khoảng cách giữa các ghế */
+    grid-gap: 15px; /* Space between seats */
     margin-top: 20px;
-    justify-content: center; /* Canh giữa toàn bộ layout ghế */
+    justify-content: center; /* Center the entire seat layout */
 }
+
 
 .seat-row {
     display: contents;
