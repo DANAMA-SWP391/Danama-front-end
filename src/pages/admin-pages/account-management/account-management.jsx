@@ -340,7 +340,7 @@ const AccountManagement = () => {
                     <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                         {modalType === 'add' && (
                             <div>
-                                <h3>Add Account</h3>
+                                <h3 className={'add-account-title'}>Add Account</h3>
                                 <input
                                     type="text"
                                     name="name"

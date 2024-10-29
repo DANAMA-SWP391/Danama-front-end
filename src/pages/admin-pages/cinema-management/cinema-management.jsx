@@ -112,6 +112,7 @@ const CinemaManagement = () => {
                 return;
             }
         }
+        setLoading(true);
 
         const success = await fetchAddCinema({ ...newCinema, logo: logoUrl });
         if (success) {
@@ -125,7 +126,7 @@ const CinemaManagement = () => {
             if (updatedCinemas) {
                 setCinemas(updatedCinemas);
             }
-
+            setLoading(false);
             handleCloseModal(); // Reset form and close modal after successful addition
         } else {
             showAlert('Failed to add cinema.');
@@ -176,8 +177,10 @@ const CinemaManagement = () => {
         const isConfirmed = window.confirm('Are you sure you want to delete this cinema?');
 
         if (isConfirmed) {
+            setLoading(true);
             const success = await fetchDeleteCinema(cinemaId);
             if (success) {
+                setLoading(false);
                 showAlert('Cinema deleted successfully!');
                 setCinemas(cinemas.filter((cinema) => cinema.cinemaId !== cinemaId));
                 handleCloseModal(); // Reset form and close modal after successful deletion
