@@ -77,8 +77,10 @@ const MovieManagement = () => {
     };
     const handleUploadPoster = async () => {
         if (posterFile) {
+            setLoading(true);
             const imageUrl = await upFileToAzure(posterFile); // Upload image to Azure
             if (imageUrl) {
+                setLoading(false);
                 setSelectedMovie({ ...selectedMovie, poster: imageUrl }); // Set the new poster URL
                 showAlert("Poster uploaded successfully!");
             } else {
@@ -124,9 +126,10 @@ const MovieManagement = () => {
             ...selectedMovie,
             genres: selectedMovie.genres.map(genre => ({ genreId: genre.genreId }))
         };
-
+        setLoading(true);
         const success = await fetchAddMovie(movieToAdd);
         if (success) {
+            setLoading(false);
             showAlert('Movie added successfully!');
 
             // setMovies([...movies, movieToAdd]); // Thêm phim mới vào danh sách phim
@@ -187,10 +190,11 @@ const MovieManagement = () => {
             ...selectedMovie,
             genres: selectedMovie.genres.map(genre => ({ genreId: genre.genreId }))
         };
-
+        setLoading(true);
         // Gửi yêu cầu cập nhật phim
         const success = await fetchUpdateMovie(movieToUpdate);
         if (success) {
+            setLoading(false);
             showAlert('Movie updated successfully!');
 
             // Định dạng lại ngày của tất cả các phim, bao gồm phim vừa cập nhật
