@@ -12,6 +12,7 @@ import {upFileToAzure} from "../../../api/webAPI.jsx";
 import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx";
 import AdminSidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
 import {useCustomAlert} from "../../../utils/CustomAlertContext.jsx";
+import { useNavigate } from 'react-router-dom';
 
 
 const MovieManagement = () => {
@@ -30,6 +31,11 @@ const MovieManagement = () => {
     const [itemsPerPage] = useState(10); // Số mục hiển thị trên mỗi trang
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
     const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
+
+    const handleViewMovieRequests = () => {
+        navigate("/movie-management/movie-requests");
+    };
 
 
     const paginatedMovies = movies.slice(
@@ -233,7 +239,6 @@ const MovieManagement = () => {
         }
     };
 
-
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setSelectedMovie(null);
@@ -309,8 +314,6 @@ const MovieManagement = () => {
     if (error) {
         return <p>Error: {error}</p>;
     }
-
-
     return (
         <>
             <AdminHeader />
@@ -319,7 +322,10 @@ const MovieManagement = () => {
                 <div className="movie-management-content">
                     <div className="movie-management-header">
                         <h2>MOVIE LIST</h2>
+                        <div className="func-btn">
                         <button className="add-movie-btn" onClick={handleAddMovie}>+ Add new movie</button>
+                        <button className="movie-request-btn" onClick={handleViewMovieRequests}>View Movie Request</button>
+                        </div>
                     </div>
 
                     {/* Danh sách phim */}
@@ -378,8 +384,14 @@ const MovieManagement = () => {
                                 <p><strong>Age Restricted:</strong> {selectedMovie.ageRestricted}</p>
                                 <p><strong>Actors:</strong> {selectedMovie.actors}</p>
                                 <p><strong>Duration:</strong> {selectedMovie.duration} mins</p>
-                                <p><strong>Status:</strong> {selectedMovie.status === 1 ? "Available" : "Unavailable"}
-                                </p> {/* Hiển thị trạng thái rõ ràng */}
+                                <p>
+                                    <strong>Status:</strong> {
+                                    selectedMovie.status === 1 ? "Now Playing" :
+                                        selectedMovie.status === 2 ? "Coming Soon" :
+                                            selectedMovie.status === 3 ? "Inactive" :
+                                                "Unknown"
+                                }
+                                </p>
 
                                 {/* Hiển thị danh sách thể loại (genres) */}
                                 <p><strong>Genres:</strong></p>
@@ -548,35 +560,6 @@ const MovieManagement = () => {
                                             {errors.status && <p className="error-message">{errors.status}</p>}
                                         </label>
 
-                                        {/*<label>*/}
-                                        {/*    <strong>Genres:</strong>*/}
-                                        {/*    <div className="genres-container">*/}
-                                        {/*        {selectedMovie.genres.map((genre, index) => (*/}
-                                        {/*            <div key={index} className="genre-input">*/}
-                                        {/*                <select*/}
-                                        {/*                    value={genre.genreId || ""}*/}
-                                        {/*                    onChange={(e) => handleGenreChange(e, index)}*/}
-                                        {/*                >*/}
-                                        {/*                    <option value="">Select Genre</option>*/}
-                                        {/*                    {availableGenres*/}
-                                        {/*                        .filter(availGenre => !selectedMovie.genres.some(g => g.genreId === availGenre.genreId && g.genreId !== genre.genreId))*/}
-                                        {/*                        .map((availableGenre) => (*/}
-                                        {/*                            <option key={availableGenre.genreId}*/}
-                                        {/*                                    value={availableGenre.genreId}>*/}
-                                        {/*                                {availableGenre.name}*/}
-                                        {/*                            </option>*/}
-                                        {/*                        ))}*/}
-                                        {/*                </select>*/}
-                                        {/*                <button type="button"*/}
-                                        {/*                        onClick={() => handleRemoveGenre(index)}>X*/}
-                                        {/*                </button>*/}
-                                        {/*            </div>*/}
-                                        {/*        ))}*/}
-                                        {/*        <button type="button" onClick={handleAddGenre}>+ Add Genre</button>*/}
-                                        {/*    </div>*/}
-                                        {/*    {errors.genres && <p className="error-message">{errors.genres}</p>}*/}
-                                        {/*</label>*/}
-
                                         <label>
                                             <strong>Genres:</strong>
                                             <div className="genres-container">
@@ -594,7 +577,6 @@ const MovieManagement = () => {
                                             </div>
                                             {errors.genres && <p className="error-message">{errors.genres}</p>}
                                         </label>
-
 
                                     </div>
 
