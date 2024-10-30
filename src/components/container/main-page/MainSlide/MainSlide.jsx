@@ -101,7 +101,6 @@ function MainSlide({filmLists = [] }) {
 {/*// </div>*/}
 
 MainSlide.propTypes = {
-    isLogged: PropTypes.bool.isRequired,
     filmLists: PropTypes.arrayOf(PropTypes.shape({
         movieId: PropTypes.number.isRequired,
         name: PropTypes.string,
