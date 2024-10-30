@@ -1,15 +1,12 @@
-
-
-
 import './CManagerSeat.css';
 import PropTypes from 'prop-types';
 
-function CManagerSeat({ seat, onClick, color }) {
+function CManagerSeat({ seat, onClick, color, isCouple }) {
     return (
         <div className='CManagerSeat-container'>
             <div
-                className='cmanager-seat'
-                onClick={() => onClick()}  // Khi bấm ghế, gọi onClick nhưng không xử lý popup ở đây
+                className={`cmanager-seat ${isCouple ? 'couple-long-seat' : ''} `}
+                onClick={() => onClick()}
                 style={{ backgroundColor: color }}
             >
                 {seat}
@@ -20,9 +17,15 @@ function CManagerSeat({ seat, onClick, color }) {
 
 CManagerSeat.propTypes = {
     seat: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
+    onClick: PropTypes.func,
     color: PropTypes.string.isRequired,
+    isCouple: PropTypes.bool, // New prop to indicate if this is a couple long seat
+    isBlocked:PropTypes.bool
+};
+
+CManagerSeat.defaultProps = {
+    isCouple: false,
+    isBlocked: false
 };
 
 export default CManagerSeat;
-

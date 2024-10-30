@@ -1,8 +1,7 @@
-    .cmanager-seat {
+.cmanager-seat {
         width: 50px;
         height: 50px;
         border-radius: 10px;
-        background-color: #f5f5f5;
         color: #ffffff;
         display: flex;
         justify-content: center;
@@ -11,4 +10,16 @@
         font-family: "Albert Sans semi-bold", sans-serif;
         cursor: pointer;
         transition: all 0.3s;
-    }
+}
+
+/* Style for couple long seat */
+.couple-long-seat {
+        width: 100px; /* Extend width to cover adjacent cell */
+        height: 50px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1; /* Make sure it overlays above other seats */
+        left: -10px; /* Shift to the left to appear as one continuous seat */
+}
