@@ -10,7 +10,6 @@ import {
 } from "../../../api/cManagerAPI.js";
 import Button from "../../../components/common/Button/Button.jsx";
 import {MdDeleteOutline} from "react-icons/md";
-
 import {FaPencilAlt} from "react-icons/fa";
 import Modal from "react-modal";
 import {WebContext} from "../../../utils/webContext.jsx";
@@ -110,7 +109,6 @@ function ShowtimeManagement() {
         setIsEdit(false);
         setFormData({
             movieId: '',
-            // showDate: new Date().toISOString().split('T')[0],
             showDate: new Date().toLocaleDateString('en-CA'),
             startTime: '00:00:00',
             endTime: '00:00:00',
@@ -137,11 +135,9 @@ function ShowtimeManagement() {
             showtimeId: showtime.showtimeId,
             movieId: showtime.movie.movieId,
             showDate: new Date(showtime.showDate).toLocaleDateString('en-CA'),
-
             // startTime:  showtime.startTime.slice(0, 5),  // Just select HH:mm for time picker
             // endTime: showtime.endTime.slice(0, 5),
-
-            startTime: convertTo24HourFormat(showtime.startTime),  // Chỉ lấy phần HH:mm:ss
+            startTime: convertTo24HourFormat(showtime.startTime),  //  HH:mm:ss
             endTime: convertTo24HourFormat(showtime.endTime),
             // startTime:  convertTo24HourFormat(showtime.startTime),  // Just select HH:mm for time picker
             // endTime: convertTo24HourFormat(showtime.endTime),
@@ -191,11 +187,11 @@ function ShowtimeManagement() {
         setFormError(prev => ({...prev, movieId: ''}));
     };
 
-    // Cập nhật endTime khi startTime thay đổi
+    // Update endTime when startTime change
     const handleStartTimeChange = (e) => {
         const startTime = e.target.value;
 
-        // Lấy `duration` từ phim hiện tại
+        // Get `duration` from the current film
         const selectedMovie = filmList.find(film => film.movieId === formData.movieId);
         const duration = selectedMovie ? selectedMovie.duration : formData.duration;
 
@@ -229,8 +225,6 @@ function ShowtimeManagement() {
 
 
     const handleSubmit = async () => {
-        logShowtimeDetails(); // In startTime và endTime
-
         let hasError = false;
         let errors = {
             movieId: '',
@@ -267,17 +261,6 @@ function ShowtimeManagement() {
             hasError = true;
         }
 
-
-        // if (formData.status === null || formData.status === undefined || formData.status === '') {
-        //     errors.status = 'Status is required';
-        //     hasError = true;
-        // }
-
-
-        // Create object  Date for startTime and endTime of new showtime
-        // const newStartTime = new Date(`${formData.showDate}T${formData.startTime}`);
-        // const newEndTime = new Date(`${formData.showDate}T${formData.endTime}`);
-
         const newStartTime = formData.startTime;
         const newEndTime = formData.endTime;
 
@@ -312,7 +295,8 @@ function ShowtimeManagement() {
                 //     (newEndTime > existingStartTime && newEndTime <= existingEndTime) ||
                 //     (newStartTime <= existingStartTime && newEndTime >= existingEndTime)
                 // );
-                // Thực hiện phép so sánh
+
+                // Make comparisons
                 const conflictResult = (
                     (newStartTime >= existingStartTime && newStartTime < existingEndTime) ||
                     (newEndTime > existingStartTime && newEndTime <= existingEndTime) ||
@@ -351,7 +335,7 @@ function ShowtimeManagement() {
             movie: {movieId: formData.movieId},
             room: {roomId: formData.roomId},
             seatAvailable: formData.seatAvailable,
-            // status: formData.status
+            status: 1
         };
 
 
@@ -396,10 +380,6 @@ function ShowtimeManagement() {
         if (name === 'roomId' && value) {
             setFormError(prev => ({...prev, roomId: ''}));
         }
-
-        // if (name === 'status' && value) {
-        //     setFormError(prev => ({ ...prev, status: '' }));
-        // }
     };
 
     const getMovieName = (movieId) => {
@@ -407,11 +387,6 @@ function ShowtimeManagement() {
         return movie ? movie.name : 'N/A';
     };
 
-
-    const logShowtimeDetails = () => {
-        console.log("Start Time:", formData.startTime);
-        console.log("End Time:", formData.endTime);
-    };
 
     const indexOfLastShowtime = currentPage * showtimesPerPage;
     const indexOfFirstShowtime = indexOfLastShowtime - showtimesPerPage;
@@ -453,8 +428,6 @@ function ShowtimeManagement() {
                                     <th>Base Price</th>
                                     <th>Room Name</th>
                                     <th>Seat Available</th>
-                                    {/*<th>Status</th>*/}
-
                                     <th className="icon-column">Delete Showtime</th>
                                     <th className="icon-column">Update Showtime</th>
                                 </tr>
@@ -474,22 +447,14 @@ function ShowtimeManagement() {
                                         <td>{showtime.basePrice}</td>
                                         <td>{showtime.room ? showtime.room.name : 'N/A'}</td>
                                         <td>{showtime.seatAvailable}</td>
-                                        {/*<td>*/}
-                                        {/*    {showtime.status === 0 ? 'Coming Soon' : 'Now Showing'}*/}
-                                        {/*</td>*/}
-
-
                                         <td>
 
                                             <Button
-
                                                 className="delete-button"
                                                 onClick={() => openDeleteModal(showtime.showtimeId)}
                                             >
                                                 <span className="icon"><MdDeleteOutline
                                                     style={{fontSize: '20px'}}/></span>
-
-
                                             </Button>
                                         </td>
                                         <td>
@@ -553,7 +518,6 @@ function ShowtimeManagement() {
                                     <select
                                         name="movieId"
                                         value={formData.movieId}
-                                        // onChange={handleChange}
                                         onChange={handleMovieChange}
                                         required
                                         className="select-dropdown"
@@ -599,12 +563,7 @@ function ShowtimeManagement() {
 
                                     <div className="label-group">
                                         <label>End Time:</label>
-                                        {/*{formError.endTime && (*/}
-                                        {/*    <span className="showtime-error-message">{formError.endTime}</span>*/}
-                                        {/*)}*/}
                                     </div>
-
-
                                     <input
                                         type="time"
                                         name="endTime"
@@ -641,7 +600,6 @@ function ShowtimeManagement() {
                                         onChange={handleChange}
                                         required
                                         className="select-dropdown"
-
                                     >
                                         <option value="">Select Room</option>
                                         {roomlist.map(room => (
@@ -654,27 +612,6 @@ function ShowtimeManagement() {
                                         ))}
                                     </select>
                                 </div>
-
-
-                                {/*<div>*/}
-                                {/*    <div className="label-group">*/}
-                                {/*        <label>Status:</label>*/}
-                                {/*        {formError.status && (*/}
-                                {/*            <span className="showtime-error-message">{formError.status}</span>*/}
-                                {/*        )}*/}
-                                {/*    </div>*/}
-                                {/*    <select*/}
-                                {/*        name="status"*/}
-                                {/*        value={formData.status}*/}
-                                {/*        onChange={handleChange}*/}
-                                {/*        required*/}
-                                {/*    >*/}
-                                {/*        <option value="">Select Status</option>*/}
-                                {/*        <option value="0">Coming Soon</option>*/}
-                                {/*        <option value="1">Now Showing</option>*/}
-                                {/*    </select>*/}
-                                {/*</div>*/}
-
                                 <div className="modal-footer">
                                     <Button onClick={handleSubmit}>{isEdit ? "Update" : "Add"}</Button>
                                     <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>

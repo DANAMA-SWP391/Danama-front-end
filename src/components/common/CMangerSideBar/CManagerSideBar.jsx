@@ -4,6 +4,7 @@ import { MdDashboard } from "react-icons/md";
 import { FaClipboardList } from "react-icons/fa";
 import { BsDoorOpenFill } from "react-icons/bs";
 import { FaCalendarAlt } from "react-icons/fa";
+import { BiMoviePlay } from "react-icons/bi";
 import { useLocation } from "react-router-dom";
 
 
@@ -59,6 +60,14 @@ function Sidebar() {
                 >
                     <span className="icon"><FaCalendarAlt style={{ fontSize: '20px' }} /></span>
                     Showtime Management
+                </Button>
+
+                <Button
+                    className={`menu-item ${location.pathname === "/movie-request" ? "active" : ""}`}
+                    to="/movie-request"
+                >
+                    <span className="icon"><BiMoviePlay style={{ fontSize: '20px' }} /></span>
+                    Movie Request
                 </Button>
             </div>
         </div>

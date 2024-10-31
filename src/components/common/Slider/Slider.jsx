@@ -8,7 +8,7 @@ import PropTypes, {object} from "prop-types";
 function Slider({ filmLists }) {
 
     const [currentSlide, setCurrentSlide] = useState(0);
-    const [filmsPerSlide] = useState(5);
+    const [filmsPerSlide] = useState(4);
     const [isHover, setIsHover] = useState(false);
 
     const handlePrevSlide = () => {
@@ -40,9 +40,9 @@ function Slider({ filmLists }) {
                     <div
                         className="film-list"
                         style={{
-                            width: `${(filmLists.length / filmsPerSlide) * 100}%`,
+                            width: `${((filmLists.length - 0.25) / filmsPerSlide) * 100}%`,
                             transform: `translateX(-${currentSlide * (100 / filmsPerSlide)}%)`,
-                            transition: 'transform 0.5s ease-in-out',
+                            transition: 'transform 0.75s ease-in-out',
                         }}
                     >
                         {filmLists.map((film, index) => (

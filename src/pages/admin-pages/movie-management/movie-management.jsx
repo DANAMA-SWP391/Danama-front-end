@@ -12,6 +12,7 @@ import {upFileToAzure} from "../../../api/webAPI.jsx";
 import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx";
 import AdminSidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
 import {useCustomAlert} from "../../../utils/CustomAlertContext.jsx";
+import { useNavigate } from 'react-router-dom';
 
 
 const MovieManagement = () => {
@@ -20,7 +21,7 @@ const MovieManagement = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedMovie, setSelectedMovie] = useState(null);  // Movie được chọn để hiển thị chi tiết
-    const [isEditing, setIsEditing] = useState(false);  // Xác định xem có đang chỉnh sửa phim không
+    const [isEditing, setIsEditing] = useState(false);  // Xác định xem có đang chỉnh sửa phim không ----------
     const [isModalOpen, setIsModalOpen] = useState(false); // Xác định trạng thái của modal
     const [availableGenres, setAvailableGenres] = useState([]);
     const [isAdding, setIsAdding] = useState(false);
@@ -30,6 +31,11 @@ const MovieManagement = () => {
     const [itemsPerPage] = useState(10); // Số mục hiển thị trên mỗi trang
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
     const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
+
+    const handleViewMovieRequests = () => {
+        navigate("/movie-management/movie-requests");
+    };
 
 
     const paginatedMovies = movies.slice(
@@ -69,7 +75,6 @@ const MovieManagement = () => {
                 setLoading(false);
             }
         };
-
         getMoviesAndGenres();
     }, []);
     const handlePosterChange = (e) => {
@@ -107,7 +112,7 @@ const MovieManagement = () => {
             genres: []
         });
         setIsAdding(true); // Đang thêm mới phim
-        setIsEditing(false);
+        setIsEditing(false); //
         setIsModalOpen(true);
     };
     const handleSaveNewMovie = async (e) => {
@@ -131,8 +136,6 @@ const MovieManagement = () => {
         if (success) {
             setLoading(false);
             showAlert('Movie added successfully!');
-
-            // setMovies([...movies, movieToAdd]); // Thêm phim mới vào danh sách phim
 
             // Re-fetch the movie list after adding a new movie
             const updatedMovies = await fetchMovieList();
@@ -236,39 +239,26 @@ const MovieManagement = () => {
         }
     };
 
-
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setSelectedMovie(null);
     };
-    // Thay đổi nội dung của một thể loại (genre)
-    const handleGenreChange = (e, index) => {
-        const selectedGenreId = parseInt(e.target.value);
-        const selectedGenre = availableGenres.find(genre => genre.genreId === selectedGenreId);
 
-        const updatedGenres = [...selectedMovie.genres];
-        updatedGenres[index] = selectedGenre ? { genreId: selectedGenre.genreId, name: selectedGenre.name } : { genreId: '', name: '' };
+    const handleGenreChange = (e, genre) => {
+        const isChecked = e.target.checked;
+        const updatedGenres = isChecked
+            ? [...selectedMovie.genres, genre] // Thêm thể loại nếu được chọn
+            : selectedMovie.genres.filter((g) => g.genreId !== genre.genreId); // Bỏ thể loại nếu không chọn
 
         setSelectedMovie({ ...selectedMovie, genres: updatedGenres });
     };
-// Thêm một thể loại mới
-    const handleAddGenre = () => {
-        // Kiểm tra nếu đã có thể loại rỗng, tránh thêm mục rỗng trùng lặp
-        if (selectedMovie.genres.some((genre) => !genre.genreId)) return;
-        const newGenre = { genreId: '', name: '' };
-        setSelectedMovie({ ...selectedMovie, genres: [...selectedMovie.genres, newGenre] });
-    };
+
     // Hàm format lại ngày để hiển thị trong input type="date"
     const formatReleaseDate = (dateStr) => {
         const date = new Date(dateStr);
         // Sử dụng toLocaleDateString với timezone UTC để tránh sự khác biệt múi giờ
         const offsetDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
         return offsetDate.toISOString().split('T')[0];
-    };
-// Xóa một thể loại
-    const handleRemoveGenre = (index) => {
-        const updatedGenres = selectedMovie.genres.filter((_, i) => i !== index);
-        setSelectedMovie({ ...selectedMovie, genres: updatedGenres });
     };
 
     const validateForm = () => {
@@ -324,8 +314,6 @@ const MovieManagement = () => {
     if (error) {
         return <p>Error: {error}</p>;
     }
-
-
     return (
         <>
             <AdminHeader />
@@ -334,7 +322,10 @@ const MovieManagement = () => {
                 <div className="movie-management-content">
                     <div className="movie-management-header">
                         <h2>MOVIE LIST</h2>
+                        <div className="func-btn">
                         <button className="add-movie-btn" onClick={handleAddMovie}>+ Add new movie</button>
+                        <button className="movie-request-btn" onClick={handleViewMovieRequests}>View Movie Request</button>
+                        </div>
                     </div>
 
                     {/* Danh sách phim */}
@@ -393,8 +384,14 @@ const MovieManagement = () => {
                                 <p><strong>Age Restricted:</strong> {selectedMovie.ageRestricted}</p>
                                 <p><strong>Actors:</strong> {selectedMovie.actors}</p>
                                 <p><strong>Duration:</strong> {selectedMovie.duration} mins</p>
-                                <p><strong>Status:</strong> {selectedMovie.status === 1 ? "Available" : "Unavailable"}
-                                </p> {/* Hiển thị trạng thái rõ ràng */}
+                                <p>
+                                    <strong>Status:</strong> {
+                                    selectedMovie.status === 1 ? "Now Playing" :
+                                        selectedMovie.status === 2 ? "Coming Soon" :
+                                            selectedMovie.status === 3 ? "Inactive" :
+                                                "Unknown"
+                                }
+                                </p>
 
                                 {/* Hiển thị danh sách thể loại (genres) */}
                                 <p><strong>Genres:</strong></p>
@@ -566,31 +563,21 @@ const MovieManagement = () => {
                                         <label>
                                             <strong>Genres:</strong>
                                             <div className="genres-container">
-                                                {selectedMovie.genres.map((genre, index) => (
-                                                    <div key={index} className="genre-input">
-                                                        <select
-                                                            value={genre.genreId || ""}
-                                                            onChange={(e) => handleGenreChange(e, index)}
-                                                        >
-                                                            <option value="">Select Genre</option>
-                                                            {availableGenres
-                                                                .filter(availGenre => !selectedMovie.genres.some(g => g.genreId === availGenre.genreId && g.genreId !== genre.genreId))
-                                                                .map((availableGenre) => (
-                                                                    <option key={availableGenre.genreId}
-                                                                            value={availableGenre.genreId}>
-                                                                        {availableGenre.name}
-                                                                    </option>
-                                                                ))}
-                                                        </select>
-                                                        <button type="button"
-                                                                onClick={() => handleRemoveGenre(index)}>X
-                                                        </button>
+                                                {availableGenres.map((genre) => (
+                                                    <div key={genre.genreId} className="genre-checkbox">
+                                                        <input
+                                                            type="checkbox"
+                                                            id={`genre-${genre.genreId}`}
+                                                            checked={selectedMovie.genres.some((selectedGenre) => selectedGenre.genreId === genre.genreId)}
+                                                            onChange={(e) => handleGenreChange(e, genre)}
+                                                        />
+                                                        <label htmlFor={`genre-${genre.genreId}`}>{genre.name}</label>
                                                     </div>
                                                 ))}
-                                                <button type="button" onClick={handleAddGenre}>+ Add Genre</button>
                                             </div>
                                             {errors.genres && <p className="error-message">{errors.genres}</p>}
                                         </label>
+
                                     </div>
 
                                     <div className="form-actions">
@@ -752,26 +739,19 @@ const MovieManagement = () => {
                                         <label>
                                             <strong>Genres:</strong>
                                             <div className="genres-container">
-                                                {selectedMovie.genres.map((genre, index) => (
-                                                    <div key={index} className="genre-input">
-                                                        <select
-                                                            value={genre.genreId}
-                                                            onChange={(e) => handleGenreChange(e, index)}
-                                                        >
-                                                            {availableGenres.map((availableGenre) => (
-                                                                <option key={availableGenre.genreId}
-                                                                        value={availableGenre.genreId}>
-                                                                    {availableGenre.name}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                        <button type="button"
-                                                                onClick={() => handleRemoveGenre(index)}>X
-                                                        </button>
+                                                {availableGenres.map((genre) => (
+                                                    <div key={genre.genreId} className="genre-checkbox">
+                                                        <input
+                                                            type="checkbox"
+                                                            id={`genre-${genre.genreId}`}
+                                                            checked={selectedMovie.genres.some((selectedGenre) => selectedGenre.genreId === genre.genreId)}
+                                                            onChange={(e) => handleGenreChange(e, genre)}
+                                                        />
+                                                        <label htmlFor={`genre-${genre.genreId}`}>{genre.name}</label>
                                                     </div>
                                                 ))}
-                                                <button type="button" onClick={handleAddGenre}>+ Add Genre</button>
                                             </div>
+                                            {errors.genres && <p className="error-message">{errors.genres}</p>}
                                         </label>
                                     </div>
 

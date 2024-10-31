@@ -43,7 +43,7 @@ function MainSlide({filmLists = [] }) {
     return (
         <div className="main-slide">
             {filmLists.length > 1 && (
-                <div className="dots-container">
+                <div className="dots-container" >
                     <div className="dots">
                         {filmLists.map((film, index) => (
                             <p
