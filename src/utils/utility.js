@@ -85,5 +85,11 @@ export const checkShowtimeValid = (showDate, startTime) => {
     // Check if showtime is at least 30 minutes in the future
     return (showDateTime - now) > 30 * 60 * 1000; // 30 minutes in milliseconds
 };
-
+export const handleScroll = (selector, event) => {
+    event.preventDefault();
+    document.querySelector(selector).scrollIntoView({ behavior: "smooth" });
+};
+export const createSeatFormat = (numberOfRows, numberOfColumns) => {
+    return Array(numberOfRows).fill(null).map(() => Array(numberOfColumns).fill(null));
+};
 

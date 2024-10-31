@@ -1,10 +1,10 @@
 import './Seat.css';
 import PropTypes from 'prop-types';
 
-function Seat({ seat, onClick, color, price }) {
+function Seat({ seat, onClick, color, isCouple }) {
     return (
         <div
-            className='seat'
+            className={`${isCouple? 'couple-seat':'seat'}`}
             onClick={color !== 'black' ? onClick : null}
             style={{ backgroundColor: color }}
         >
@@ -17,7 +17,7 @@ Seat.propTypes = {
     seat: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     color: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired
+    isCouple: PropTypes.bool.isRequired
 };
 
 export default Seat;

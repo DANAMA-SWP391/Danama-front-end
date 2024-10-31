@@ -12,3 +12,17 @@
     cursor: pointer;
     transition: all 0.3s;
 }
+.couple-seat {
+    width: 80px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-family: "Albert Sans semi-bold", sans-serif;
+    cursor: pointer;
+    transition: all 0.3s;
+}

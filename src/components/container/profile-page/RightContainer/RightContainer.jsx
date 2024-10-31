@@ -6,11 +6,10 @@ import phone from '../../../../assets/Icons/phone.svg';
 import avatar from '../../../../assets/Icons/avatar.svg';
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
-import {changePassword, checkIfHasPassword, fetchJwtToken, resetPassword} from "../../../../api/authAPI.js";
+import {changePassword, checkIfHasPassword, fetchJwtToken, logoutUser, resetPassword} from "../../../../api/authAPI.js";
 import {fetchBookingHistory, updateProfile} from "../../../../api/userAPI.js";
 import BookingHistory from "../BookingHistory/Booking History.jsx";
 import ChangePass from "../ChangePass/ChangePass.jsx";
-import {useNavigate} from "react-router-dom";
 import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
 function RightContainer({ selectedOption }) {
@@ -21,7 +20,6 @@ function RightContainer({ selectedOption }) {
     const [error, setError] = useState(null);
     const fetchCalled = useRef(false);
     const [message, setMessage] = useState('');
-    const navigate= useNavigate();
     const [hasPassword, setHasPassword] = useState(false);
     useEffect(() => {
         const fetchUserData = async () => {
@@ -34,7 +32,7 @@ function RightContainer({ selectedOption }) {
                 setHasPassword(hasPasswordResult);
             } else {
                 showAlert("Your session is expired, login again!");
-                navigate('/login');
+                logoutUser();
             }
         };
 

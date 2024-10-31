@@ -17,3 +17,65 @@
 .option a:hover {
     color: #ff0000;
 }
+.option {
+    flex:1;
+}
+.search-bar {
+    flex:2;
+    width: 100%;
+    position: relative;
+}
+.search-bar input {
+    height: 30px;
+    width: 100%;
+    padding: 8px;
+    margin-top:0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+.film-dropdown-overlay {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #333;
+    color: #fff;
+    border-radius: 4px;
+    max-height: 600px; /* Increased height to show more items */
+    overflow-y: auto;
+    z-index: 1000;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    margin-top: 5px;
+}
+
+/* Other CSS remains the same */
+
+.film-dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.film-dropdown-item img {
+    width: 40px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.film-dropdown-item .film-info .film-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.film-dropdown-item .film-info .film-subtitle {
+    font-size: 12px;
+    color: #ccc;
+}

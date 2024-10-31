@@ -15,3 +15,23 @@
     width: 90%;
     height: 100%;
 }
+.header .container > * {
+    display: flex;
+    align-items: center;
+}
+
+.header .container .main-page-logo {
+    flex: 1; /* Make logo take up some space on the left */
+}
+
+.header .container .option-list {
+    flex: 2; /* Center options in the middle and give them more space */
+    display: flex;
+    justify-content: center;
+}
+
+.header .container .user-actions {
+    flex: 1; /* Position user actions (HeaderUser or LoginBtn) on the right */
+    display: flex;
+    justify-content: flex-end;
+}

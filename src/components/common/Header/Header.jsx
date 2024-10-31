@@ -13,14 +13,18 @@ function Header() {
     return (
         <div className="header">
             <div className="container">
-                <MainPageLogo />
-                <OptionList />
-                {
-                    user ?
-                        <HeaderUser user={user} /> : <LoginBtn to={"/login"} />
-                }
+                <div className="main-page-logo">
+                    <MainPageLogo/>
+                </div>
+                <div className="option-list">
+                    <OptionList/>
+                </div>
+                <div className="user-actions">
+                    {user ? <HeaderUser user={user}/> : <LoginBtn to={"/login"}/>}
+                </div>
             </div>
         </div>
+
     );
 }
 

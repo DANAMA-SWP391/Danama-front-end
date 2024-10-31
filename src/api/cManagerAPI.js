@@ -116,7 +116,7 @@ export const fetchDeleteRoom = async (roomId) => {
             },
             body: JSON.stringify({
                 action: 'delete',
-                room: { roomId: roomId }
+                roomId: roomId,
             }),
         });
 
@@ -125,12 +125,13 @@ export const fetchDeleteRoom = async (roomId) => {
         }
 
         const data = await response.json();
-        return data;
+        return data; // Return success and message from the server
     } catch (error) {
         console.error('Error deleting room:', error);
-        return false;
+        return { success: false, message: 'Error deleting room.' };
     }
 };
+
 
 export const fetchDeleteSeat = async (seatId) => {
     try {
@@ -225,10 +226,10 @@ export const fetchAddRoom = async (room) => {
         }
 
         const data = await response.json();
-        return data;
+        return data; // Return success and message from the server
     } catch (error) {
         console.error('Error adding room:', error);
-        return false;
+        return { success: false, message: 'Error adding room.' };
     }
 };
 
@@ -257,8 +258,6 @@ export const fetchAddSeat = async (seat) => {
     }
 };
 
-
-
 export const fetchUpdateRoom = async (room) => {
     try {
         const response = await fetch('http://localhost:8080/DANAMA_war_exploded/RoomController', {
@@ -276,10 +275,11 @@ export const fetchUpdateRoom = async (room) => {
             throw new Error(`Error: ${response.status}`);
         }
 
-        return true;
+        const data = await response.json();
+        return data; // Return success and message from the server
     } catch (error) {
         console.error('Error updating room:', error);
-        return false;
+        return { success: false, message: 'Error updating room.' };
     }
 };
 
@@ -292,10 +292,8 @@ export const fetchChangeSeatType = async (seat) => {
             },
             body: JSON.stringify({
                 action: 'changeSeatType',
-                // seat: { seatId: seatId, type: newType }
                 seat: seat
-                }
-            ),
+            }),
         });
 
         if (!response.ok) {
@@ -427,33 +425,6 @@ export const fetchDeleteMovieRequest = async (movierequestId) => {
         return false;
     }
 };
-
-// export const fetchViewMovieRequest = async (requestId) => {
-//     try {
-//         const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieRequestController', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({
-//                 action: 'view',
-//                 movie: { movieId: movieId }  // Truyền đối tượng movie với movieId
-//             }),
-//         });
-//
-//         const result = await response.json();
-//
-//         if (result.success) {
-//             return result.movie;  // Trả về thông tin movie nếu thành công
-//         } else {
-//             throw new Error('Movie not found or error occurred');
-//         }
-//     } catch (error) {
-//         console.error('Error fetching movie:', error);
-//         return null;
-//     }
-// };
-
 
 export const fetchViewMovieRequest = async(requestId) => {
     const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieRequestController', {

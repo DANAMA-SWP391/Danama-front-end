@@ -22,11 +22,15 @@ function ShowtimeCard({film, showtime, isValid}) {
     const [user, setUser] = useState(null); // Store user data here
     const navigate = useNavigate();
     const seatsInfo = [
-        ["Booked", "black"], ["Selected", "#BCB3B3"], ["Standard", "#1BA0D4"], ["VIP", "#D64242"]
+        ["Booked", "black"], ["Selected", "#BCB3B3"], ["Standard", "#1BA0D4"], ["VIP", "#D64242"], ['Couple','#FFD700']
     ];
     const getSeatColor = (type) => {
         switch (type) {
+            case 'Couple':
+                return '#FFD700';
             case 'Booked':
+                return 'black';
+            case 'Booked-Couple':
                 return 'black';
             case 'Selected':
                 return '#BCB3B3';
@@ -169,6 +173,8 @@ function ShowtimeCard({film, showtime, isValid}) {
                         seats={seats}
                         basePrice={showtime.basePrice}
                         getSeatColor={getSeatColor}
+                        numberOfRows={showtime.room.numberOfRows}
+                        numberOfColumns={showtime.room.numberOfColumns}
                     />
                     <div className="seats-info">
                         {seatsInfo.map((info, index) => (

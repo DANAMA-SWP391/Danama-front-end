@@ -1,14 +1,25 @@
 
+/*.cmanagerseats {*/
+/*    display: grid;*/
+/*    grid-gap: 10px; !* Space between seats *!*/
+/*    margin-top: 20px;*/
+/*    justify-content: center; !* Center the entire seat layout *!*/
+/*}*/
+
+/*.seat-row {*/
+/*    display: contents;*/
+/*}*/
 .cmanagerseats {
-    display: grid;
-    grid-template-columns: repeat(17, 50px); /* 17 cột với kích thước ghế là 50px */
-    grid-gap: 15px; /* Khoảng cách giữa các ghế */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers rows horizontally */
     margin-top: 20px;
-    justify-content: center; /* Canh giữa toàn bộ layout ghế */
+    gap: 10px; /* Space between rows */
 }
 
 .seat-row {
-    display: contents;
+    display: flex; /* Flexbox to allow individual widths */
+    gap: 10px; /* Space between seats */
 }
 
 .CManagerSeat-container {
@@ -16,8 +27,6 @@
     justify-content: center;
     align-items: center;
 }
-
-
 
 .cmanager-seat, .empty-seat {
 
@@ -33,14 +42,6 @@
     border: none; /* Loại bỏ viền */
     margin: 0; /* Đảm bảo không có margin làm lệch ghế */
     padding: 0; /* Loại bỏ padding */
-}
-
-
-.cmanager-seat {
-    background-color: #3498db; /* Màu ghế Standard */
-}
-.cmanager-seat.vip {
-    background-color: #e74c3c; /* Màu đỏ cho ghế VIP */
 }
 
 
@@ -89,4 +90,3 @@
     transform: scale(1.1); /* Phóng to nhẹ để nổi bật */
     transition: background-color 0.3s, border 0.3s, transform 0.3s; /* Hiệu ứng chuyển mượt mà */
 }
-

@@ -11,20 +11,22 @@ import { useNavigate } from 'react-router-dom';
 import { MdDeleteOutline } from "react-icons/md";
 import { MdEventSeat } from "react-icons/md";
 import { FaPencilAlt } from "react-icons/fa";
+import {useCustomAlert} from "../../../utils/CustomAlertContext.jsx";
 
 function RoomManagement() {
+    const showAlert = useCustomAlert();
     const [rooms, setRooms] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    const [formData, setFormData] = useState({ roomId: '', name: '', numberOfSeat: '' });
+    const [formData, setFormData] = useState({ roomId: '', name: '', numberOfSeat: '', numberOfRows: 6, numberOfColumns: 17 });
     const [currentPage, setCurrentPage] = useState(1);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [roomToDelete, setRoomToDelete] = useState(null);
-    const navigate = useNavigate();
     const [error, setError] = useState('');
+    const [deleteError, setDeleteError] = useState(''); // Error message for delete action
 
-
+    const navigate = useNavigate();
     const roomsPerPage = 10;
     const storagecinema = localStorage.getItem('cinema');
     const cinema = JSON.parse(storagecinema);
@@ -35,6 +37,7 @@ function RoomManagement() {
         setLoading(true);
         try {
             const data = await fetchRoomList(cinemaId);
+            console.log(data.rooms);
             setRooms(data.rooms || []);
         } catch (error) {
             console.error('Error fetching booking list:', error);
@@ -49,33 +52,43 @@ function RoomManagement() {
     // Handle room deletion
     const handleDeleteRoom = async () => {
         const result = await fetchDeleteRoom(roomToDelete);
-        if (result) {
+        if (result.success) {
             setRooms(rooms.filter(room => room.roomId !== roomToDelete));
             setIsDeleteModalOpen(false);
+            setDeleteError('');
+            showAlert("Delete room successfully!");
         } else {
-            console.error('Failed to delete room');
+            setDeleteError(result.message || 'Failed to delete room');
         }
     };
 
     const handleNavigate = (room) => {
-        navigate(`/seat-management/${room.roomId}` , {state: {room}}) ;
+        console.log(room);
+        navigate(`/seat-management/${room.roomId}`, { state: { room } });
     };
 
     const openDeleteModal = (roomId) => {
         setRoomToDelete(roomId);
+        setDeleteError('');
         setIsDeleteModalOpen(true);
     };
 
     const openAddRoomModal = () => {
         setIsEdit(false);
-        setFormData({ name: ''});
+        setFormData({ name: '', numberOfRows: 6, numberOfColumns: 17 });
         setError('');
         setIsModalOpen(true);
     };
 
     const openUpdateRoomModal = (room) => {
         setIsEdit(true);
-        setFormData({ roomId: room.roomId, name: room.name, numberOfSeat: room.numberOfSeat});
+        setFormData({
+            roomId: room.roomId,
+            name: room.name,
+            numberOfSeat: room.numberOfSeat,
+            numberOfRows: room.numberOfRows,
+            numberOfColumns: room.numberOfColumns
+        });
         setError('');
         setIsModalOpen(true);
     };
@@ -86,22 +99,52 @@ function RoomManagement() {
             return;
         }
 
+        if (!formData.numberOfRows || formData.numberOfRows <= 0) {
+            setError('Number of Rows must be greater than 0.');
+            return;
+        }
+
+        if (!formData.numberOfColumns || formData.numberOfColumns <= 0) {
+            setError('Number of Columns must be greater than 0.');
+            return;
+        }
+
+
         const dataToSend = {
             name: formData.name,
-            numberOfSeat: formData.numberOfSeat, // Keep the existing number of seats
-            cinema: { cinemaId: cinemaId }
+            numberOfSeat: formData.numberOfSeat,
+            cinema: { cinemaId: cinemaId },
+            numberOfRows: formData.numberOfRows,
+            numberOfColumns: formData.numberOfColumns
         };
 
         if (isEdit) {
-            await fetchUpdateRoom({ ...dataToSend, roomId: formData.roomId });
-            setRooms(rooms.map(room => room.roomId === formData.roomId ? { ...dataToSend, roomId: formData.roomId } : room));
-        } else {
-            await fetchAddRoom(dataToSend);
-            await getRooms();
-        }
-        setIsModalOpen(false);
-        setError('');
+            const result = await fetchUpdateRoom({ ...dataToSend, roomId: formData.roomId });
+            if (result.success) {
+                // Find the room in the current rooms list and update it
+                setRooms(prevRooms =>
+                    prevRooms.map(room =>
+                        room.roomId === formData.roomId ? { ...room, ...dataToSend } : room
+                    )
+                );
 
+                setIsModalOpen(false); // Close the modal
+
+                // Display a smooth success message (e.g., toast notification)
+                showAlert("Update room successfully!");
+            } else {
+                setError(result.message || 'Failed to update room');
+            }
+        } else {
+            const result = await fetchAddRoom(dataToSend);
+            if (result.success) {
+                await getRooms();
+                setIsModalOpen(false);
+                showAlert("Add room successfully!");
+            } else {
+                setError(result.message || 'Failed to add room');
+            }
+        }
     };
 
     const handleChange = (e) => {
@@ -144,6 +187,8 @@ function RoomManagement() {
                                     <th>Room ID</th>
                                     <th>Room Name</th>
                                     <th>Num of Seat</th>
+                                    <th>Rows</th>
+                                    <th>Cols</th>
                                     <th className="icon-column">Edit seat</th>
                                     <th className="icon-column">Delete room</th>
                                     <th className="icon-column">Update room</th>
@@ -155,6 +200,8 @@ function RoomManagement() {
                                         <td>{room.roomId}</td>
                                         <td>{room.name}</td>
                                         <td>{room.numberOfSeat}</td>
+                                        <td>{room.numberOfRows}</td>
+                                        <td>{room.numberOfColumns}</td>
                                         <td>
                                             <Button className="edit-seat-button" onClick={() => handleNavigate(room)}>
                                                 <span className="icon"><MdEventSeat style={{fontSize: '20px'}}/></span>
@@ -212,9 +259,9 @@ function RoomManagement() {
                             <h2 className="modal-title">{isEdit ? "Update Room" : "Add Room"}</h2>
                         </div>
                         <div className="modal-body">
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                                 <div>
-                                    <div className="label-group" >
+                                    <div className="label-group">
                                         <label>Room Name:</label>
                                         {error && <p className="error-message">{error}</p>}
                                     </div>
@@ -224,6 +271,26 @@ function RoomManagement() {
                                         value={formData.name}
                                         onChange={handleChange}
                                         required
+                                    />
+                                </div>
+                                <div>
+                                    <label>Rows:</label>
+                                    <input
+                                        type="number"
+                                        name="numberOfRows"
+                                        value={formData.numberOfRows}
+                                        onChange={handleChange}
+                                        min="1"
+                                    />
+                                </div>
+                                <div>
+                                    <label>Columns:</label>
+                                    <input
+                                        type="number"
+                                        name="numberOfColumns"
+                                        value={formData.numberOfColumns}
+                                        onChange={handleChange}
+                                        min="1"
                                     />
                                 </div>
                                 <div className="modal-footer">
@@ -245,6 +312,7 @@ function RoomManagement() {
                         </div>
                         <div className="modal-body">
                             <p>Are you sure you want to delete this room?</p>
+                            {deleteError && <p className="error-message">{deleteError}</p>}
                         </div>
                         <div className="modal-footer">
                             <Button onClick={handleDeleteRoom}>Yes</Button>
@@ -256,4 +324,5 @@ function RoomManagement() {
         </div>
     );
 }
+
 export default RoomManagement;
