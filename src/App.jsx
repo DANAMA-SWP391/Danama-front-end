@@ -24,8 +24,9 @@ import RoomManagement from "./pages/cManager-Pages/room-management-page/room-man
 import CinemaDashboard from "./pages/cManager-Pages/dashboard-page/dash-board.jsx";
 import SeatManagement from "./pages/cManager-Pages/seat-management-page/seat-management.jsx";
 import ShowtimeManagement from "./pages/cManager-Pages/showtime-management-page/showtime-management.jsx";
-import TestPage from "./TestAdminMovieRequest/TestPage.jsx";
 import MovieRequestManagement from "./pages/admin-pages/movie-request-management/movie-request-management.jsx";
+import TestComponent from "./test/file.jsx";
+import CManagerMovieRequestManagement from "./pages/cManager-Pages/cmanager-movie-request/cmanager-movie-request.jsx";
 
 // import Payment from "./pages/payment-page/payment-page.jsx";
 
@@ -56,6 +57,7 @@ function App() {
                             path="/movie-management/movie-requests"
                             element={<ProtectedRoute element={<MovieRequestManagement />} requiredRole={1} />}
                         />
+                        <Route path="/movie-request" element={<ProtectedRoute element={<CManagerMovieRequestManagement/>} requiredRole={2}/>}/>
                         <Route path="/list-booking" element={<ProtectedRoute element={<BookingList/>} requiredRole={2}/>}/>
                         <Route path="/room-management" element={<ProtectedRoute element={<RoomManagement/>} requiredRole={2}/>}/>
                         <Route path="/showtime-management" element={<ProtectedRoute element={<ShowtimeManagement/>} requiredRole={2}/>}/>
@@ -81,9 +83,8 @@ function App() {
                         <Route path="/film-list" element={<FilmListPage/>}/>
                         <Route path="/film-page" element={<FilmPage/>}/>
                         <Route path="/payment" element={<Payment/>}/>
+                        <Route path="/test" element={<TestComponent/>}/>
 
-                        <Route path="/test" element={<TestPage/>}/>
-                        {/*<Route path="/movie-requests" element={<MovieRequestManagement/>}/>*/}
                     </Routes>
                 </Router>
             </CustomAlertProvider>
