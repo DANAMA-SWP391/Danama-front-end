@@ -24,6 +24,7 @@ import RoomManagement from "./pages/cManager-Pages/room-management-page/room-man
 import CinemaDashboard from "./pages/cManager-Pages/dashboard-page/dash-board.jsx";
 import SeatManagement from "./pages/cManager-Pages/seat-management-page/seat-management.jsx";
 import ShowtimeManagement from "./pages/cManager-Pages/showtime-management-page/showtime-management.jsx";
+import MovieRequestManagement from "./pages/admin-pages/movie-request-management/movie-request-management.jsx";
 import TestComponent from "./test/file.jsx";
 import MovieRequestManagement from "./pages/cManager-Pages/cmanager-movie-request/cmanager-movie-request.jsx";
 
@@ -51,6 +52,10 @@ function App() {
                         <Route
                             path="/cinema-management"
                             element={<ProtectedRoute element={<CinemaManagement/>} requiredRole={1}/>}
+                        />
+                        <Route
+                            path="/movie-management/movie-requests"
+                            element={<ProtectedRoute element={<MovieRequestManagement />} requiredRole={1} />}
                         />
                         <Route path="/movie-request" element={<ProtectedRoute element={<MovieRequestManagement/>} requiredRole={2}/>}/>
                         <Route path="/list-booking" element={<ProtectedRoute element={<BookingList/>} requiredRole={2}/>}/>

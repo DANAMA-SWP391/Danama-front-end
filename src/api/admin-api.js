@@ -413,6 +413,88 @@ export const fetchAdminDashBoardPage = async () => {
     }
 };
 
+// Fetch danh sách yêu cầu phim đang chờ duyệt
+export const fetchPendingMovieRequests = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/AdminMovieRequestController', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        // Parse JSON từ phản hồi
+        const data = await response.json();
+        console.log('Received pending requests data:', data); // Log dữ liệu nhận được
+
+        // Trả về danh sách yêu cầu phim nếu có
+        return data.pendingRequests;
+    } catch (error) {
+        console.error('Error fetching pending movie requests:', error.message);
+        return null;
+    }
+};
+// Accept movie request API
+export const acceptMovieRequest = async (requestId, movieId) => {
+    try {
+        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/AdminMovieRequestController', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 'accept',
+                requestId: requestId,
+                movieId: movieId,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Accept movie request response:', data); // Log response
+
+        return data.success;
+    } catch (error) {
+        console.error('Error accepting movie request:', error.message);
+        return false;
+    }
+};
+
+// Reject movie request API
+export const rejectMovieRequest = async (requestId, movieId) => {
+    try {
+        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/AdminMovieRequestController', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 'reject',
+                requestId: requestId,
+                movieId: movieId,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Reject movie request response:', data); // Log response
+
+        return data.success;
+    } catch (error) {
+        console.error('Error rejecting movie request:', error.message);
+        return false;
+    }
+};
 
 
 

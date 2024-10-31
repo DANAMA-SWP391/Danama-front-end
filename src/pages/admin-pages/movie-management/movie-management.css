@@ -38,6 +38,18 @@
     transition: background-color 0.3s ease;
 }
 
+.movie-request-btn {
+    background-color: #1f70c8;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+
 .add-movie-btn:hover {
     background-color: #45a049;
 }
