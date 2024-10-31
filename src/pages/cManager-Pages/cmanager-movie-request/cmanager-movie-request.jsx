@@ -17,7 +17,7 @@ import Modal from "../../../components/common/Modal/Modal.jsx";
 
 
 
-function MovieRequestManagement(){
+function CManagerMovieRequestManagement(){
     const showAlert = useCustomAlert();
     const [movierequests, setMovierequests] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -612,4 +612,4 @@ return (
     </div>
 );
 }
-export default MovieRequestManagement;
+export default CManagerMovieRequestManagement;
