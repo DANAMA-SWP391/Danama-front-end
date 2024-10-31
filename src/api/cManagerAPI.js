@@ -426,33 +426,6 @@ export const fetchDeleteMovieRequest = async (movierequestId) => {
     }
 };
 
-// export const fetchViewMovieRequest = async (requestId) => {
-//     try {
-//         const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieRequestController', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({
-//                 action: 'view',
-//                 movie: { movieId: movieId }  // Truyền đối tượng movie với movieId
-//             }),
-//         });
-//
-//         const result = await response.json();
-//
-//         if (result.success) {
-//             return result.movie;  // Trả về thông tin movie nếu thành công
-//         } else {
-//             throw new Error('Movie not found or error occurred');
-//         }
-//     } catch (error) {
-//         console.error('Error fetching movie:', error);
-//         return null;
-//     }
-// };
-
-
 export const fetchViewMovieRequest = async(requestId) => {
     const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieRequestController', {
         method: 'POST',

@@ -25,7 +25,6 @@ import CinemaDashboard from "./pages/cManager-Pages/dashboard-page/dash-board.js
 import SeatManagement from "./pages/cManager-Pages/seat-management-page/seat-management.jsx";
 import ShowtimeManagement from "./pages/cManager-Pages/showtime-management-page/showtime-management.jsx";
 import MovieRequestManagement from "./pages/admin-pages/movie-request-management/movie-request-management.jsx";
-import TestComponent from "./test/file.jsx";
 import CManagerMovieRequestManagement from "./pages/cManager-Pages/cmanager-movie-request/cmanager-movie-request.jsx";
 
 // import Payment from "./pages/payment-page/payment-page.jsx";
@@ -83,7 +82,6 @@ function App() {
                         <Route path="/film-list" element={<FilmListPage/>}/>
                         <Route path="/film-page" element={<FilmPage/>}/>
                         <Route path="/payment" element={<Payment/>}/>
-                        <Route path="/test" element={<TestComponent/>}/>
 
                     </Routes>
                 </Router>
