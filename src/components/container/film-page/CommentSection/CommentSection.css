@@ -4,10 +4,6 @@
     position: relative;
 }
 
-.comment-section button {
-    margin-top: 50px;
-}
-
 .comment-section p {
     color: #000;
     font-size: 14px;
