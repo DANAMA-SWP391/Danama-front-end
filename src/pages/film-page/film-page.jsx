@@ -19,17 +19,28 @@ function FilmPage() {
     const { film } = location.state || {};
     const { user } = useContext(UserContext);
     const {showtimeList} = useContext(WebContext);
+
     const [isLogged, setIsLogged] = useState(false);
     const showtimes = showtimeList?.filter(showtime => showtime.movie.movieId === film.movieId) || [];
     const [reviews,setReviews] = useState([]);
     const randomTop5Films = filmList
         .sort(() => 0.4 - Math.random())
         .slice(0, 5);
+
+    const [isShowTimeLoaded, setIsShowTimeLoaded] = useState(false);
+
     useEffect(() => {
         if (user) {
             setIsLogged(true);
         }
     }, [user]);
+
+    useEffect(() => {
+        if(showtimeList && showtimeList.length > 0) {
+            setIsShowTimeLoaded(true);
+        }
+    }, [showtimeList]);
+
 
     // Fetch movie details on component mount
     useEffect(() => {
@@ -50,10 +61,15 @@ function FilmPage() {
         <div className="film-page">
             <Header />
             <MainSlide isLogged={isLogged} filmLists={[film]} />
-            {/*<ScreenShotSlider screenShots={screenShots} />*/}
-
-
-            <Schedule showtimes={showtimes} film={film} />
+            {
+                isShowTimeLoaded && (
+                    showtimes.length > 0 ? (
+                        <Schedule showtimes={showtimes} film={film} />
+                    ) : (
+                        <h1>No showtime available</h1>
+                    )
+                )
+            }
             <SeparateLine />
             <CommentSection reviews={reviews} movieId={film.movieId}/>
             <SeparateLine />

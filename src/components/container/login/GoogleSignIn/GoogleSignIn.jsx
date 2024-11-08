@@ -6,7 +6,6 @@ import {useContext} from "react";
 import {UserContext} from "../../../../utils/userContext.jsx";
 import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 
-
 function GoogleSignIn() {
     const showAlert = useCustomAlert();
     const { setUser } = useContext(UserContext);
