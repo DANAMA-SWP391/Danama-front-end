@@ -35,7 +35,7 @@ export async function login(email, password) {
         return data;
     } catch (error) {
         console.error('Error during login:', error);
-        return { success: false, message: 'An error occurred during login.' }; // Handle errors gracefully
+        return { success: false, message: 'An error occurred during login.' };
     }
 }
 

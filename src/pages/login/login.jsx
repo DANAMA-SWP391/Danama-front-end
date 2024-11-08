@@ -36,8 +36,8 @@ function Login() {
             if (!validateEmailAndPassword(email, password)) {
                 setContent("Invalid email or password!");
                 setIsSuccess(false);
-                setLoading(false); // Set loading to false if validation fails
-                return; // Exit the function early
+                setLoading(false);
+                return;
             }
 
             try {
@@ -61,7 +61,6 @@ function Login() {
             }
         }, 500); // Delay of 500ms
     };
-
 
     const handleLoginFailed = () => {
         setContent("Email or password is incorrect!");

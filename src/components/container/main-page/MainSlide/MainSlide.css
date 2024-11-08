@@ -11,22 +11,20 @@
 .body .main-slide .dots-container {
     position: absolute;
     bottom: 2%;
-    display: flex;
     margin: 0 auto;
-    justify-content: start;
-    align-items: center;
     width: 200px;
     height: 50px;
     z-index: 999;
-    overflow: hidden;
+
 }
 
 .body .main-slide .dots {
     position: absolute;
     bottom: 2%;
-    width: 400px;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
+    width: 200px;
 }
 
 .body .main-slide .dots .dot {
