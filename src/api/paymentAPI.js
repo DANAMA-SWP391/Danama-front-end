@@ -1,7 +1,9 @@
+import {API_URL} from "../utils/utility.js";
+
 export async function doVNPayPayment(amount, bookingId) {
     try {
         // Prepare the request to send to the backend (VNPAYPaymentController)
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/vnpay', {
+        const response = await fetch(API_URL+'vnpay', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -19,6 +21,7 @@ export async function doVNPayPayment(amount, bookingId) {
 
         // Check if the response is successful
         if (data.code === '00') {
+            console.log(data.data);
             // Open the VNPay payment gateway in a new tab
             window.open(data.data, '_blank');
         } else {
@@ -35,7 +38,7 @@ export async function doVNPayPayment(amount, bookingId) {
 
 export async function checkPaymentStatus(bookingId) {
     try {
-        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/checkPaymentStatus?bookingId=${bookingId}`);
+        const response = await fetch(API_URL+`checkPaymentStatus?bookingId=${bookingId}`);
         return await response.json(); // { status: 0, 1, or 2 }
     } catch (error) {
         console.error("Error checking payment status:", error);

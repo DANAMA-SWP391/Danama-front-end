@@ -1,8 +1,9 @@
 import {openDB} from "idb";
+import {API_URL} from "../utils/utility.js";
 
 export const fetchDetailMovie = async(movieId) => {
     try {
-        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/detailMovie?movieId=${movieId}`, {
+        const response = await fetch(API_URL+`detailMovie?movieId=${movieId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,7 +23,7 @@ export const fetchDetailMovie = async(movieId) => {
 };
 export const fetchDetailShowtime = async (showtimeId, roomId) => {
     try {
-        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/detailShowtime`, {
+        const response = await fetch(API_URL+`detailShowtime`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +45,7 @@ export const fetchDetailShowtime = async (showtimeId, roomId) => {
 export const fetchMoviePage = async() => {
     try {
         // Make an API call to the endpoint that handles the movie page retrieval
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/moviePage', {
+        const response = await fetch(API_URL+'moviePage', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -70,7 +71,7 @@ export const fetchMoviePage = async() => {
 export async function fetchShowtimePage() {
     try {
         // Make a GET request to the endpoint that handles the showtime page retrieval
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/showtimePage', {
+        const response = await fetch(API_URL+'showtimePage', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,7 +97,7 @@ export async function fetchShowtimePage() {
 export async function fetchHomePage() {
     try {
         // Make a GET request to the endpoint that handles the homepage retrieval
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/home', {
+        const response = await fetch(API_URL+'home', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -147,7 +148,7 @@ export async function upFileToAzure(file) {
         const formData = new FormData();
         formData.append("file", file);
 
-        const response = await fetch("http://localhost:8080/DANAMA_war_exploded/uploadFileToAzure", {
+        const response = await fetch(API_URL+"uploadFileToAzure", {
             method: "POST",
             body: formData,
         });

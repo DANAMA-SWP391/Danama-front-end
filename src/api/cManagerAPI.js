@@ -1,6 +1,8 @@
+import {API_URL} from "../utils/utility.js";
+
 export const fetchBookingListPage = async (cinemaId) => {
     try {
-        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/ListBookingController?cinemaId=${cinemaId}`, {
+        const response = await fetch(API_URL+`ListBookingController?cinemaId=${cinemaId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,7 +25,7 @@ export const fetchBookingListPage = async (cinemaId) => {
 
 export const fetchCinemaDashBoardPage = async (cinemaId) => {
     try {
-        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/managerDashBoard?cinemaId=${cinemaId}`, {
+        const response = await fetch(API_URL+`managerDashBoard?cinemaId=${cinemaId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -46,7 +48,7 @@ export const fetchCinemaDashBoardPage = async (cinemaId) => {
 
 export const fetchRoomList = async (cinemaId) => {
     try {
-        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/RoomController?cinemaId=${cinemaId}`, {
+        const response = await fetch(API_URL+`RoomController?cinemaId=${cinemaId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -67,7 +69,7 @@ export const fetchRoomList = async (cinemaId) => {
 
 export const fetchSeatList = async (roomId) => {
     try {
-        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/SeatController?roomId=${roomId}`, {
+        const response = await fetch(API_URL+`SeatController?roomId=${roomId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -88,7 +90,7 @@ export const fetchSeatList = async (roomId) => {
 
 export const fetchShowtimeList = async (cinemaId) => {
     try {
-        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/ShowtimeController?cinemaId=${cinemaId}`, {
+        const response = await fetch(API_URL+`ShowtimeController?cinemaId=${cinemaId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -109,7 +111,7 @@ export const fetchShowtimeList = async (cinemaId) => {
 
 export const fetchDeleteRoom = async (roomId) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/RoomController', {
+        const response = await fetch(API_URL+'RoomController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -135,7 +137,7 @@ export const fetchDeleteRoom = async (roomId) => {
 
 export const fetchDeleteSeat = async (seatId) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/SeatController', {
+        const response = await fetch(API_URL+'SeatController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -160,7 +162,7 @@ export const fetchDeleteSeat = async (seatId) => {
 
 export const fetchDeleteShowtime = async (showtimeId) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/ShowtimeController', {
+        const response = await fetch(API_URL+'ShowtimeController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -185,7 +187,7 @@ export const fetchDeleteShowtime = async (showtimeId) => {
 
 export const fetchAddShowtime = async (showtime) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/ShowtimeController', {
+        const response = await fetch(API_URL+'ShowtimeController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -210,7 +212,7 @@ export const fetchAddShowtime = async (showtime) => {
 
 export const fetchAddRoom = async (room) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/RoomController', {
+        const response = await fetch(API_URL+'RoomController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -235,7 +237,7 @@ export const fetchAddRoom = async (room) => {
 
 export const fetchAddSeat = async (seat) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/SeatController', {
+        const response = await fetch(API_URL+'SeatController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -260,7 +262,7 @@ export const fetchAddSeat = async (seat) => {
 
 export const fetchUpdateRoom = async (room) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/RoomController', {
+        const response = await fetch(API_URL+'RoomController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -276,7 +278,7 @@ export const fetchUpdateRoom = async (room) => {
         }
 
         const data = await response.json();
-        return data; // Return success and message from the server
+        return data;
     } catch (error) {
         console.error('Error updating room:', error);
         return { success: false, message: 'Error updating room.' };
@@ -285,7 +287,7 @@ export const fetchUpdateRoom = async (room) => {
 
 export const fetchChangeSeatType = async (seat) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/SeatController', {
+        const response = await fetch(API_URL+'SeatController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -309,7 +311,7 @@ export const fetchChangeSeatType = async (seat) => {
 
 export const fetchUpdateShowtime = async (showtime) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/ShowtimeController', {
+        const response = await fetch(API_URL+'ShowtimeController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -333,7 +335,7 @@ export const fetchUpdateShowtime = async (showtime) => {
 
 export const fetchMovieRequestList = async (cinemaId) => {
     try {
-        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/MovieRequestController?cinemaId=${cinemaId}`, {
+        const response = await fetch(API_URL+`MovieRequestController?cinemaId=${cinemaId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -354,7 +356,7 @@ export const fetchMovieRequestList = async (cinemaId) => {
 
 export const fetchAddMovieRequest = async (movierequest) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieRequestController', {
+        const response = await fetch(API_URL+'MovieRequestController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -379,7 +381,7 @@ export const fetchAddMovieRequest = async (movierequest) => {
 
 export const fetchUpdateMovieRequest = async (movierequest) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieRequestController', {
+        const response = await fetch(API_URL+'MovieRequestController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -403,7 +405,7 @@ export const fetchUpdateMovieRequest = async (movierequest) => {
 
 export const fetchDeleteMovieRequest = async (movierequestId) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieRequestController', {
+        const response = await fetch(API_URL+'MovieRequestController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -427,14 +429,14 @@ export const fetchDeleteMovieRequest = async (movierequestId) => {
 };
 
 export const fetchViewMovieRequest = async(requestId) => {
-    const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieRequestController', {
+    const response = await fetch(API_URL+'MovieRequestController', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
             action: 'view',
-            requestId: requestId, // Gửi requestId để lấy thông tin yêu cầu
+            requestId: requestId,
         }),
     });
 
@@ -442,8 +444,7 @@ export const fetchViewMovieRequest = async(requestId) => {
         throw new Error('Network response was not ok');
     }
 
-    const data = await response.json(); // Chuyển đổi phản hồi về định dạng JSON
-    // Kiểm tra và xử lý dữ liệu trả về
+    const data = await response.json();
     if (data.movieRequest) {
         console.log('Movie Request Details:', data.movieRequest);
     } else {
@@ -452,7 +453,7 @@ export const fetchViewMovieRequest = async(requestId) => {
 
     if (data.movie) {
         console.log('Movie Details:', data.movie);
-        console.log('Genres:', data.movie.genres); // In ra danh sách thể loại
+        console.log('Genres:', data.movie.genres);
     } else {
         console.error('No Movie found for the given requestId');
     }

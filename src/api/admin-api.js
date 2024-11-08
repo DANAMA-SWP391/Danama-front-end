@@ -1,7 +1,8 @@
-// Fetch danh sách rạp chiếu phim
+import {API_URL} from "../utils/utility.js";
+
 export const fetchCinemaList = async () => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/CinemaController', {
+        const response = await fetch(API_URL+'CinemaController', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,7 +23,7 @@ export const fetchCinemaList = async () => {
 // Thêm mới một rạp chiếu phim
 export const fetchAddCinema = async (cinema) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/CinemaController', {
+        const response = await fetch(API_URL+'CinemaController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -51,7 +52,7 @@ export const fetchAddCinema = async (cinema) => {
 // Cập nhật thông tin rạp chiếu phim
 export const fetchUpdateCinema = async (cinema) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/CinemaController', {
+        const response = await fetch(API_URL+'CinemaController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -80,7 +81,7 @@ export const fetchUpdateCinema = async (cinema) => {
 // Xóa rạp chiếu phim
 export const fetchDeleteCinema = async (cinemaId) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/CinemaController', {
+        const response = await fetch(API_URL+'CinemaController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -103,7 +104,7 @@ export const fetchDeleteCinema = async (cinemaId) => {
 // Thêm mới một tài khoản
 export const fetchAddAccount = async (account) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/AccountController', {
+        const response = await fetch(API_URL+'AccountController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -133,7 +134,7 @@ export const fetchAddAccount = async (account) => {
 // Xem chi tiết tài khoản
 export const fetchAccountById = async (UID) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/AccountController', {
+        const response = await fetch(API_URL+'AccountController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -165,7 +166,7 @@ export const fetchAccountById = async (UID) => {
 // Cấm tài khoản
 export const fetchBanAccount = async (UID) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/AccountController', {
+        const response = await fetch(API_URL+'AccountController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -188,7 +189,7 @@ export const fetchBanAccount = async (UID) => {
 // Fetch danh sách tài khoản
 export const fetchAccountList = async () => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/AccountController', {
+        const response = await fetch(API_URL+'AccountController', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -210,7 +211,7 @@ export const fetchAccountList = async () => {
 // Update Account
 export const fetchUpdateAccount = async (UID, updatedAccount) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/AccountController', {
+        const response = await fetch(API_URL+'AccountController', {
             method: 'POST', // Có thể sử dụng 'PUT' nếu bạn muốn đúng chuẩn REST
             headers: {
                 'Content-Type': 'application/json',
@@ -240,7 +241,7 @@ export const fetchUpdateAccount = async (UID, updatedAccount) => {
 // Lấy danh sách phim
 export const fetchMovieList = async () => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieController', {
+        const response = await fetch(API_URL+'MovieController', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -265,7 +266,7 @@ export const fetchMovieList = async () => {
 // Thêm mới một bộ phim
 export const fetchAddMovie = async (movie) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieController', {
+        const response = await fetch(API_URL+'MovieController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -307,7 +308,7 @@ export const fetchAddMovie = async (movie) => {
 // Xem chi tiết bộ phim
 export const fetchViewMovie = async (movieId) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieController', {
+        const response = await fetch(API_URL+'MovieController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -334,7 +335,7 @@ export const fetchViewMovie = async (movieId) => {
 
 export const fetchDeleteMovie = async (movieId) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieController', {
+        const response = await fetch(API_URL+'MovieController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -357,7 +358,7 @@ export const fetchDeleteMovie = async (movieId) => {
 export const fetchUpdateMovie = async (movie) => {
 
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/MovieController', {
+        const response = await fetch(API_URL+'MovieController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -384,28 +385,22 @@ export const fetchUpdateMovie = async (movie) => {
 
 export const fetchAdminDashBoardPage = async () => {
     try {
-        // Gửi yêu cầu GET đến API của backend để lấy toàn bộ dữ liệu cho trang dashboard admin
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/adminDashBoard', {
-            method: 'GET',  // Dùng GET để lấy dữ liệu
+        const response = await fetch(API_URL+'adminDashBoard', {
+            method: 'GET',
             headers: {
-                'Content-Type': 'application/json',  // Định dạng header để nhận JSON
+                'Content-Type': 'application/json',
             },
         });
-
-        // Kiểm tra xem response có hợp lệ hay không
         if (!response.ok) {
             throw new Error(`Error: ${response.status} - ${response.statusText}`);
         }
 
-        // Parse dữ liệu từ response thành JSON
         const data = await response.json();
 
-        // Kiểm tra nếu không nhận được dữ liệu hợp lệ
         if (!data) {
             throw new Error('No data received from server');
         }
 
-        // Trả về dữ liệu đã nhận được từ API
         return data;
     } catch (error) {
         console.error('Error fetching admin dashboard page:', error.message);
@@ -413,10 +408,9 @@ export const fetchAdminDashBoardPage = async () => {
     }
 };
 
-// Fetch danh sách yêu cầu phim đang chờ duyệt
 export const fetchPendingMovieRequests = async () => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/AdminMovieRequestController', {
+        const response = await fetch(API_URL+'AdminMovieRequestController', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -426,22 +420,17 @@ export const fetchPendingMovieRequests = async () => {
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
         }
-
-        // Parse JSON từ phản hồi
         const data = await response.json();
-        console.log('Received pending requests data:', data); // Log dữ liệu nhận được
-
-        // Trả về danh sách yêu cầu phim nếu có
+        console.log('Received pending requests data:', data);
         return data.pendingRequests;
     } catch (error) {
         console.error('Error fetching pending movie requests:', error.message);
         return null;
     }
 };
-// Accept movie request API
 export const acceptMovieRequest = async (requestId, movieId) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/AdminMovieRequestController', {
+        const response = await fetch(API_URL+'AdminMovieRequestController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -467,10 +456,9 @@ export const acceptMovieRequest = async (requestId, movieId) => {
     }
 };
 
-// Reject movie request API
 export const rejectMovieRequest = async (requestId, movieId) => {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/AdminMovieRequestController', {
+        const response = await fetch(API_URL+'AdminMovieRequestController', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

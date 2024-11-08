@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 
+export const API_URL= 'https://danamabe-bgedczc5awhadpgs.southeastasia-01.azurewebsites.net/';
+export const LOCAL_URL= 'http://localhost:8080/DANAMA_war_exploded/';
+
 export default function useDebounce(value, delay) {
     const [debouncedValue, setDebouncedValue] = useState(value);
 

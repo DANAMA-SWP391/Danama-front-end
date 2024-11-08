@@ -1,7 +1,9 @@
+import {API_URL} from "../utils/utility.js";
+
 export const fetchProfile = async (uid) => {
     try {
         // Make a GET request to the appropriate endpoint where your servlet is mapped
-        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/profile?uid=${uid}`, {
+        const response = await fetch(API_URL+`profile?uid=${uid}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,7 +28,7 @@ export const fetchProfile = async (uid) => {
 };
 
 export function updateProfile(user) {
-    return fetch('http://localhost:8080/DANAMA_war_exploded/profile', {
+    return fetch(API_URL+'profile', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -55,7 +57,7 @@ export function updateProfile(user) {
 
 export const fetchBookingHistory = async (uid) => {
     try {
-        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/bookingHistory?uid=${uid}`, {
+        const response = await fetch(API_URL+`bookingHistory?uid=${uid}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -79,7 +81,7 @@ export const fetchBookingHistory = async (uid) => {
 export async function addReview(review) {
     review.reviewId=0;
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/review', {
+        const response = await fetch(API_URL+'review', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -103,7 +105,7 @@ export async function addReview(review) {
 
 export async function updateReview(review) {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/review', {
+        const response = await fetch(API_URL+'review', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -126,7 +128,7 @@ export async function updateReview(review) {
 
 export async function deleteReview(reviewId) {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/review', {
+        const response = await fetch(API_URL+'review', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -149,7 +151,7 @@ export async function deleteReview(reviewId) {
 
 export async function addBooking(booking, tickets) {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/booking', {
+        const response = await fetch(API_URL+'booking', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -172,7 +174,7 @@ export async function addBooking(booking, tickets) {
 
 export async function cancelBooking(bookingId) {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/cancelBooking', {
+        const response = await fetch(API_URL+'cancelBooking', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -193,7 +195,7 @@ export async function cancelBooking(bookingId) {
 
 export async function getBookingDetail(bookingId) {
     try {
-        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/booking?bookingId=${bookingId}`, {
+        const response = await fetch(API_URL+`booking?bookingId=${bookingId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

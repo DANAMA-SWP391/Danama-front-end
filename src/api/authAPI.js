@@ -1,10 +1,11 @@
 import {useCustomAlert} from "../utils/CustomAlertContext.jsx";
+import {API_URL} from "../utils/utility.js";
 
 
 export async function login(email, password) {
 
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/login', {
+        const response = await fetch(API_URL+'login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +41,7 @@ export async function login(email, password) {
 
 export async function loginByGoogle(token) {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/loginGoogle', {
+        const response = await fetch(API_URL+'loginGoogle', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -71,7 +72,7 @@ export async function loginByGoogle(token) {
 
 export async function sendVerificationCode(email) {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/emailVerify',{
+        const response = await fetch(API_URL+'emailVerify',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -90,7 +91,7 @@ export async function sendVerificationCode(email) {
 }
 export async function register(user) {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/signUp',{
+        const response = await fetch(API_URL+'signUp',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -109,7 +110,7 @@ export async function register(user) {
 }
 export async function fetchListEmails() {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/signUp',{
+        const response = await fetch(API_URL+'signUp',{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -128,7 +129,7 @@ export async function fetchListEmails() {
 // authAPI.js
 export async function checkIfHasPassword(UID) {
     try {
-        const response = await fetch(`http://localhost:8080/DANAMA_war_exploded/changePassword?UID=${UID}`, {
+        const response = await fetch(API_URL+`changePassword?UID=${UID}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -149,7 +150,7 @@ export async function checkIfHasPassword(UID) {
 
 export async function changePassword(email,oldPassword,newPassword) {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/changePassword',{
+        const response = await fetch(API_URL+'changePassword',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -168,7 +169,7 @@ export async function changePassword(email,oldPassword,newPassword) {
 }
 export async function resetPassword(email,newPassword) {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/changePassword',{
+        const response = await fetch(API_URL+'changePassword',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -193,7 +194,7 @@ export async function fetchJwtToken() {
     }
 
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/validateJwtToken', {
+        const response = await fetch(API_URL+'validateJwtToken', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -235,7 +236,7 @@ export async function fetchJwtToken() {
 
 async function refreshJwtToken(token) {
     try {
-        const response = await fetch('http://localhost:8080/DANAMA_war_exploded/validateJwtToken', {
+        const response = await fetch(API_URL+'validateJwtToken', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
