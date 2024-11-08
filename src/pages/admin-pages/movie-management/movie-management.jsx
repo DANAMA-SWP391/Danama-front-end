@@ -550,12 +550,12 @@ const MovieManagement = () => {
                                                 value={selectedMovie.status}
                                                 onChange={(e) => setSelectedMovie({
                                                     ...selectedMovie,
-                                                    status: e.target.value
+                                                    status: Number(e.target.value) // Convert to number
                                                 })}
                                             >
-                                                <option value="1">Nowplaying</option>
-                                                <option value="2">Incomming Soon</option>
-                                                <option value="0">Inactive</option>
+                                                <option value={1}>Now Playing</option>
+                                                <option value={2}>Coming Soon</option>
+                                                <option value={0}>Inactive</option>
                                             </select>
                                             {errors.status && <p className="error-message">{errors.status}</p>}
                                         </label>
@@ -728,12 +728,12 @@ const MovieManagement = () => {
                                                 value={selectedMovie.status}
                                                 onChange={(e) => setSelectedMovie({
                                                     ...selectedMovie,
-                                                    status: e.target.value
+                                                    status: Number(e.target.value) // Convert to number
                                                 })}
                                             >
-                                                <option value="1">Nowplaying</option>
-                                                <option value="2">Incomming Soon</option>
-                                                <option value="0">Inactive</option>
+                                                <option value={1}>Now Playing</option>
+                                                <option value={2}>Coming Soon</option>
+                                                <option value={0}>Inactive</option>
                                             </select>
                                         </label>
                                         <label>
