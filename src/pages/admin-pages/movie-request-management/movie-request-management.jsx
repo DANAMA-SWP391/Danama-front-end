@@ -5,12 +5,14 @@ import './movie-request-management.css';
 import AdminHeader from "../../../components/common/AdminHeader/AdminHeader.jsx";
 import AdminSidebar from "../../../components/common/AdminSideBar/AdminSideBar.jsx";
 import BackSpace from "../../../assets/Icons/back-space.svg";
-import {useNavigate} from "react-router-dom"; // Tạo file CSS này để định dạng trang
+import {useNavigate} from "react-router-dom";
+import {useCustomAlert} from "../../../utils/CustomAlertContext.jsx"; // Tạo file CSS này để định dạng trang
 // eslint-disable-next-line react-hooks/rules-of-hooks
 
 
 
 const MovieRequestManagement = () => {
+    const showAlert = useCustomAlert();
     const [pendingRequests, setPendingRequests] = useState([]);
     const [selectedMovie, setSelectedMovie] = useState(null);  // Movie details for the selected movie
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -28,20 +30,20 @@ const MovieRequestManagement = () => {
     const handleAccept = async (requestId, movieId) => {
         const success = await acceptMovieRequest(requestId, movieId);
         if (success) {
-            console.log(`Request ${requestId} accepted.`);
+            showAlert(`Request ${requestId} accepted.`);
             loadPendingMovieRequests(); // Reload the list after accept
         } else {
-            console.log(`Failed to accept request ${requestId}.`);
+            showAlert(`Failed to accept request ${requestId}.`);
         }
     };
 
     const handleReject = async (requestId, movieId) => {
         const success = await rejectMovieRequest(requestId, movieId);
         if (success) {
-            console.log(`Request ${requestId} rejected.`);
+            showAlert(`Request ${requestId} rejected.`);
             loadPendingMovieRequests(); // Reload the list after reject
         } else {
-            console.log(`Failed to reject request ${requestId}.`);
+            showAlert(`Failed to reject request ${requestId}.`);
         }
     };
 

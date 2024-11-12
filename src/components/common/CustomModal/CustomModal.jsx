@@ -1,6 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types'; // Import prop-types
-// Import your CSS
+import PropTypes from 'prop-types';
+
 
 const CustomModal = ({ isOpen, onClose, children }) => {
     if (!isOpen) return null;
@@ -17,11 +16,10 @@ const CustomModal = ({ isOpen, onClose, children }) => {
     );
 };
 
-// Adding propTypes validation
 CustomModal.propTypes = {
-    isOpen: PropTypes.bool.isRequired,  // 'isOpen' should be a boolean and is required
-    onClose: PropTypes.func.isRequired, // 'onClose' should be a function and is required
-    children: PropTypes.node.isRequired, // 'children' can be any renderable node and is required
+    isOpen: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 export default CustomModal;

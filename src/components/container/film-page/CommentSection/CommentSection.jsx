@@ -52,7 +52,6 @@ function CommentSection({ reviews, movieId }) {
     const currentComments = commentList.slice(indexOfFirstComment, indexOfLastComment);
 
     const handleCommentClick = () => {
-        console.log(user);
         if (user) {
             if(user.roleId === 1 || user.roleId ===2) {
                 showAlert("You can't leave comment!!");

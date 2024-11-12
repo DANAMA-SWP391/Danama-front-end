@@ -37,7 +37,6 @@ function RoomManagement() {
         setLoading(true);
         try {
             const data = await fetchRoomList(cinemaId);
-            console.log(data.rooms);
             setRooms(data.rooms || []);
         } catch (error) {
             console.error('Error fetching booking list:', error);
@@ -63,7 +62,6 @@ function RoomManagement() {
     };
 
     const handleNavigate = (room) => {
-        console.log(room);
         navigate(`/seat-management/${room.roomId}`, { state: { room } });
     };
 

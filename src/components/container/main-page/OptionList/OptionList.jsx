@@ -31,7 +31,6 @@ function OptionList() {
     };
 
     const handleFilmSelect = (film) => {
-        console.log("Selected film:", film);
         setSearchTerm(""); // Clear the search term
         setFilteredFilms([]); // Clear the dropdown
     };

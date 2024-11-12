@@ -151,7 +151,6 @@ function CManagerMovieRequestManagement(){
 
     const handleSaveNewMovieRequest = async (e) => {
         e.preventDefault();
-        console.log("Submitting form..."); // Kiểm tra xem hàm có được gọi không
 
         if (!validateForm()) return;
 

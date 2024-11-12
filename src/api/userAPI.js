@@ -42,11 +42,6 @@ export function updateProfile(user) {
             return response.json();  // Parse JSON response
         })
         .then(data => {
-            if (data.sucess === "true") {
-                console.log('Profile updated successfully');
-            } else {
-                console.log('Profile update failed');
-            }
             return data;
         })
         .catch(error => {

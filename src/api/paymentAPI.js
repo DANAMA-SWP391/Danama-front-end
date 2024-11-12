@@ -21,7 +21,6 @@ export async function doVNPayPayment(amount, bookingId) {
 
         // Check if the response is successful
         if (data.code === '00') {
-            console.log(data.data);
             // Open the VNPay payment gateway in a new tab
             window.open(data.data, '_blank');
         } else {

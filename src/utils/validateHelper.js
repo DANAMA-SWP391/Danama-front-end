@@ -21,7 +21,6 @@ export async function validateExistEmail(email) {
     try {
         const data = await fetchListEmails();
         const emailList= data.listEmails;
-        console.log(emailList);// Fetch the list of emails
         // Check if the provided email exists in the email list
         return emailList.includes(email);  // Return true if exists, false otherwise
     } catch (error) {

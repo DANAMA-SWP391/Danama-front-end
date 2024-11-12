@@ -52,7 +52,6 @@ function RightContainer({ selectedOption }) {
                 try {
                     const historyData = await fetchBookingHistory(user.UID); // Use uid from user
                     setBookingHistory(historyData.bookings);
-                    console.log(historyData);
                 } catch (error) {
                     setError('Error fetching booking history');
                 }
@@ -106,7 +105,6 @@ function RightContainer({ selectedOption }) {
         } else if (updatedInfo.title === "Avatar") {
             updatedUser.avatar = updatedInfo.content;
         }
-        console.log(updatedUser);
         // Call the updateProfile API
         try {
             const response = await updateProfile(updatedUser);
