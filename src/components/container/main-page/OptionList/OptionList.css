@@ -7,6 +7,13 @@
     align-items: center;
 }
 
+.option-list p {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold; /* Make the text bold */
+    transition: 0.25s ease;
+}
+
 .option a {
     color: #ffffff;
     font-size: 14px;
@@ -39,8 +46,8 @@
     top: 100%;
     left: 0;
     right: 0;
-    background-color: #333;
-    color: #fff;
+    background-color: #FFFFFF;
+    color: #000000;
     border-radius: 4px;
     max-height: 600px; /* Increased height to show more items */
     overflow-y: auto;

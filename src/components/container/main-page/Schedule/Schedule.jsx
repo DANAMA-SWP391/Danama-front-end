@@ -58,15 +58,15 @@ function Schedule() {
     const {cinemaList, showtimeList, filmList} = useContext(WebContext);
     // Initialize the dates (actual dates stored as "MMM dd, yyyy")
     const dates = getNext7Days();
+    const [SelectedFilmList, setSelectedFilmList] = useState([]);
     const [isVisible, setIsVisible] = useState(false);
     const [sortByPrice, setSortByPrice] = useState(false);
     const [sortOrder, setSortOrder] = useState('desc');
-    const [selectedCinema, setSelectedCinema] = useState(null);
+    const [selectedCinema, setSelectedCinema] = useState(cinemaList[0]);
     const [selectedDate, setSelectedDate] = useState(formatDate(dates[0])); // Track selected date (default to the first date in "MMM dd, yyyy" format)
     useEffect(() => {
         if (cinemaList && cinemaList.length > 0) {
-            const defaultCinema = cinemaList.find(cinema => cinema.name === 'CGV');
-            setSelectedCinema(defaultCinema);
+            setSelectedCinema(cinemaList[0]);
         }
     }, [cinemaList]);
     // Function to sort cinemas by price range based on sort order
@@ -171,7 +171,7 @@ function Schedule() {
         };
     }, []);
 
-
+    const filteredFilms = filterFilmsByCinemaAndDate(selectedCinema?.cinemaId, selectedDate);
 
     return (
         <div className={`schedule-section ${isVisible ? 'visible' : ''}`}>
@@ -256,7 +256,7 @@ function Schedule() {
                                     })}
                                 </div>
                                 <div className="films-list">
-                                    {filterFilmsByCinemaAndDate(selectedCinema?.cinemaId, selectedDate).map((film, index) => (
+                                    {filteredFilms.length === 0 ? <p>No films available on this day.</p> : filterFilmsByCinemaAndDate(selectedCinema?.cinemaId, selectedDate).map((film, index) => (
                                         <>
                                             <FilmCard key={index} film={film} showtimes={film.showtimes} />
                                             <SeparateLine />

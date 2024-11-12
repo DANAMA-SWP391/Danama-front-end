@@ -1,5 +1,5 @@
 import "./OptionList.css";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../../../utils/userContext.jsx";
 import {WebContext} from "../../../../utils/webContext.jsx";
 import FilmCard from "../../../common/FilmCard/FilmCard.jsx";
@@ -35,6 +35,22 @@ function OptionList() {
         setSearchTerm(""); // Clear the search term
         setFilteredFilms([]); // Clear the dropdown
     };
+
+    const handleClickOutside = (e) => {
+        if (e.target.closest(".search-bar")) {
+            return;
+        }
+        setSearchTerm("");
+        setFilteredFilms([]);
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    });
+
     return (
         <div className="option-list">
             <div className="option">
@@ -62,18 +78,22 @@ function OptionList() {
                     value={searchTerm}
                     onChange={handleSearch}
                 />
-                {searchTerm && filteredFilms.length > 0 && (
+                {searchTerm ? (
                     <div className="film-dropdown-overlay">
-                        {filteredFilms.map((film, index) => (
-                            <div
-                                key={film.id}
-                                onClick={() => handleFilmSelect(film)}
-                            >
-                                <FilmCard film={film} index={index}/>
-                            </div>
-                        ))}
+                        {filteredFilms.length > 0 ? (
+                            filteredFilms.map((film, index) => (
+                                <div
+                                    key={film.id}
+                                    onClick={() => handleFilmSelect(film)}
+                                >
+                                    <FilmCard film={film} index={index}/>
+                                </div>
+                            ))
+                        ) : (
+                            <p>No films available!</p>
+                        )}
                     </div>
-                )}
+                ) : null}
             </div>
         </div>
 
