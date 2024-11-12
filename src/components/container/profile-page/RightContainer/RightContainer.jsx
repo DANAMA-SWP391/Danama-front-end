@@ -143,7 +143,7 @@ function RightContainer({ selectedOption }) {
                 return (
                     <div>
                         <h2>Booking History</h2>
-                        <BookingHistory history={bookingHistory} /> {/* Pass booking history data */}
+                        {bookingHistory.length === 0 ? <p className={message}>No booking history</p> : <BookingHistory history={bookingHistory} />}
                     </div>
                 );
             case 'Change Password':

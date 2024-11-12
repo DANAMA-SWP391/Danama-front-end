@@ -4,6 +4,7 @@
     padding: 20px;
     width: 100%; /* Ensure the container takes up full width */
     margin: 0 auto; /* Center the content */
+    margin-left: 60px;
 }
 .message {
     text-align: center;
