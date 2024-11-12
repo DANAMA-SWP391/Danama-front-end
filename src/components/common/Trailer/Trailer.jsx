@@ -4,6 +4,7 @@ import ReactPlayer from 'react-player/youtube';
 import SoundBtn from "../SoundBtn/SoundBtn.jsx";
 import PlayBtn from "../PlayBtn/PlayBtn.jsx";
 
+// eslint-disable-next-line react/prop-types
 function Trailer({ url, onReady }) {
     const playerRef = useRef(null);
     const [isMuted, setIsMuted] = useState(true);
@@ -17,15 +18,11 @@ function Trailer({ url, onReady }) {
     }, [isLoaded]);
 
     const togglePlay = () => {
-        if (isPlaying) {
-            setIsPlaying(false);
-        } else {
-            setIsPlaying(true);
-        }
+        setIsPlaying(!isPlaying);
     };
 
     const toggleMute = () => {
-        setIsMuted((prevMuted) => !prevMuted);
+        setIsMuted(!isMuted);
     };
 
     useEffect(() => {
