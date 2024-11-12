@@ -476,7 +476,7 @@ export const rejectMovieRequest = async (requestId, movieId) => {
 
 export async function fetchAvailableManagers() {
     try {
-        const response = await fetch(LOCAL_URL+'list-available-managers');
+        const response = await fetch(API_URL+'list-available-managers');
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
