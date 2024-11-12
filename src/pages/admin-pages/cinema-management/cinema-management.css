@@ -71,7 +71,7 @@
     cursor: pointer;
 }
 
-select {
+.modal-content select {
     width: 500px;
     padding: 10px;
     border: 1px solid #ccc;
@@ -83,7 +83,7 @@ select {
     transition: border-color 0.3s ease;
 }
 
-select:focus {
+.modal-content select:focus {
     border-color: #4CAF50; /* Highlight border on focus */
     outline: none;
 }
