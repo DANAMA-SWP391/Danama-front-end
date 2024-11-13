@@ -60,7 +60,7 @@ function Slider({ filmLists, defaultFilmsPerSlide = 4 }) {
                     className="film-list"
                     style={{
                         width: `${(filmLists.length / filmsPerSlide) * 100}%`,
-                        transform: `translateX(-${currentSlide * (100 / filmsPerSlide)}%)`,
+                        transform: `translateX(-${currentSlide * (100 / filmLists.length)}%)`,
                         transition: 'transform 0.75s ease-in-out',
                     }}
                 >

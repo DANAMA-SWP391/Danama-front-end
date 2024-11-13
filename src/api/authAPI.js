@@ -17,9 +17,8 @@ export async function login(email, password) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
         const data = await response.json();
-         // Return the response data, which includes success and message
+
         if (data.success && data.jwtToken) {
-            // Store the JWT token in localStorage
             localStorage.setItem('jwtToken', data.jwtToken);
             if(data.user && data.user.roleId !== 0) {
                 localStorage.setItem('user', JSON.stringify(data.user));
@@ -52,19 +51,17 @@ export async function loginByGoogle(token) {
         }
 
         const data = await response.json();
-        // Return the response data, which includes success and message
+
         if (data.success && data.jwtToken) {
-            // Store the JWT token in localStorage
             localStorage.setItem('jwtToken', data.jwtToken);
             if(data.user.roleId !== 0) {
                 localStorage.setItem('user', JSON.stringify(data.user));
             }
-
         }
         return data;
     } catch (error) {
         console.error("Login failed:", error);
-        throw error;  // Optionally rethrow the error for further handling
+        throw error;
     }
 }
 

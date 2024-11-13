@@ -41,25 +41,25 @@ function Login() {
             }
 
             try {
-                const response = await login(email, password); // Use the login function
+                const response = await login(email, password);
 
                 if (response.success) {
                     if (response.user.roleId !== 0) {
                         setUser(response.user);
                     }
-                    handleLoginSuccess(response.user); // Call your success handler
+                    handleLoginSuccess(response.user);
                 } else {
-                    handleLoginFailed(); // Call your failure handler
-                    setContent(response.message || "Login failed!"); // Optionally set an error message
+                    handleLoginFailed();
+                    setContent(response.message || "Login failed!");
                 }
             } catch (error) {
                 console.error('Login error:', error); // Log the error
                 setContent("An error occurred during login.");
                 setIsSuccess(false);
             } finally {
-                setLoading(false); // Ensure loading is set to false at the end
+                setLoading(false);
             }
-        }, 500); // Delay of 500ms
+        }, 500);
     };
 
     const handleLoginFailed = () => {

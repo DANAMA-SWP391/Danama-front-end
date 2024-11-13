@@ -25,7 +25,7 @@ function ResetPass() {
         err: false,
         password: "",
         confirmPassword: "",
-        verificationCode: ""  // State to store the verification code from the backend
+        verificationCode: ""
     });
 
     const updateFormState = (newState) => {
