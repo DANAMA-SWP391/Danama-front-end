@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 import {WebContext} from "../../utils/webContext.jsx";
 import {fetchDetailMovie} from "../../api/webAPI.jsx";
 import ListFilms from "../../components/container/film-list-page/ListFilms/ListFilms.jsx";
+import  event_busy from "../../assets/Icons/event_busy.svg";
 
 function FilmPage() {
     const location = useLocation();
@@ -66,7 +67,10 @@ function FilmPage() {
                     showtimes.length > 0 ? (
                         <Schedule showtimes={showtimes} film={film} />
                     ) : (
-                        <h1>No showtime available</h1>
+                        <div className="no-schedule-notify">
+                            <h1>No showtime available</h1>
+                            <img src={event_busy} alt="No showtime available" />
+                        </div>
                     )
                 )
             }
