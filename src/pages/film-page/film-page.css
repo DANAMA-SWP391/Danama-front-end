@@ -16,3 +16,25 @@
 .film-page .others-films {
     margin: 10px;
 }
+
+.film-page .no-schedule-notify {
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    align-items: center;
+   padding-top: 40px;
+}
+
+.film-page .no-schedule-notify img {
+    width: 120px;
+    height: 120px;
+    margin-top: 40px;
+}
+
+.film-page .no-schedule-notify h1 {
+    font-size: 24px;
+    font-family: "Albert Sans semi-bold", sans-serif;
+    text-align: center;
+}
+
+

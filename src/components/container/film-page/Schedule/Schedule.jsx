@@ -28,8 +28,8 @@ function Schedule({showtimes, film}) {
 
     const [selectedCinema, setSelectedCinema] = useState(null);
     const [selectedDate, setSelectedDate] = useState(formatDate(dates[0]));
-    const [sortByPrice, setSortByPrice] = useState(false); // State to track sorting by price
-    const [sortOrder, setSortOrder] = useState('desc'); // Track ascending or descending sort order
+    const [sortByPrice, setSortByPrice] = useState(false);
+    const [sortOrder, setSortOrder] = useState('desc');
 
     useEffect(() => {
         if (cinemaList && cinemaList.length > 0) {
@@ -37,7 +37,7 @@ function Schedule({showtimes, film}) {
             setSelectedCinema(defaultCinema);
         }
     }, [cinemaList]);
-    // Handle the directions button click
+
     const handleDirectionOnClick = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -64,17 +64,14 @@ function Schedule({showtimes, film}) {
         }
     };
 
-    // Function to handle cinema logo click (set selected cinema)
     const handleCinemaClick = (cinema) => {
-        setSelectedCinema(cinema); // Set selected cinema
+        setSelectedCinema(cinema);
     };
 
-    // Function to handle date click
     const handleDateClick = (date) => {
-        setSelectedDate(formatDate(date)); // Store the actual date in "MMM dd, yyyy"
+        setSelectedDate(formatDate(date));
     };
 
-    // Function to sort cinemas by price range based on sort order
     const sortCinemasByPrice = (cinemas) => {
         return cinemas.sort((a, b) => {
             const priceA = getPriceRangeForCinema(a.cinemaId, showtimes);
@@ -83,14 +80,13 @@ function Schedule({showtimes, film}) {
             const maxPriceA = priceA ? priceA.maxPrice : 0;
             const maxPriceB = priceB ? priceB.maxPrice : 0;
 
-            return sortOrder === 'asc' ? maxPriceB - maxPriceA : maxPriceA - maxPriceB; // Ascending or descending
+            return sortOrder === 'asc' ? maxPriceB - maxPriceA : maxPriceA - maxPriceB;
         });
     };
 
-    // Handle the sorting toggle and update the sort order
     const handleSortByPrice = () => {
         setSortByPrice(true);
-        setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc'); // Toggle sort order
+        setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc');
     };
 
     return (
@@ -100,7 +96,7 @@ function Schedule({showtimes, film}) {
             {/* Date Selection */}
             <div className="dates">
                 {dates.map((date, index) => {
-                    const displayDate = getDisplayDate(date); // Get the ['Day in week', dd] format
+                    const displayDate = getDisplayDate(date);
                     return (
                         <ScheduleDate
                             key={index}
