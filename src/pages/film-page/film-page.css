@@ -20,14 +20,14 @@
 .film-page .no-schedule-notify {
     display: flex;
     flex-direction: column;
-    height: 350px;
+    height: 300px;
     align-items: center;
    padding-top: 40px;
 }
 
 .film-page .no-schedule-notify img {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     margin-top: 40px;
 }
 

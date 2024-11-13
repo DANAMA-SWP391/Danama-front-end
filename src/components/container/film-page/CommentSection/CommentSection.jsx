@@ -119,7 +119,6 @@ function CommentSection({ reviews, movieId }) {
             {isCommentBoxVisible && (
                 <CommentBox setIsCommentBoxVisible={setIsCommentBoxVisible} movieId={movieId} uid={user.UID}/>
             )}
-            <Button onClick={handleCommentClick}>Leave rate and comment?</Button>
 
             {/* Comments Header */}
             <div className="comment-section__header">
@@ -150,6 +149,7 @@ function CommentSection({ reviews, movieId }) {
                     Next
                 </Button>
             </div>
+            <Button onClick={handleCommentClick}>Leave rate and comment?</Button>
         </div>
 
     );
