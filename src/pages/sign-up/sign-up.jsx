@@ -27,7 +27,6 @@ function SignUp() {
     const handleButtonClick = async (name, email, phone, pass, confirmPass) => {
         let error = false;
         const emailExists = await validateExistEmail(email);
-        console.log(emailExists);
         if (!validateName(name)) {
             setContent("Name must be at least 3 characters long.");
             error = true;

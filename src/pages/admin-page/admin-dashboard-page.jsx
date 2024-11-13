@@ -15,7 +15,6 @@ function AdminDashboardPage() {
         const fetchData = async () => {
             try {
                 const data = await fetchAdminDashBoardPage();
-                console.log('Fetched data:', data); // Log dữ liệu để kiểm tra
                 setDashboardData(data);
                 setError(null);
             } catch (err) {

@@ -71,6 +71,23 @@
     cursor: pointer;
 }
 
+.modal-content select {
+    width: 500px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 16px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.modal-content select:focus {
+    border-color: #4CAF50; /* Highlight border on focus */
+    outline: none;
+}
+
 .input-error {
     border-color: red;
 }
@@ -79,6 +96,11 @@
     color: red;
     font-size: 12px;
     margin-top: 5px;
+}
+
+/* Adjust styles for form inputs for better consistency */
+input[type="text"], input[type="file"], select {
+    margin-bottom: 15px;
 }
 .pagination-controls {
     display: flex;

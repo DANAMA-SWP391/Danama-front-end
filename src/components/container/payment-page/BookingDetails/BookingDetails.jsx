@@ -93,7 +93,6 @@ function BookingDetails({bookingData, paymentMethod, bookingId}) {
 
         while (!paymentCompleted && retries < maxRetries) {
             const result = await checkPaymentStatus(bookingId);
-            console.log(result);
 
             if (result.status === 1) { // Status 1 indicates success
                 paymentCompleted = true;

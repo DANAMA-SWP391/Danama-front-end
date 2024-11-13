@@ -445,18 +445,6 @@ export const fetchViewMovieRequest = async(requestId) => {
     }
 
     const data = await response.json();
-    if (data.movieRequest) {
-        console.log('Movie Request Details:', data.movieRequest);
-    } else {
-        console.error('No Movie Request found');
-    }
-
-    if (data.movie) {
-        console.log('Movie Details:', data.movie);
-        console.log('Genres:', data.movie.genres);
-    } else {
-        console.error('No Movie found for the given requestId');
-    }
 
     return data;
 }

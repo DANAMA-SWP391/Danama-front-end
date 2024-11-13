@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
-import { fetchAddCinema, fetchCinemaList, fetchDeleteCinema, fetchUpdateCinema } from "../../../api/admin-api.js";
+import {
+    fetchAccountById,
+    fetchAddCinema,
+    fetchAvailableManagers,
+    fetchCinemaList,
+    fetchDeleteCinema,
+    fetchUpdateCinema
+} from "../../../api/admin-api.js";
 import CustomModal from "../../../components/common/CustomModal/CustomModal.jsx";
 import { upFileToAzure } from "../../../api/webAPI.jsx";
 import "./cinema-management.css";
@@ -18,7 +25,7 @@ const CinemaManagement = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalType, setModalType] = useState(''); // 'add' or 'edit'
     const [selectedFile, setSelectedFile] = useState(null);
-
+    const [availableManagers, setAvailableManagers] = useState([]);
 
     // Hàm reset state newCinema
     const resetForm = () => {
@@ -51,7 +58,9 @@ const CinemaManagement = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
         resetForm();
+        resetAvailableManagers(); // Reset available managers when closing the modal
     };
+
 
     // Hàm xử lý khi nhấn Cancel
     const handleCancel = () => {
@@ -75,24 +84,48 @@ const CinemaManagement = () => {
         getCinemas();
     }, []);
 
+    useEffect(() => {
+        const fetchManagers = async () => {
+            try {
+                const managers = await fetchAvailableManagers();
+                setAvailableManagers(managers);
+            } catch (err) {
+                console.error('Error fetching available managers:', err);
+            }
+        };
+        fetchManagers();
+    }, []);
+
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
     };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setNewCinema((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
+
+        // If changing the managerId, also update managerEmail
+        if (name === 'managerId') {
+            const selectedManager = availableManagers.find(manager => manager.UID === value);
+            setNewCinema((prevState) => ({
+                ...prevState,
+                managerId: value,
+                managerEmail: selectedManager ? selectedManager.email : '' // Set the new email if a manager is found
+            }));
+        } else {
+            setNewCinema((prevState) => ({
+                ...prevState,
+                [name]: value,
+            }));
+        }
     };
+
 
     const validateForm = () => {
         const errors = {};
         if (!newCinema.name.trim()) errors.name = 'Cinema name is required';
         if (!newCinema.address.trim()) errors.address = 'Address is required';
         if (!newCinema.description.trim()) errors.description = 'Description is required';
-        if (!newCinema.managerId.trim()) errors.managerId = 'Manager ID is required';
+        if (!newCinema.managerId.trim()) errors.managerId = 'Manager is required';
         setFormError(errors);
         return Object.keys(errors).length === 0;
     };
@@ -116,15 +149,16 @@ const CinemaManagement = () => {
 
         const success = await fetchAddCinema({ ...newCinema, logo: logoUrl });
         if (success) {
-            // alert('Cinema added successfully!');
-            // setCinemas([...cinemas, { ...newCinema, logo: logoUrl }]);
-            // handleCloseModal(); // Reset form và đóng modal sau khi thêm thành công
             showAlert('Cinema added successfully!');
 
             // Fetch the updated list of cinemas
             const updatedCinemas = await fetchCinemaList();
+            const updatedManagers = await fetchAvailableManagers();
             if (updatedCinemas) {
                 setCinemas(updatedCinemas);
+            }
+            if(updatedManagers) {
+                setAvailableManagers(updatedManagers);
             }
             setLoading(false);
             handleCloseModal(); // Reset form and close modal after successful addition
@@ -133,25 +167,55 @@ const CinemaManagement = () => {
         }
     };
 
-    const handleEditCinema = (cinema) => {
+    const handleEditCinema = async (cinema) => {
         setEditCinemaId(cinema.cinemaId);
+        let managerEmail = ''; // Default value for the email
+
+        if (cinema.managerId) {
+            // Check if the manager is already in availableManagers
+            let manager = availableManagers.find(mgr => mgr.UID === cinema.managerId);
+            if (!manager) {
+                // Fetch the manager's details if not already in availableManagers
+                const managerInfo = await fetchAccountById(cinema.managerId);
+                if (managerInfo) {
+                    managerEmail = managerInfo.email;
+                    // Add the current manager to availableManagers
+                    setAvailableManagers(prevManagers => [...prevManagers, managerInfo]);
+                }
+            } else {
+                // Use the existing manager data
+                managerEmail = manager.email;
+            }
+        }
+
         setNewCinema({
             cinemaId: cinema.cinemaId,
             name: cinema.name,
             logo: cinema.logo,
             address: cinema.address,
             description: cinema.description,
-            managerId: cinema.managerId
+            managerId: cinema.managerId,
+            managerEmail: managerEmail
         });
+
         setModalType('edit');
         setIsModalOpen(true);
     };
+
+    const resetAvailableManagers = async () => {
+        try {
+            const managers = await fetchAvailableManagers();
+            setAvailableManagers(managers);
+        } catch (err) {
+            console.error('Error resetting available managers:', err);
+        }
+    };
+
 
     const handleUpdateCinema = async () => {
         if (!validateForm()) {
             return;
         }
-
         let logoUrl = newCinema.logo;
         if (selectedFile) {
             const uploadedImageUrl = await upFileToAzure(selectedFile);
@@ -166,7 +230,14 @@ const CinemaManagement = () => {
         const success = await fetchUpdateCinema({ ...newCinema, logo: logoUrl });
         if (success) {
             showAlert('Cinema updated successfully!');
-            setCinemas(cinemas.map((cinema) => (cinema.cinemaId === newCinema.cinemaId ? { ...cinema, ...newCinema, logo: logoUrl } : cinema)));
+            const updatedManagers = await fetchAvailableManagers();
+            const updatedCinemas = await fetchCinemaList();
+            if (updatedCinemas) {
+                setCinemas(updatedCinemas);
+            }
+            if(updatedManagers) {
+                setAvailableManagers(updatedManagers);
+            }
             handleCloseModal(); // Reset form và đóng modal sau khi cập nhật thành công
         } else {
             showAlert('Failed to update cinema.');
@@ -290,14 +361,20 @@ const CinemaManagement = () => {
                                 />
                                 {formError.description && <p className="error-message">{formError.description}</p>}
 
-                                <input
-                                    type="text"
+                                <select
                                     name="managerId"
                                     value={newCinema.managerId}
                                     onChange={handleInputChange}
-                                    placeholder="Manager ID"
                                     className={formError.managerId ? 'input-error' : ''}
-                                />
+                                >
+                                    <option value="">Select Manager</option>
+                                    {availableManagers.map(manager => (
+                                        <option key={manager.UID} value={manager.UID}>
+                                            {manager.email}
+                                        </option>
+                                    ))}
+                                </select>
+
                                 {formError.managerId && <p className="error-message">{formError.managerId}</p>}
 
                                 <input type="file" accept="image/*" onChange={handleFileChange}/>
@@ -340,14 +417,21 @@ const CinemaManagement = () => {
                                 />
                                 {formError.description && <p className="error-message">{formError.description}</p>}
 
-                                <input
-                                    type="text"
+                                <select
                                     name="managerId"
                                     value={newCinema.managerId}
                                     onChange={handleInputChange}
-                                    placeholder="Manager ID"
                                     className={formError.managerId ? 'input-error' : ''}
-                                />
+                                >
+                                    <option value="">Select Manager</option>
+                                    {availableManagers.map(manager => (
+                                        <option key={manager.UID} value={manager.UID}>
+                                            {manager.email}
+                                        </option>
+                                    ))}
+                                </select>
+
+
                                 {formError.managerId && <p className="error-message">{formError.managerId}</p>}
 
                                 <button onClick={handleUpdateCinema}>Update</button>

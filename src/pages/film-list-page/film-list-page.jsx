@@ -49,7 +49,6 @@ function FilmListPage() {
                 "Inactive": 0
             };
             const statusValue = statusMapping[status];
-            console.log(statusValue);
             if (statusValue !== undefined) {
                 filtered = filtered.filter(film => film.status === statusValue);
             }

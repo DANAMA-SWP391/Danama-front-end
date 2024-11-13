@@ -17,7 +17,6 @@ export async function login(email, password) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
         const data = await response.json();
-        console.log(data);
          // Return the response data, which includes success and message
         if (data.success && data.jwtToken) {
             // Store the JWT token in localStorage
@@ -27,7 +26,6 @@ export async function login(email, password) {
             } else {
                 localStorage.clear();
             }
-            // console.log(data);
             if (data.user && data.user.roleId === 2) {
                 localStorage.setItem('cinema', JSON.stringify(data.cinema));
             }

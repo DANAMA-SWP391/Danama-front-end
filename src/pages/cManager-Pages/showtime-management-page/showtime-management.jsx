@@ -4,9 +4,10 @@ import "./showtime-management.css";
 import CManagerHeader from "../../../components/common/CManagerHeader/CManagerHeader.jsx";
 import {
     fetchAddShowtime,
+    fetchDeleteShowtime,
+    fetchRoomList,
     fetchShowtimeList,
     fetchUpdateShowtime,
-    fetchDeleteShowtime, fetchRoomList,
 } from "../../../api/cManagerAPI.js";
 import Button from "../../../components/common/Button/Button.jsx";
 import {MdDeleteOutline} from "react-icons/md";
@@ -264,10 +265,10 @@ function ShowtimeManagement() {
         const newStartTime = formData.startTime;
         const newEndTime = formData.endTime;
 
-        console.log("New showtime startTime:", formData.startTime);
-        console.log("New showtime endTime:", formData.endTime);
-        console.log("New showtime startTime (Date object):", newStartTime);
-        console.log("New showtime endTime (Date object):", newEndTime);
+        // console.log("New showtime startTime:", formData.startTime);
+        // console.log("New showtime endTime:", formData.endTime);
+        // console.log("New showtime startTime (Date object):", newStartTime);
+        // console.log("New showtime endTime (Date object):", newEndTime);
 
         // Check duplicate showtime
         const isConflict = showtimes.some((showtime) => {
@@ -281,30 +282,12 @@ function ShowtimeManagement() {
                 const existingStartTime = convertTo24HourFormat(showtime.startTime);
                 const existingEndTime = convertTo24HourFormat(showtime.endTime);
 
-
-                console.log("Checking against existing showtime:");
-                console.log("Existing showtime startTime:", showtime.startTime);
-                console.log("Existing showtime endTime:", showtime.endTime);
-                console.log("Existing startTime (Date object):", existingStartTime);
-                console.log("Existing endTime (Date object):", existingEndTime);
-                console.log("New StartTime:", newStartTime);
-                console.log("New EndTime:", newEndTime);
-                // Check duplicate
-                // return (
-                //     (newStartTime >= existingStartTime && newStartTime < existingEndTime) ||
-                //     (newEndTime > existingStartTime && newEndTime <= existingEndTime) ||
-                //     (newStartTime <= existingStartTime && newEndTime >= existingEndTime)
-                // );
-
                 // Make comparisons
-                const conflictResult = (
+                return (
                     (newStartTime >= existingStartTime && newStartTime < existingEndTime) ||
                     (newEndTime > existingStartTime && newEndTime <= existingEndTime) ||
                     (newStartTime <= existingStartTime && newEndTime >= existingEndTime)
                 );
-
-                console.log("Conflict detected:", conflictResult); // Kiểm tra kết quả so sánh
-                return conflictResult;
 
             }
             return false; // No conflict not in the same room or on the same day

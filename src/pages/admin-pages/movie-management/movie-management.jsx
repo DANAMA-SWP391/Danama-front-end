@@ -66,8 +66,6 @@ const MovieManagement = () => {
                     const genres = data.genres;
                     setMovies(movies);
                     setAvailableGenres(genres);
-                    console.log(genres);
-                    console.log(movies);// Store the list of genres so it can be used for selection
                 }
             } catch (err) {
                 setError(err.message);

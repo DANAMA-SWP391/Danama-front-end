@@ -7,7 +7,7 @@ import {useState} from "react";
 import {fetchDetailShowtime} from "../../../../api/webAPI.jsx";
 import {fetchJwtToken} from "../../../../api/authAPI.js";
 import {addBooking} from "../../../../api/userAPI.js";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useCustomAlert} from "../../../../utils/CustomAlertContext.jsx";
 import {checkShowtimeValid, formatCurrency} from "../../../../utils/utility.js";
 
@@ -179,7 +179,9 @@ function FilmCard({film, showtimes}) {
                 </div>
             )}
             <div className="schedule-film">
+                <Link to="/film-page" state={{ film }} className="film-link">
                 <img src={film.poster} alt="film poster"/>
+                </Link>
                 <div className="film-info">
                     <p className="film-age">{film.ageRestricted}+</p>
                     <p className="film-name">{film.name}</p>

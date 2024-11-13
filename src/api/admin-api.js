@@ -1,4 +1,4 @@
-import {API_URL} from "../utils/utility.js";
+import {API_URL, LOCAL_URL} from "../utils/utility.js";
 
 export const fetchCinemaList = async () => {
     try {
@@ -68,7 +68,6 @@ export const fetchUpdateCinema = async (cinema) => {
         }
 
         const result = await response.json(); // Nhận phản hồi từ server
-        console.log('Update response:', result); // Log phản hồi để kiểm tra kết quả
         return result.success; // Trả về giá trị success từ server
     } catch (error) {
         console.error('Error updating cinema:', error);
@@ -93,7 +92,6 @@ export const fetchDeleteCinema = async (cinemaId) => {
         });
 
         const result = await response.json();
-        console.log('Delete response:', result); // Log kết quả phản hồi
         return result.success; // Trả về true nếu xóa thành công
     } catch (error) {
         console.error('Error deleting cinema:', error);
@@ -121,7 +119,6 @@ export const fetchAddAccount = async (account) => {
         }
 
         const result = await response.json(); // Lấy kết quả trả về từ server
-        console.log('Account added response:', result);  // In kết quả ra để kiểm tra
 
         return result.success;  // Trả về kết quả từ server
     } catch (error) {
@@ -253,7 +250,6 @@ export const fetchMovieList = async () => {
         }
 
         const data = await response.json();
-        console.log(data);
 
         return data;
     } catch (error) {
@@ -296,7 +292,6 @@ export const fetchAddMovie = async (movie) => {
         }
 
         const result = await response.json();  // Nhận phản hồi JSON từ server
-        console.log('Add movie response:', result);
         return result.success;  // Trả về true nếu thêm thành công
     } catch (error) {
         console.error('Error adding movie:', error);
@@ -347,7 +342,6 @@ export const fetchDeleteMovie = async (movieId) => {
         });
 
         const result = await response.json();
-        console.log('Delete response:', result);  // Ghi log kết quả phản hồi
         return result.success;  // Trả về true nếu xóa thành công
     } catch (error) {
         console.error('Error deleting movie:', error);
@@ -374,7 +368,6 @@ export const fetchUpdateMovie = async (movie) => {
         }
 
         const result = await response.json();
-        console.log('Update movie response:', result);
         return result.success;
     } catch (error) {
         console.error('Error updating movie:', error);
@@ -421,7 +414,6 @@ export const fetchPendingMovieRequests = async () => {
             throw new Error(`Error: ${response.status}`);
         }
         const data = await response.json();
-        console.log('Received pending requests data:', data);
         return data.pendingRequests;
     } catch (error) {
         console.error('Error fetching pending movie requests:', error.message);
@@ -447,7 +439,6 @@ export const acceptMovieRequest = async (requestId, movieId) => {
         }
 
         const data = await response.json();
-        console.log('Accept movie request response:', data); // Log response
 
         return data.success;
     } catch (error) {
@@ -475,7 +466,6 @@ export const rejectMovieRequest = async (requestId, movieId) => {
         }
 
         const data = await response.json();
-        console.log('Reject movie request response:', data); // Log response
 
         return data.success;
     } catch (error) {
@@ -484,6 +474,18 @@ export const rejectMovieRequest = async (requestId, movieId) => {
     }
 };
 
+export async function fetchAvailableManagers() {
+    try {
+        const response = await fetch(API_URL+'list-available-managers');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json(); // Parse the JSON response
+        return data; // You can process the data further as needed
+    } catch (error) {
+        console.error('Error fetching available managers:', error);
+    }
+}
 
 
 

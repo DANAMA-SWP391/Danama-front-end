@@ -40,7 +40,7 @@ function GoogleSignIn() {
     };
 
     const handleError = (error) => {
-        console.log("Google Sign-In failed. Error:", error);
+        showAlert("Google Sign-In failed. ");
     }
 
     return (

@@ -69,8 +69,6 @@ function BookingDetailsPage() {
                 if (user.roleId === 2) {
                     // Check if user is a cinema manager with matching cinema name
                     const cinema = JSON.parse(localStorage.getItem('cinema'));
-                    console.log(data.cinemaName);
-                    console.log(cinema.name);
                     if (data.cinemaName !== cinema.name) {
                         showAlert("You do not have access to this booking.");
                         navigate('/Cmanager');
